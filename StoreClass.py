@@ -13,21 +13,24 @@
 # store.graph[graph_identifier].delete_vertex(vertex_identifier):
 # store.graph[graph_identifier].delete_edge(edge_identifier):
 import pickle
+from GraphEditorClass import GraphEditor
 
 
 class Store:
     def __init__(self):
+        self.graph_editor = GraphEditor()
         self.graphs = list()
         self.current_graph = None
 
     def create_graph(self, identifier):
         try:
+            if len(self.get_graph_with_id(identifier)) != 0:
+                raise Exception("Such graph already exists")
             graph = Graph()
             graph.set_identifier(identifier)
             self.graphs.append(graph)
         except Exception as ex:
             print(ex)
-            return
 
     def set_current_graph(self, identifier):
         graph_with_id = self.get_graph_with_id(identifier)
@@ -43,11 +46,11 @@ class Store:
     def export_graph(self, identifier):
         graphs_to_save = [graph for graph in self.graphs if graph.identifier == identifier]
         for graph in graphs_to_save:
-            with open(f'{identifier}-{graphs_to_save.index(graph)}.wwg', 'wb') as file:
+            with open(f'{identifier}-{graphs_to_save.index(graph)}.gepp', 'wb') as file:
                 pickle.dump(graph, file)
 
     def import_graph(self, identifier):
-        with open(f'{identifier}.www', 'rb') as file:
+        with open(f'{identifier}.gepp', 'rb') as file:
             graph_new = pickle.load(file)
             # check graph with same identifier
             if len([graph for graph in self.graphs if graph.identifier == identifier]) != 0:
@@ -55,18 +58,14 @@ class Store:
             self.graphs.append(graph_new)
 
     def delete_graph(self, identifier):
-        if identifier is None:
+        if identifier is None or "":
             raise Exception("The identifier of the graph being deleted is empty")
         for graph in self.graphs:
-            if graph.identifier == identifier:
-                print(graph.identifier)
+            if graph is None or graph.identifier == identifier:
                 self.graphs.remove(graph)
-        # _ = (self.graphs.remove(graph) for graph in self.graphs if graph.identifier == identifier)
-        if self.current_graph is not None and self.current_graph.identifier == identifier:
-            self.current_graph = None
 
     def get_graph_with_id(self, identifier):
-        return [graph for graph in self.graphs if graph.identifier == identifier]
+        return [graph for graph in self.graphs if graph is not None and graph.identifier == identifier]
 
 
 # For the program to work correctly,
@@ -88,6 +87,7 @@ class Graph:
             self.identifier = None
             self.content = None
             self.position = None
+            self.color = (0, 0, 0)
 
         def set_identifier(self, identifier):
             self.identifier = identifier
@@ -109,6 +109,7 @@ class Graph:
             self.vertex_identifier_first = None
             self.vertex_identifier_second = None
             self.oriented = False
+            self.color = (0, 0, 0)
 
         def set_identifier(self, identifier):
             self.identifier = identifier
@@ -128,7 +129,7 @@ class Graph:
             self.vertex_identifier_second = None
             self.oriented = False
 
-    def add_edge(self, identifier, vertex_identifier_first, vertex_identifier_second):
+    def add_edge(self, identifier, vertex_identifier_first, vertex_identifier_second, oriented=False):
         # not empty edge
         if identifier is None:
             raise Exception("New edge identifier is empty")
@@ -140,10 +141,17 @@ class Graph:
         if len([edge for edge in self.edges if edge.identifier == identifier]) != 0:
             raise Exception("Edge with same identifier already in graph")
 
+        vertex_first = self.get_vertex_by_identifier(vertex_identifier_first)
+        vertex_second = self.get_vertex_by_identifier(vertex_identifier_second)
+        if vertex_first is None or vertex_second is None:
+            return
+
         edge = self.Edge()
         edge.set_identifier(identifier=identifier)
         edge.set_vertex_identifier_first(vertex_identifier=vertex_identifier_first)
         edge.set_vertex_identifier_second(vertex_identifier=vertex_identifier_second)
+        if oriented:
+            edge.change_the_orientation_state()
         self.edges.append(edge)
 
     def add_vertex(self, identifier, content, position):
@@ -168,9 +176,29 @@ class Graph:
     def delete_edge(self, identifier):
         if identifier is None:
             raise Exception("The identifier of the edge being deleted is empty")
-        _ = (self.edges.remove(edge) for edge in self.edges if edge.identifier == identifier)
+        for edge in self.edges:
+            if edge.identifier == identifier:
+                self.edges.remove(edge)
 
     def delete_vertex(self, identifier):
         if identifier is None:
             raise Exception("The identifier of the vertex being deleted is empty")
-        _ = (self.vertexes.remove(vertex) for vertex in self.vertexes if vertex.identifier == identifier)
+        for vertex in self.vertexes:
+            if vertex.identifier == identifier:
+                self.vertexes.remove(vertex)
+        for edge in self.edges:
+            if edge.vertex_identifier_first == identifier or \
+                    edge.vertex_identifier_second == identifier:
+                self.delete_edge(edge.identifier)
+
+    def get_vertex_by_identifier(self, identifier):
+        for vertex in self.vertexes:
+            if vertex.identifier == identifier:
+                return vertex
+        return None
+
+    def get_edge_by_identifier(self, identifier):
+        for edge in self.edges:
+            if edge.identifier == identifier:
+                return edge
+        return None

@@ -1,16 +1,13 @@
-import os
-
 import pygame
 import sys
 from GraphRendererClass import GraphRenderer
 from EventsHandlerClass import EventsHandler
 from StoreClass import Store
-from GraphEditorClass import GraphEditor
 
 DISPLAY_WIDTH = DISPLAY_HEIGHT = 500
 pygame.init()
 display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
-pygame.display.set_caption("WWG:WorkerWithGraphs")
+pygame.display.set_caption("GE:GraphEditor")
 clock = pygame.time.Clock()
 
 

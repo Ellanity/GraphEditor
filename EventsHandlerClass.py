@@ -19,10 +19,13 @@ class EventsHandler:
 
         def run(self):
             while True:
-                if self.purpose == "console handler":
-                    self.event = input()
-                    self.event_handler.event_implementation(self.event)
-                self.event_handler.app.clock.tick(10)
+                try:
+                    if self.purpose == "console handler":
+                        self.event = input()
+                        self.event_handler.event_implementation(self.event)
+                    self.event_handler.app.clock.tick(10)
+                except Exception as ex:
+                    print(ex)
 
     def events(self):
         self.console_event_thread.start()
@@ -30,7 +33,7 @@ class EventsHandler:
             try:
                 self.display_handler()
                 self.event_implementation("render")
-            except Exception as ex:
+            except Exception as _:
                 pass
             self.app.clock.tick(15)
 
@@ -60,22 +63,54 @@ class EventsHandler:
         # GRAPHS
         if event[:13] == "create graph " and len(event) > 13:
             self.app.store.create_graph(event[13:])
+            print(f"graph {event[13:]} created")
         if event[:13] == "choose graph " and len(event) > 13:
             self.app.store.set_current_graph(event[13:])
-            print("current graph:", self.app.store.current_graph.identifier)
+            print("current graph:" +
+                  self.app.store.current_graph.identifier if self.app.store.current_graph is not None else ";")
         if event[:13] == "delete graph " and len(event) > 13:
             self.app.store.delete_graph(event[13:])
+            print(f"graph {event[13:]} deleted")
         if event == "save graph":
             self.app.store.save_current_graph_in_store()
+            print(self.app.store.current_graph.identifier if self.app.store.current_graph is not None else ";"
+                  + "saved in store")
         if event == "print graphs in store":
-            print("; ".join([graph.identifier for graph in self.app.store.graphs if graph is not None]) + ";")
+            print("graphs in store: ",
+                  "; ".join([(graph.identifier if graph is not None else "None") for graph in self.app.store.graphs])
+                  + ';')
         if event == "print current graph":
-            print(self.app.store.current_graph.identifier if self.app.store.current_graph is not None else ";")
+            print("current graph: ",
+                  self.app.store.current_graph.identifier if self.app.store.current_graph is not None else ";")
+
+        if event[:13] == "export graph " and len(event) > 13:
+            self.app.store.export_graph(event[13:])
+            print(f"graph {event[13:]} exported")
+
+        if event[:13] == "import graph " and len(event) > 13:
+            self.app.store.import_graph(event[13:])
+            print(f"graph {event[13:]} imported")
 
         # VERTEXES
-        if event[:13] == "create vertex " and len(event) > 13:
-            args = event[13:].split(" ")
-            self.app.store.current_graph.create_vertex(args[0], args[1], args[2])
+        # example in cli: create vertex 1 2 50 100; 1 - id, 2 - content, 50 - x, 100 - y
+        if event[:14] == "create vertex " and len(event) > 14:
+            args = event[14:].split(" ")
+            vertex_identifier = args[0]
+            content = args[1]
+            position = [int(args[i]) for i in range(2, len(args))]
+            self.app.store.current_graph.add_vertex(identifier=vertex_identifier, content=content, position=position)
+
+        # example in cli: create vertex 1 v2 v3 False; 1 - id, v2, v3 - vertexes, False - oriented (default)
+        if event[:12] == "create edge " and len(event) > 12:
+            args = event[12:].split(" ")
+            edge_identifier = args[0]
+            vertex_identifier_first = args[1]
+            vertex_identifier_second = args[2]
+            oriented = True if args[3] == "True" else False
+            self.app.store.current_graph.add_edge(identifier=edge_identifier,
+                                                  vertex_identifier_first=vertex_identifier_first,
+                                                  vertex_identifier_second=vertex_identifier_second,
+                                                  oriented=oriented)
 
         # ADDITIONAL COMMANDS
         if event == "command":
