@@ -21,6 +21,7 @@ class Store:
         self.graph_editor = GraphEditor()
         self.graphs = list()
         self.current_graph = None
+        self.current_vertex = None
 
     def create_graph(self, identifier):
         try:
@@ -87,7 +88,7 @@ class Graph:
             self.identifier = None
             self.content = None
             self.position = None
-            self.color = (0, 0, 0)
+            self.active = False
 
         def set_identifier(self, identifier):
             self.identifier = identifier
@@ -98,18 +99,23 @@ class Graph:
         def set_position(self, position):
             self.position = position
 
+        def change_the_active_state(self):
+            self.active = not self.active
+
         def reset(self):
             self.identifier = None
             self.content = None
             self.position = None
+            # other
+            self.active = False
 
     class Edge:
         def __init__(self):
             self.identifier = None
             self.vertex_identifier_first = None
             self.vertex_identifier_second = None
+            # other
             self.oriented = False
-            self.color = (0, 0, 0)
 
         def set_identifier(self, identifier):
             self.identifier = identifier
@@ -202,3 +208,14 @@ class Graph:
             if edge.identifier == identifier:
                 return edge
         return None
+
+    def change_edge_oriented_status(self, identifier):
+        for edge in self.edges:
+            if edge.identifier == identifier:
+                edge.change_the_orientation_state()
+
+    def change_vertex_active_status(self, identifier):
+        for vertex in self.vertexes:
+            if vertex.identifier == identifier:
+                vertex.change_the_active_state()
+                return

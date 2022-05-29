@@ -35,10 +35,11 @@ class EventsHandler:
                 self.event_implementation("render")
             except Exception as _:
                 pass
-            self.app.clock.tick(15)
+            self.app.clock.tick(35)
 
     def display_handler(self):
         pygame.display.update()
+        # vertex_work_with = self.app.store.current_vertex
         for event in pygame.event.get():
             # MAIN COMMANDS
             if event.type == pygame.QUIT:
@@ -46,11 +47,19 @@ class EventsHandler:
             # ADDITIONAL COMMANDS
             # right mouse button click
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                pass  # print(event.pos())
+                self.app.store.current_graph.change_vertex_active_status(self.app.store.current_vertex.identifier)
+                self.app.store.current_vertex = None
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(pygame.mouse.get_pos())
+                self.app.store.current_graph.change_vertex_active_status(self.app.store.current_vertex.identifier)
 
         # right mouse button press
         if pygame.mouse.get_pressed()[0]:
-            pass  # print(pygame.mouse.get_pos())
+            pass  # pygame.mouse.get_pos()
+
+        if self.app.store.current_vertex is not None:
+            self.app.store.current_vertex.position = pygame.mouse.get_pos()
 
     def event_implementation(self, event):
         # MAIN COMMANDS
@@ -100,6 +109,10 @@ class EventsHandler:
             position = [int(args[i]) for i in range(2, len(args))]
             self.app.store.current_graph.add_vertex(identifier=vertex_identifier, content=content, position=position)
 
+        if event[:12] == "move vertex " and len(event) > 12:
+            pass
+
+        # EDGES
         # example in cli: create vertex 1 v2 v3 False; 1 - id, v2, v3 - vertexes, False - oriented (default)
         if event[:12] == "create edge " and len(event) > 12:
             args = event[12:].split(" ")
@@ -111,6 +124,11 @@ class EventsHandler:
                                                   vertex_identifier_first=vertex_identifier_first,
                                                   vertex_identifier_second=vertex_identifier_second,
                                                   oriented=oriented)
+
+        if event[:28] == "edge change oriented status " and len(event) > 28:
+            edge_identifier = event[28:]
+            self.app.store.current_graph.change_edge_oriented_status(edge_identifier)
+            print(edge_identifier, " oriented status changed")
 
         # ADDITIONAL COMMANDS
         if event == "command":
