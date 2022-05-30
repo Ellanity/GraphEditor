@@ -4,7 +4,8 @@ from GraphRendererClass import GraphRenderer
 from EventsHandlerClass import EventsHandler
 from StoreClass import Store
 
-DISPLAY_WIDTH = DISPLAY_HEIGHT = 500
+DISPLAY_WIDTH = 800
+DISPLAY_HEIGHT = 500
 pygame.init()
 display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 pygame.display.set_caption("GE:GraphEditor")
@@ -26,6 +27,8 @@ class App:
             sys.exit()
 
     def run(self):
+        # self.events_handler.event_implementation("import graph 1-0")
+        # self.events_handler.event_implementation("choose graph 1")
         self.events_handler.events()
 
 

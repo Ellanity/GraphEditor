@@ -15,6 +15,29 @@ class GraphRenderer:
         self.clock = clock
         self.graph = graph
         self.setting = self.Settings()
+        self.camera = self.Camera()
+
+    class Camera:
+        def __init__(self):
+            self.move_shift_start = [0, 0]
+            self.move_shift_finish = [0, 0]
+
+            self.position = [0, 0]
+            self.move_state = False
+
+        def reset_shift(self):
+            self.move_shift_start = [0, 0]
+            self.move_shift_finish = [0, 0]
+
+        def set_shift(self, shift_start, shift_finish):
+            self.move_shift_start = shift_start
+            self.move_shift_finish = shift_finish
+
+        def recalculate_position(self):
+            shift_x = self.move_shift_finish[0] - self.move_shift_start[0]
+            shift_y = self.move_shift_finish[1] - self.move_shift_start[1]
+            self.position[0] += shift_x
+            self.position[1] += shift_y
 
     # settings are not available yet
     class Settings:
@@ -45,66 +68,83 @@ class GraphRenderer:
             vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
             vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
             # print(edge.identifier, vertex_first.position, vertex_second.position, EDGE_COLOR )
-            pygame.draw.aaline(self.display, EDGE_COLOR, vertex_first.position, vertex_second.position)
+
+            vertex_first_position_to_draw = [0, 0]
+            vertex_first_position_to_draw[0] = vertex_first.position[0] + self.camera.position[0]
+            vertex_first_position_to_draw[1] = vertex_first.position[1] + self.camera.position[1]
+            vertex_second_position_to_draw = [0, 0]
+            vertex_second_position_to_draw[0] = vertex_second.position[0] + self.camera.position[0]
+            vertex_second_position_to_draw[1] = vertex_second.position[1] + self.camera.position[1]
+
+            pygame.draw.aaline(self.display, EDGE_COLOR, vertex_first_position_to_draw, vertex_second_position_to_draw)
 
             if edge.oriented:
                 # print(edge.identifier)
                 # vertex_second.position
-                T0 = vertex_second.position
+                T0 = vertex_second_position_to_draw
                 T23 = [0, 0]
                 T1 = [0, 0]
                 T2 = [0, 0]
                 T3 = [0, 0]
 
                 # it's fine too
-                distance_between_vertexes = sqrt((abs(vertex_first.position[0] - vertex_second.position[0]) ** 2) +
-                                                 (abs(vertex_first.position[1] - vertex_second.position[1]) ** 2))
+                distance_between_vertexes = \
+                    sqrt((abs(vertex_first_position_to_draw[0] - vertex_second_position_to_draw[0]) ** 2) +
+                         (abs(vertex_first_position_to_draw[1] - vertex_second_position_to_draw[1]) ** 2))
 
                 # SCVA is scale coefficient vertex arrow [between center and edge of vertex]
                 SCVA = self.setting.vertexes_radius / distance_between_vertexes
-                dist_x_between_T1_T0 = (abs(vertex_first.position[0] - vertex_second.position[0])) * SCVA
-                dist_y_between_T1_T0 = (abs(vertex_first.position[1] - vertex_second.position[1])) * SCVA
+                dist_x_between_T1_T0 = \
+                    (abs(vertex_first_position_to_draw[0] - vertex_second_position_to_draw[0])) * SCVA
+                dist_y_between_T1_T0 = \
+                    (abs(vertex_first_position_to_draw[1] - vertex_second_position_to_draw[1])) * SCVA
 
-                T1[0] = T0[0] - dist_x_between_T1_T0 if vertex_first.position[0] < vertex_second.position[0] \
+                T1[0] = T0[0] - dist_x_between_T1_T0 \
+                    if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
                     else T0[0] + dist_x_between_T1_T0
-                T1[1] = T0[1] - dist_y_between_T1_T0 if vertex_first.position[1] < vertex_second.position[1] \
+                T1[1] = T0[1] - dist_y_between_T1_T0 \
+                    if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
                     else T0[1] + dist_y_between_T1_T0
 
                 ####### # fine
                 scale_coefficient = self.setting.arrow_size / distance_between_vertexes
-                dist_x_between_T1_T23 = (abs(vertex_first.position[0] - vertex_second.position[0])) * scale_coefficient
-                dist_y_between_T1_T23 = (abs(vertex_first.position[1] - vertex_second.position[1])) * scale_coefficient
+                dist_x_between_T1_T23 = \
+                    (abs(vertex_first_position_to_draw[0] - vertex_second_position_to_draw[0])) * scale_coefficient
+                dist_y_between_T1_T23 = \
+                    (abs(vertex_first_position_to_draw[1] - vertex_second_position_to_draw[1])) * scale_coefficient
 
-                T23[0] = T1[0] - dist_x_between_T1_T23 if vertex_first.position[0] < vertex_second.position[0] \
+                T23[0] = T1[0] - dist_x_between_T1_T23 \
+                    if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
                     else T1[0] + dist_x_between_T1_T23
-                T23[1] = T1[1] - dist_y_between_T1_T23 if vertex_first.position[1] < vertex_second.position[1] \
+                T23[1] = T1[1] - dist_y_between_T1_T23 \
+                    if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
                     else T1[1] + dist_y_between_T1_T23
-                # print("T0: ", vertex_first.position, "T1: ", T1, "DISTxy: ",
+                # print("T0: ", vertex_first_position_to_draw, "T1: ", T1, "DISTxy: ",
                 # dist_x_between_T1_T23, dist_y_between_T1_T23, "T23: ", T23)
 
-                dist_x_between_T23_T2_and_T23_T3 = dist_y_between_T1_T23 / 2
-                dist_y_between_T23_T2_and_T23_T3 = dist_x_between_T1_T23 / 2
+                dist_x_between_T23_T2_and_T3 = dist_y_between_T1_T23 / 2
+                dist_y_between_T23_T2_and_T3 = dist_x_between_T1_T23 / 2
 
-                T2[0] = T23[0] - dist_x_between_T23_T2_and_T23_T3 if vertex_first.position[0] \
-                                                                     < vertex_second.position[0] \
-                    else T23[0] + dist_x_between_T23_T2_and_T23_T3
-                T2[1] = T23[1] + dist_y_between_T23_T2_and_T23_T3 if vertex_first.position[1] \
-                                                                     < vertex_second.position[1] \
-                    else T23[1] - dist_y_between_T23_T2_and_T23_T3
+                T2[0] = T23[0] - dist_x_between_T23_T2_and_T3 \
+                    if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
+                    else T23[0] + dist_x_between_T23_T2_and_T3
+                T2[1] = T23[1] + dist_y_between_T23_T2_and_T3 \
+                    if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
+                    else T23[1] - dist_y_between_T23_T2_and_T3
 
-                T3[0] = T23[0] + dist_x_between_T23_T2_and_T23_T3 if vertex_first.position[0] \
-                                                                     < vertex_second.position[0] \
-                    else T23[0] - dist_x_between_T23_T2_and_T23_T3
-                T3[1] = T23[1] - dist_y_between_T23_T2_and_T23_T3 if vertex_first.position[1] \
-                                                                     < vertex_second.position[1] \
-                    else T23[1] + dist_y_between_T23_T2_and_T23_T3
+                T3[0] = T23[0] + dist_x_between_T23_T2_and_T3 \
+                    if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
+                    else T23[0] - dist_x_between_T23_T2_and_T3
+                T3[1] = T23[1] - dist_y_between_T23_T2_and_T3 \
+                    if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
+                    else T23[1] + dist_y_between_T23_T2_and_T3
 
                 T2[0] = int(T2[0])
                 T2[1] = int(T2[1])
                 T3[0] = int(T3[0])
                 T3[1] = int(T3[1])
                 # print("T23: ", T23, "DISTxy: ",
-                # dist_x_between_T23_T2_and_T23_T3, dist_y_between_T23_T2_and_T23_T3, "T2: ", T2, "T3: ", T3)
+                # dist_x_between_T23_T2_and_T3, dist_y_between_T23_T2_and_T3, "T2: ", T2, "T3: ", T3)
                 pygame.draw.polygon(self.display, EDGE_COLOR, [T1, T2, T3])
                 pygame.draw.aalines(self.display, EDGE_COLOR, True, [T1, T2, T3])
 
@@ -132,7 +172,11 @@ class GraphRenderer:
         if self.graph is None:
             return None
         for vertex in self.graph.vertexes:
-            if (position[0] - vertex.position[0]) ** 2 + (position[1] - vertex.position[1]) ** 2 \
+            vertex_position_to_draw = [0, 0]
+            vertex_position_to_draw[0] = vertex.position[0] + self.camera.position[0]
+            vertex_position_to_draw[1] = vertex.position[1] + self.camera.position[1]
+
+            if (position[0] - vertex_position_to_draw[0]) ** 2 + (position[1] - vertex_position_to_draw[1]) ** 2 \
                     < self.setting.vertexes_radius ** 2:
                 return vertex
         return None
@@ -142,16 +186,23 @@ class GraphRenderer:
             # circle
             AREA_COLOR_LOCAL = ACTIVE_AREA_COLOR if vertex.active else AREA_COLOR
             CIRCLE_COLOR_LOCAL = ACTIVE_CIRCLE_COLOR if vertex.active else CIRCLE_COLOR
+            
+            vertex_position_to_draw = [0, 0]
+            vertex_position_to_draw[0] = vertex.position[0] + self.camera.position[0]
+            vertex_position_to_draw[1] = vertex.position[1] + self.camera.position[1]
+            
             pygame.draw.circle(self.display, AREA_COLOR_LOCAL,
-                               (vertex.position[0], vertex.position[1]), self.setting.vertexes_radius)
+                               (vertex_position_to_draw[0], vertex_position_to_draw[1]),
+                               self.setting.vertexes_radius)
             pygame.draw.circle(self.display, CIRCLE_COLOR_LOCAL,
-                               (vertex.position[0], vertex.position[1]), self.setting.vertexes_radius, 1)
+                               (vertex_position_to_draw[0], vertex_position_to_draw[1]),
+                               self.setting.vertexes_radius, 1)
             # identifier
             font = pygame.font.Font(None, self.setting.vertexes_radius * 2)
             vertex_identifier = font.render(vertex.identifier, True, CIRCLE_COLOR_LOCAL)
 
-            vertex_identifier_x = vertex.position[0] + self.setting.vertexes_radius
-            vertex_identifier_y = vertex.position[1] + self.setting.vertexes_radius
+            vertex_identifier_x = vertex_position_to_draw[0] + self.setting.vertexes_radius
+            vertex_identifier_y = vertex_position_to_draw[1] + self.setting.vertexes_radius
             if vertex_identifier_x + vertex_identifier.get_width() > self.display.get_width():
                 vertex_identifier_x -= (self.setting.vertexes_radius * 2 + vertex_identifier.get_width())
             if vertex_identifier_y + vertex_identifier.get_height() > self.display.get_height():

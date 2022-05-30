@@ -39,7 +39,6 @@ class EventsHandler:
 
     def display_handler(self):
         pygame.display.update()
-        # vertex_work_with = self.app.store.current_vertex
         for event in pygame.event.get():
             # MAIN COMMANDS
             if event.type == pygame.QUIT:
@@ -47,19 +46,45 @@ class EventsHandler:
             # ADDITIONAL COMMANDS
             # right mouse button click
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                self.app.store.current_graph.change_vertex_active_status(self.app.store.current_vertex.identifier)
+                # camera
+                self.app.renderer.camera.move_state = False
+                self.app.renderer.camera.reset_shift()
+                # vertex
+                vertex_id = self.app.store.current_vertex.identifier
+                if self.app.store.current_vertex is not None:
+                    self.app.store.current_vertex.change_the_active_state()
+                    self.app.store.current_vertex.reset_shift()
                 self.app.store.current_vertex = None
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(pygame.mouse.get_pos())
-                self.app.store.current_graph.change_vertex_active_status(self.app.store.current_vertex.identifier)
+                mouse_position = pygame.mouse.get_pos()
+                # vertex
+                self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
+                if self.app.store.current_vertex is not None:
+                    self.app.store.current_vertex.change_the_active_state()
+                    self.app.store.current_vertex.move_shift_start = mouse_position
+                else:
+                    # camera
+                    self.app.renderer.camera.move_state = True
+                    self.app.renderer.camera.move_shift_start = mouse_position
 
         # right mouse button press
         if pygame.mouse.get_pressed()[0]:
             pass  # pygame.mouse.get_pos()
 
+        # Move vertex
         if self.app.store.current_vertex is not None:
-            self.app.store.current_vertex.position = pygame.mouse.get_pos()
+            mouse_position = pygame.mouse.get_pos()
+            self.app.store.current_vertex.move_shift_finish = mouse_position
+            self.app.store.current_vertex.recalculate_position()
+            self.app.store.current_vertex.move_shift_start = self.app.store.current_vertex.move_shift_finish
+
+        # Move camera
+        if self.app.renderer.camera.move_state is True:
+            mouse_position = pygame.mouse.get_pos()
+            self.app.renderer.camera.move_shift_finish = mouse_position
+            self.app.renderer.camera.recalculate_position()
+            self.app.renderer.camera.move_shift_start = self.app.renderer.camera.move_shift_finish
 
     def event_implementation(self, event):
         # MAIN COMMANDS
@@ -125,10 +150,10 @@ class EventsHandler:
                                                   vertex_identifier_second=vertex_identifier_second,
                                                   oriented=oriented)
 
-        if event[:28] == "edge change oriented status " and len(event) > 28:
+        if event[:28] == "edge change oriented state " and len(event) > 28:
             edge_identifier = event[28:]
-            self.app.store.current_graph.change_edge_oriented_status(edge_identifier)
-            print(edge_identifier, " oriented status changed")
+            self.app.store.current_graph.change_edge_oriented_state(edge_identifier)
+            print(edge_identifier, " oriented state changed")
 
         # ADDITIONAL COMMANDS
         if event == "command":
