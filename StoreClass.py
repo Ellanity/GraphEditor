@@ -1,5 +1,5 @@
 import pickle
-from GraphEditorClass import GraphEditor
+from GraphCalculator import GraphCalculator
 
 
 ###########################################
@@ -7,7 +7,7 @@ from GraphEditorClass import GraphEditor
 ###########################################
 class Store:
     def __init__(self):
-        self.graph_editor = GraphEditor()
+        self.graph_calculator = GraphCalculator()
         self.graphs = list()
         self.current_graph = None
         self.current_vertex = None
@@ -158,6 +158,7 @@ class Graph:
         for vertex in self.vertexes:
             if vertex.identifier == identifier:
                 self.vertexes.remove(vertex)
+                break
         for edge in self.edges:
             if edge.vertex_identifier_first == identifier or \
                     edge.vertex_identifier_second == identifier:

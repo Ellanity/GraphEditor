@@ -1,21 +1,22 @@
 from math import sqrt
-
 import pygame
+from ThemeClass import OrangeDarkTheme, BlueLightTheme
 
-AREA_COLOR = BG_COLOR = (240, 245, 255)
-ACTIVE_CIRCLE_COLOR = (32, 79, 206)
-ACTIVE_AREA_COLOR = (176, 194, 242)
-CIRCLE_COLOR = (0, 0, 0)
-EDGE_COLOR = (0, 0, 0)
+FONT = "CONSOLA.ttf"
 
 
 class GraphRenderer:
-    def __init__(self, display=None, clock=None, graph=None):
+    def __init__(self, display=None, graph=None):
         self.display = display
-        self.clock = clock
-        self.graph = graph
         self.setting = self.Settings()
         self.camera = self.Camera()
+        self.graph = graph
+        # ## theme
+        self.light_theme = BlueLightTheme()
+        self.dark_theme = OrangeDarkTheme()
+        self.theme = self.light_theme
+        # ## buttons in future
+        self.info_location = [0, 0, 0, 0]  # x y width height
 
     class Camera:
         def __init__(self):
@@ -46,10 +47,17 @@ class GraphRenderer:
             self.background_start_pos_y = 0
             self.background_width = 500
             self.background_height = 500
+            #
             self.edges_width = 2
             self.vertexes_radius = 8
             self.graph_scale = 1
             self.arrow_size = 8
+            #
+            self.info_padding = 5
+            self.info_margin_vertical = 3
+            self.info_margin_horizontal = 6
+            self.info_main_size = 18
+            self.info_additional_size = 18
 
     def set_graph(self, graph):
         self.graph = graph
@@ -57,17 +65,13 @@ class GraphRenderer:
     def set_display(self, display):
         self.display = display
 
-    def set_clock(self, clock):
-        self.clock = clock
-
     def render_background(self):
-        self.display.fill(BG_COLOR)
+        self.display.fill(self.theme.BG_COLOR)
 
     def render_edges(self):
         for edge in self.graph.edges:
             vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
             vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
-            # print(edge.identifier, vertex_first.position, vertex_second.position, EDGE_COLOR )
 
             vertex_first_position_to_draw = [0, 0]
             vertex_first_position_to_draw[0] = vertex_first.position[0] + self.camera.position[0]
@@ -76,10 +80,9 @@ class GraphRenderer:
             vertex_second_position_to_draw[0] = vertex_second.position[0] + self.camera.position[0]
             vertex_second_position_to_draw[1] = vertex_second.position[1] + self.camera.position[1]
 
-            pygame.draw.aaline(self.display, EDGE_COLOR, vertex_first_position_to_draw, vertex_second_position_to_draw)
+            pygame.draw.aaline(self.display, self.theme.EDGE_COLOR, vertex_first_position_to_draw, vertex_second_position_to_draw)
 
             if edge.oriented:
-                # print(edge.identifier)
                 # vertex_second.position
                 T0 = vertex_second_position_to_draw
                 T23 = [0, 0]
@@ -119,8 +122,6 @@ class GraphRenderer:
                 T23[1] = T1[1] - dist_y_between_T1_T23 \
                     if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
                     else T1[1] + dist_y_between_T1_T23
-                # print("T0: ", vertex_first_position_to_draw, "T1: ", T1, "DISTxy: ",
-                # dist_x_between_T1_T23, dist_y_between_T1_T23, "T23: ", T23)
 
                 dist_x_between_T23_T2_and_T3 = dist_y_between_T1_T23 / 2
                 dist_y_between_T23_T2_and_T3 = dist_x_between_T1_T23 / 2
@@ -143,10 +144,8 @@ class GraphRenderer:
                 T2[1] = int(T2[1])
                 T3[0] = int(T3[0])
                 T3[1] = int(T3[1])
-                # print("T23: ", T23, "DISTxy: ",
-                # dist_x_between_T23_T2_and_T3, dist_y_between_T23_T2_and_T3, "T2: ", T2, "T3: ", T3)
-                pygame.draw.polygon(self.display, EDGE_COLOR, [T1, T2, T3])
-                pygame.draw.aalines(self.display, EDGE_COLOR, True, [T1, T2, T3])
+                pygame.draw.polygon(self.display, self.theme.EDGE_COLOR, [T1, T2, T3])
+                pygame.draw.aalines(self.display, self.theme.EDGE_COLOR, True, [T1, T2, T3])
 
                 #       vertex_second
                 #       .T1
@@ -181,11 +180,23 @@ class GraphRenderer:
                 return vertex
         return None
 
+    def change_theme(self):
+        if type(self.theme) == OrangeDarkTheme:
+            self.theme = self.light_theme
+        else:
+            self.theme = self.dark_theme
+
+    def info_intersection(self, position):
+        if self.info_location[0] < position[0] < self.info_location[0] + self.info_location[2] and \
+           self.info_location[1] < position[1] < self.info_location[1] + self.info_location[3]:
+            return True
+        return False
+
     def render_vertexes(self):
         for vertex in self.graph.vertexes:
-            # circle
-            AREA_COLOR_LOCAL = ACTIVE_AREA_COLOR if vertex.active else AREA_COLOR
-            CIRCLE_COLOR_LOCAL = ACTIVE_CIRCLE_COLOR if vertex.active else CIRCLE_COLOR
+            # ## circle
+            AREA_COLOR_LOCAL = self.theme.ACTIVE_AREA_COLOR if vertex.active else self.theme.AREA_COLOR
+            CIRCLE_COLOR_LOCAL = self.theme.ACTIVE_CIRCLE_COLOR if vertex.active else self.theme.CIRCLE_COLOR
             
             vertex_position_to_draw = [0, 0]
             vertex_position_to_draw[0] = vertex.position[0] + self.camera.position[0]
@@ -197,8 +208,8 @@ class GraphRenderer:
             pygame.draw.circle(self.display, CIRCLE_COLOR_LOCAL,
                                (vertex_position_to_draw[0], vertex_position_to_draw[1]),
                                self.setting.vertexes_radius, 1)
-            # identifier
-            font = pygame.font.Font(None, self.setting.vertexes_radius * 2)
+            # ## identifier
+            font = pygame.font.Font(FONT, self.setting.vertexes_radius * 2)
             vertex_identifier = font.render(vertex.identifier, True, CIRCLE_COLOR_LOCAL)
 
             vertex_identifier_x = vertex_position_to_draw[0] + self.setting.vertexes_radius
@@ -209,16 +220,55 @@ class GraphRenderer:
                 vertex_identifier_y -= (self.setting.vertexes_radius * 2 + vertex_identifier.get_height())
             self.display.blit(vertex_identifier, (vertex_identifier_x, vertex_identifier_y))
 
+    def render_graph_info(self):
+        # ## create texts with info
+        font_main = pygame.font.Font(FONT, self.setting.info_main_size)
+        font_additional = pygame.font.Font(FONT, self.setting.info_additional_size)
+        # graph name
+        texts_to_draw = list()
+        texts_to_draw.append(font_main.render(f"Graph: {self.graph.identifier}",
+                                              True, self.theme.INFO_TEXT_COLOR))  # graph_identifier
+        texts_to_draw.append(font_additional.render(f"Vertexes: {len(self.graph.vertexes)}",
+                                                    True, self.theme.INFO_TEXT_COLOR))  # vertexes_count
+        texts_to_draw.append(font_additional.render(f"Edges: {len(self.graph.edges)}",
+                                                    True, self.theme.INFO_TEXT_COLOR))  # edges_count
+
+        # ## draw bg
+        max_width_of_text = 0
+        for text in texts_to_draw:
+            if text.get_width() >= max_width_of_text:
+                max_width_of_text = text.get_width()
+        sum_height_of_text = 0
+        for text in texts_to_draw:
+            sum_height_of_text += text.get_height()
+
+        bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
+        bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
+        self.info_location = [self.setting.info_padding, self.setting.info_padding, bg_width, bg_height]
+        bg_rectangle = (self.setting.info_padding, self.setting.info_padding, bg_width, bg_height)
+        pygame.draw.rect(self.display, self.theme.INFO_AREA_COLOR, bg_rectangle)
+        pygame.draw.rect(self.display, self.theme.INFO_TEXT_COLOR, bg_rectangle, 1)
+        # ## find location of texts
+        for text in texts_to_draw:
+            text_x = self.setting.info_padding + self.setting.info_margin_horizontal
+            text_y = self.setting.info_padding + self.setting.info_margin_vertical
+            for text_ in texts_to_draw:
+                text_y += self.setting.info_margin_vertical
+                if text_ != text:
+                    text_y += text_.get_height() + self.setting.info_margin_vertical
+                else:
+                    break
+            self.display.blit(text, (text_x, text_y))
+
     def render(self):
         if self.display is None:
             raise Exception("No display in graph renderer")
         if self.graph is None:
             raise Exception("No graph in graph renderer")
-        if self.clock is None:
-            raise Exception("No clock in graph renderer")
 
         self.render_background()
         self.render_edges()
         self.render_vertexes()
+        self.render_graph_info()
 
         pygame.display.flip()

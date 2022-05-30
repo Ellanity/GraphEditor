@@ -7,7 +7,7 @@ from StoreClass import Store
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 500
 pygame.init()
-display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
+display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("GE:GraphEditor")
 clock = pygame.time.Clock()
 
@@ -27,8 +27,8 @@ class App:
             sys.exit()
 
     def run(self):
-        # self.events_handler.event_implementation("import graph 1-0")
-        # self.events_handler.event_implementation("choose graph 1")
+        self.events_handler.event("import graph 1-0")
+        self.events_handler.event("choose graph 1")
         self.events_handler.events()
 
 
