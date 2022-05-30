@@ -23,6 +23,8 @@ class Store:
             print(ex)
 
     def set_current_graph(self, identifier):
+        self.current_vertex = None
+        self.current_graph = None
         graph_with_id = self.get_graph_with_id(identifier)
         if len(graph_with_id) != 0:
             self.current_graph = graph_with_id[0]
@@ -50,6 +52,9 @@ class Store:
     def delete_graph(self, identifier):
         if identifier is None or "":
             raise Exception("The identifier of the graph being deleted is empty")
+        if self.current_graph.identifier == identifier:
+            self.current_graph = None
+            self.current_vertex = None
         for graph in self.graphs:
             if graph is None or graph.identifier == identifier:
                 self.graphs.remove(graph)
@@ -175,6 +180,22 @@ class Graph:
         if vertex is not None:
             vertex.change_the_active_state()
 
+    def rename_vertex(self, identifier, identifier_new):
+        # ## find if no vertexes with same id
+        for vertex in self.vertexes:
+            if vertex.identifier == identifier_new:
+                return
+        # ## rename end points firstly in edges
+        for edge in self.edges:
+            if edge.vertex_identifier_first == identifier:
+                edge.vertex_identifier_first = identifier_new
+            if edge.vertex_identifier_second == identifier:
+                edge.vertex_identifier_second = identifier_new
+        # ## rename vertex
+        for vertex in self.vertexes:
+            if vertex.identifier == identifier:
+                vertex.identifier = identifier_new
+
     ###################
     ###### EDGES ######
     ###################
@@ -247,3 +268,5 @@ class Graph:
 
     def change_edge_oriented_state(self, identifier):
         self.get_edge_by_identifier(identifier).change_the_orientation_state()
+
+    # redo graph saving, for convenience of working from a file, as well as backward compatibility

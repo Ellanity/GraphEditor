@@ -80,7 +80,8 @@ class GraphRenderer:
             vertex_second_position_to_draw[0] = vertex_second.position[0] + self.camera.position[0]
             vertex_second_position_to_draw[1] = vertex_second.position[1] + self.camera.position[1]
 
-            pygame.draw.aaline(self.display, self.theme.EDGE_COLOR, vertex_first_position_to_draw, vertex_second_position_to_draw)
+            pygame.draw.aaline(self.display, self.theme.EDGE_COLOR,
+                               vertex_first_position_to_draw, vertex_second_position_to_draw)
 
             if edge.oriented:
                 # vertex_second.position
@@ -191,6 +192,23 @@ class GraphRenderer:
            self.info_location[1] < position[1] < self.info_location[1] + self.info_location[3]:
             return True
         return False
+
+    # make more buttons (not only info) in future
+    class Button(pygame.sprite.Sprite):
+        def __init__(self):
+            super().__init__()
+            self.image = None
+            self.rect = None
+            self.position_x = 0
+            self.position_y = 0
+            self.type_ = str()
+
+        def set_image(self, image):
+            self.image = image
+            self.recalculate_the_rect()
+
+        def recalculate_the_rect(self):
+            self.rect = pygame.Rect(self.position_x, self.position_y, self.image.get_width(), self.image.get_height())
 
     def render_vertexes(self):
         for vertex in self.graph.vertexes:

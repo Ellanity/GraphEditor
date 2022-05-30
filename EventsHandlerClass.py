@@ -89,6 +89,11 @@ class EventsHandler:
             self.app.renderer.camera.recalculate_position()
             self.app.renderer.camera.move_shift_start = self.app.renderer.camera.move_shift_finish
 
+    # ## ### #### ##### WARNING! the api will have to be redone
+    # it must be class Event with the main function for overload
+    # every event must have its own instance of the class
+    # thanks to this, users will be able to create their own types of events
+
     def event(self, event):
         # ## MAIN COMMANDS
         if event == "render":
@@ -136,6 +141,12 @@ class EventsHandler:
             position = [int(args[i]) for i in range(2, len(args))]
             self.app.store.current_graph.add_vertex(identifier=vertex_identifier, content=content, position=position)
 
+        if event[:14] == "rename vertex " and len(event) > 14:
+            args = event[14:].split(" ")
+            identifier = args[0]
+            identifier_new = args[1]
+            self.app.store.current_graph.rename_vertex(identifier=identifier, identifier_new=identifier_new)
+
         if event[:14] == "delete vertex " and len(event) > 14:
             self.app.store.current_graph.delete_vertex(event[14:])
             print(f"vertex {event[14:]} deleted")
@@ -159,7 +170,7 @@ class EventsHandler:
             print(edge_identifier, " oriented state changed")
 
         if event[:12] == "delete edge " and len(event) > 12:
-            self.app.store.current_graph.delete_vertex(event[12:])
+            self.app.store.current_graph.delete_edge(event[12:])
             print(f"edge {event[12:]} deleted")
 
         # ## ADDITIONAL COMMANDS
