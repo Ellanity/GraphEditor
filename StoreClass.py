@@ -94,6 +94,7 @@ class Graph:
             self.move_shift_start = [0, 0]
             self.move_shift_finish = [0, 0]
             self.move_state = False
+            self.color = None
 
         # STANDARD
         def set_identifier(self, identifier):
@@ -196,6 +197,11 @@ class Graph:
             if vertex.identifier == identifier:
                 vertex.identifier = identifier_new
 
+    def paint_vertex(self, identifier, color):
+        for vertex in self.vertexes:
+            if vertex.identifier == identifier:
+                vertex.color = color
+
     ###################
     ###### EDGES ######
     ###################
@@ -207,6 +213,7 @@ class Graph:
             self.vertex_identifier_second = None
             # other
             self.oriented = False
+            self.color = None
 
         # STANDARD
         def set_identifier(self, identifier):
@@ -268,5 +275,10 @@ class Graph:
 
     def change_edge_oriented_state(self, identifier):
         self.get_edge_by_identifier(identifier).change_the_orientation_state()
+
+    def paint_edge(self, identifier, color):
+        for edge in self.edges:
+            if edge.identifier == identifier:
+                edge.color = color
 
     # redo graph saving, for convenience of working from a file, as well as backward compatibility

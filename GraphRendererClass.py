@@ -70,6 +70,8 @@ class GraphRenderer:
 
     def render_edges(self):
         for edge in self.graph.edges:
+            color_to_draw = self.theme.EDGE_COLOR if edge.color is None else edge.color
+            # ##
             vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
             vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
 
@@ -80,7 +82,7 @@ class GraphRenderer:
             vertex_second_position_to_draw[0] = vertex_second.position[0] + self.camera.position[0]
             vertex_second_position_to_draw[1] = vertex_second.position[1] + self.camera.position[1]
 
-            pygame.draw.aaline(self.display, self.theme.EDGE_COLOR,
+            pygame.draw.aaline(self.display, color_to_draw,
                                vertex_first_position_to_draw, vertex_second_position_to_draw)
 
             if edge.oriented:
@@ -145,8 +147,8 @@ class GraphRenderer:
                 T2[1] = int(T2[1])
                 T3[0] = int(T3[0])
                 T3[1] = int(T3[1])
-                pygame.draw.polygon(self.display, self.theme.EDGE_COLOR, [T1, T2, T3])
-                pygame.draw.aalines(self.display, self.theme.EDGE_COLOR, True, [T1, T2, T3])
+                pygame.draw.polygon(self.display, color_to_draw, [T1, T2, T3])
+                pygame.draw.aalines(self.display, color_to_draw, True, [T1, T2, T3])
 
                 #       vertex_second
                 #       .T1
@@ -189,7 +191,7 @@ class GraphRenderer:
 
     def info_intersection(self, position):
         if self.info_location[0] < position[0] < self.info_location[0] + self.info_location[2] and \
-           self.info_location[1] < position[1] < self.info_location[1] + self.info_location[3]:
+                self.info_location[1] < position[1] < self.info_location[1] + self.info_location[3]:
             return True
         return False
 
@@ -212,14 +214,17 @@ class GraphRenderer:
 
     def render_vertexes(self):
         for vertex in self.graph.vertexes:
-            # ## circle
+            # ## color
             AREA_COLOR_LOCAL = self.theme.ACTIVE_AREA_COLOR if vertex.active else self.theme.AREA_COLOR
             CIRCLE_COLOR_LOCAL = self.theme.ACTIVE_CIRCLE_COLOR if vertex.active else self.theme.CIRCLE_COLOR
-            
+            if vertex.color is not None:
+                CIRCLE_COLOR_LOCAL = vertex.color
+
+            # ## circle
             vertex_position_to_draw = [0, 0]
             vertex_position_to_draw[0] = vertex.position[0] + self.camera.position[0]
             vertex_position_to_draw[1] = vertex.position[1] + self.camera.position[1]
-            
+
             pygame.draw.circle(self.display, AREA_COLOR_LOCAL,
                                (vertex_position_to_draw[0], vertex_position_to_draw[1]),
                                self.setting.vertexes_radius)

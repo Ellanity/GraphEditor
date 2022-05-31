@@ -151,6 +151,16 @@ class EventsHandler:
             self.app.store.current_graph.delete_vertex(event[14:])
             print(f"vertex {event[14:]} deleted")
 
+        # paint vertex v1 1 2 3 | v1 - id, 1 2 3 - RGB
+        if event[:13] == "paint vertex " and len(event) > 13:
+            args = event[13:].split(" ")
+            identifier = args[0]
+            color = None
+            if len(args) > 2:
+                color = (int(args[1]), int(args[2]), int(args[3]))
+            self.app.store.current_graph.paint_vertex(identifier=identifier, color=color)
+            print(f"vertex {identifier} painted")
+
         # ## EDGES
         # example in cli: create vertex 1 v2 v3 False; 1 - id, v2, v3 - vertexes, False - oriented (default)
         if event[:12] == "create edge " and len(event) > 12:
@@ -172,6 +182,16 @@ class EventsHandler:
         if event[:12] == "delete edge " and len(event) > 12:
             self.app.store.current_graph.delete_edge(event[12:])
             print(f"edge {event[12:]} deleted")
+
+        if event[:11] == "paint edge " and len(event) > 11:
+            args = event[11:].split(" ")
+            identifier = args[0]
+            color = None
+            if len(args) > 2:
+                color = (int(args[1]), int(args[2]), int(args[3]))
+            self.app.store.current_graph.paint_edge(identifier=identifier, color=color)
+            print(f"edge {identifier} painted")
+
 
         # ## ADDITIONAL COMMANDS
         if event == "command":
