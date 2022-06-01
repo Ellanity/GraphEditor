@@ -1,3 +1,29 @@
+TEST 1 -----------------------------
+
+graph create 1
+graph create2
+graph choose 2
+graph print in store
+graph delete 2
+graph print in store
+graph choose 1
+graph print in store
+graph save
+graph print current
+graph print in store
+graph create 1
+graph print in store
+graph print current
+graph choose 1
+graph delete 1
+graph print current
+graph print in store
+graph save
+graph print in store
+graph print current
+
+
+TEST 2 -----------------------------
 
 graph create 1
 graph choose 1
@@ -21,12 +47,14 @@ vertex create v17 content17 236 403
 vertex create v18 content18 35 38
 vertex create v19 content19 440 10
 vertex create v20 content20 45 130
+vertex create v21 content21 492 492
 
+edge create e8 v6 v6 False
 edge create e1 v1 v2 True
 edge create e2 v2 v20 True
 edge create e3 v6 v12 True
 edge create e4 v1 v6 True
 edge create e5 v20 v5 True
-vertex create v21 content21 492 492
 edge create e6 v19 v20 False
 graph export 1
+

@@ -14,9 +14,6 @@ class Store:
         self.current_vertex = None
         self.current_vertex_info = None
 
-    def __init_buttons__(self):
-        pass
-
     # ## GRAPH
     def create_graph(self, identifier):
         try:
@@ -34,6 +31,7 @@ class Store:
         graph_with_id = self.get_graph_with_id(identifier)
         if len(graph_with_id) != 0:
             self.current_graph = graph_with_id[0]
+            self.current_graph.calculate_graph_borders()
 
     def save_current_graph_in_store(self):
         if self.current_graph is None:
@@ -68,20 +66,12 @@ class Store:
     def get_graph_with_id(self, identifier):
         return [graph for graph in self.graphs if graph is not None and graph.identifier == identifier]
 
-    # ## BUTTONS
-    def add_button(self, button):
-        self.buttons.append(button)
 
-    def delete_button(self, identifier):
-        for button in self.buttons:
-            if button.identifier == identifier:
-                self.buttons.remove(button)
-                return
+# ## ! For the program to work correctly, ! ## #
+# ## ! the graph must have an established ! ## #
+# ## ! standard structure                 ! ## #
 
 
-# For the program to work correctly,
-# the graph must have an established
-# standard structure
 ###############################
 ###### GRAPH MAIN STRUCT ######
 ###############################
@@ -90,11 +80,31 @@ class Graph:
         self.identifier = None
         self.vertexes = list()
         self.edges = list()
+        self.borders = list()
+        # self.calculate_graph_borders()
 
     def set_identifier(self, identifier):
         self.identifier = identifier
         if identifier is None:
             raise Exception("Graph identifier is empty")
+
+    def calculate_graph_borders(self):
+        if len(self.vertexes) == 0:
+            self.borders = [0, 0, 0, 0]
+        else:
+            self.borders = [self.vertexes[0].position[0], self.vertexes[0].position[0],
+                            self.vertexes[0].position[1], self.vertexes[0].position[1]]
+        for vertex in self.vertexes:
+            # X
+            if vertex.position[0] < self.borders[0]:
+                self.borders[0] = vertex.position[0]
+            if vertex.position[0] > self.borders[1]:
+                self.borders[1] = vertex.position[0]
+            # Y
+            if vertex.position[1] < self.borders[2]:
+                self.borders[2] = vertex.position[1]
+            if vertex.position[1] > self.borders[3]:
+                self.borders[3] = vertex.position[1]
 
     ######################
     ###### VERTEXES ######
@@ -174,6 +184,7 @@ class Graph:
         vertex.set_content(content=content)
         vertex.set_position(position=position)
         self.vertexes.append(vertex)
+        self.calculate_graph_borders()
 
     def delete_vertex(self, identifier):
         if identifier is None:
@@ -299,42 +310,3 @@ class Graph:
                 edge.color = color
 
     # redo graph saving, for convenience of working from a file, as well as backward compatibility
-
-
-class Button:
-    def __init__(self, identifier):
-        self.__identifier = identifier
-        self.__position = [0, 0]
-        self.__on_click = None
-        self.__on_press = None
-        self.__image = None
-
-    def check_intersection(self, position):
-        if self.__position[0] < position[0] < self.__position[0] + self.__image.get_width() and \
-                self.__position[1] < position[1] < self.__position[1] + self.__image.get_height():
-            return True
-        return False
-
-    def click(self):
-        try:
-            self.__on_click()
-        except Exception as ex:
-            print(f"{ex}, no action binded for button {self.__identifier}")
-
-    def press(self):
-        try:
-            self.__on_press()
-        except Exception as ex:
-            print(f"{ex}, no action binded for button {self.__identifier}")
-
-    def bind_click(self, on_click):
-        self.__on_click = on_click
-
-    def bind_press(self, on_press):
-        self.__on_press = on_press
-
-    def set_position(self, position):
-        self.__position = position
-
-    def set_image(self, image):
-        self.__image = image

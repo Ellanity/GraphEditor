@@ -64,7 +64,7 @@ class EventsHandler:
                 self.command("render")
             except Exception as _:
                 pass
-            self.app.clock.tick(35)
+            self.app.clock.tick(25)
 
     def command(self, command_get):
         parsed = list()
@@ -101,13 +101,19 @@ class EventsHandler:
                 if self.app.store.current_vertex is not None:
                     self.app.store.current_vertex.change_the_active_state()
                     self.app.store.current_vertex.reset_shift()
+                    self.app.store.current_graph.calculate_graph_borders()
                 self.app.store.current_vertex = None
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_position = list(pygame.mouse.get_pos())
                 # ## check button
+                """
                 if self.app.renderer.info_intersection(mouse_position):
-                    self.app.renderer.change_theme()
+                    self.app.renderer.change_theme()"""
+                button = self.app.renderer.check_buttons_intersection(mouse_position)
+                if button is not None:
+                    button.click()
+
                 # ## if no button, check vertex
                 else:
                     self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
@@ -134,7 +140,7 @@ class EventsHandler:
 
             # ## ### MOUSE WHEEL FORWARD
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
-                self.app.renderer.camera.change_scale(0.1)
+                self.app.renderer.camera.change_scale(0.05)
             # ## ### MOUSE WHEEL BACKWARD
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
                 self.app.renderer.camera.change_scale(-0.1)

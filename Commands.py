@@ -20,8 +20,8 @@ class CommandRender(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        self.events_handler.app.renderer.set_graph(self.events_handler.app.store.current_graph)
         self.events_handler.app.renderer.set_display(self.events_handler.app.display)
+        self.events_handler.app.renderer.set_graph(self.events_handler.app.store.current_graph)
         self.events_handler.app.renderer.render()
         
 
@@ -168,6 +168,7 @@ class CommandEdgeCreate(Command):
             vertex_identifier_first=vertex_identifier_first,
             vertex_identifier_second=vertex_identifier_second,
             oriented=oriented)
+        print(f"{edge_identifier} created")
 
 
 class CommandEdgeDelete(Command):
