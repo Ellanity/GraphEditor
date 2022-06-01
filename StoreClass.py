@@ -9,9 +9,14 @@ class Store:
     def __init__(self):
         self.graph_calculator = GraphCalculator()
         self.graphs = list()
+        self.buttons = list()
         self.current_graph = None
         self.current_vertex = None
 
+    def __init_buttons__(self):
+        pass
+
+    # ## GRAPH
     def create_graph(self, identifier):
         try:
             if len(self.get_graph_with_id(identifier)) != 0:
@@ -61,6 +66,16 @@ class Store:
 
     def get_graph_with_id(self, identifier):
         return [graph for graph in self.graphs if graph is not None and graph.identifier == identifier]
+
+    # ## BUTTONS
+    def add_button(self, button):
+        self.buttons.append(button)
+
+    def delete_button(self, identifier):
+        for button in self.buttons:
+            if button.identifier == identifier:
+                self.buttons.remove(button)
+                return
 
 
 # For the program to work correctly,
@@ -282,3 +297,42 @@ class Graph:
                 edge.color = color
 
     # redo graph saving, for convenience of working from a file, as well as backward compatibility
+
+
+class Button:
+    def __init__(self, identifier):
+        self.__identifier = identifier
+        self.__position = [0, 0]
+        self.__on_click = None
+        self.__on_press = None
+        self.__image = None
+
+    def check_intersection(self, position):
+        if self.__position[0] < position[0] < self.__position[0] + self.__image.get_width() and \
+                self.__position[1] < position[1] < self.__position[1] + self.__image.get_height():
+            return True
+        return False
+
+    def click(self):
+        try:
+            self.__on_click()
+        except Exception as ex:
+            print(f"{ex}, no action binded for button {self.__identifier}")
+
+    def press(self):
+        try:
+            self.__on_press()
+        except Exception as ex:
+            print(f"{ex}, no action binded for button {self.__identifier}")
+
+    def bind_click(self, on_click):
+        self.__on_click = on_click
+
+    def bind_press(self, on_press):
+        self.__on_press = on_press
+
+    def set_position(self, position):
+        self.__position = position
+
+    def set_image(self, image):
+        self.__image = image
