@@ -85,7 +85,7 @@ class EventsHandler:
                 self.app.store.current_vertex = None
 
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_position = pygame.mouse.get_pos()
+                mouse_position = list(pygame.mouse.get_pos())
                 # ## check button
                 if self.app.renderer.info_intersection(mouse_position):
                     self.app.renderer.change_theme()
@@ -94,11 +94,17 @@ class EventsHandler:
                     self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
                 if self.app.store.current_vertex is not None:
                     self.app.store.current_vertex.change_the_active_state()
-                    self.app.store.current_vertex.move_shift_start = mouse_position
+                    move_shift_start = mouse_position
+                    self.app.store.current_vertex.move_shift_start = move_shift_start
                 # ## if no vertex check camera movement
                 else:
                     self.app.renderer.camera.move_state = True
                     self.app.renderer.camera.move_shift_start = mouse_position
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                self.app.renderer.camera.change_scale(0.1)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                self.app.renderer.camera.change_scale(-0.1)
 
         # right mouse button press
         if pygame.mouse.get_pressed()[0]:
@@ -108,7 +114,7 @@ class EventsHandler:
         if self.app.store.current_vertex is not None:
             mouse_position = pygame.mouse.get_pos()
             self.app.store.current_vertex.move_shift_finish = mouse_position
-            self.app.store.current_vertex.recalculate_position()
+            self.app.store.current_vertex.recalculate_position(1/self.app.renderer.camera.scale)
             self.app.store.current_vertex.move_shift_start = self.app.store.current_vertex.move_shift_finish
 
         # ## Move camera if mouse change pos

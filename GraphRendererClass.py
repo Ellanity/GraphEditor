@@ -14,7 +14,7 @@ class GraphRenderer:
         # ## theme
         self.light_theme = BlueLightTheme()
         self.dark_theme = OrangeDarkTheme()
-        self.theme = self.light_theme
+        self.theme = self.dark_theme
         # ## buttons in future
         self.info_location = [0, 0, 0, 0]  # x y width height
 
@@ -25,6 +25,13 @@ class GraphRenderer:
 
             self.position = [0, 0]
             self.move_state = False
+
+            self.scale = 1
+
+        def change_scale(self, percent):
+            self.scale += percent
+            self.scale = 1.5 if self.scale > 1.5 else self.scale
+            self.scale = 0.5 if self.scale < 0.5 else self.scale
 
         def reset_shift(self):
             self.move_shift_start = [0, 0]
@@ -76,11 +83,11 @@ class GraphRenderer:
             vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
 
             vertex_first_position_to_draw = [0, 0]
-            vertex_first_position_to_draw[0] = vertex_first.position[0] + self.camera.position[0]
-            vertex_first_position_to_draw[1] = vertex_first.position[1] + self.camera.position[1]
+            vertex_first_position_to_draw[0] = (vertex_first.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_first_position_to_draw[1] = (vertex_first.position[1] + self.camera.position[1]) * self.camera.scale
             vertex_second_position_to_draw = [0, 0]
-            vertex_second_position_to_draw[0] = vertex_second.position[0] + self.camera.position[0]
-            vertex_second_position_to_draw[1] = vertex_second.position[1] + self.camera.position[1]
+            vertex_second_position_to_draw[0] = (vertex_second.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_second_position_to_draw[1] = (vertex_second.position[1] + self.camera.position[1]) * self.camera.scale
 
             pygame.draw.aaline(self.display, color_to_draw,
                                vertex_first_position_to_draw, vertex_second_position_to_draw)
@@ -175,11 +182,12 @@ class GraphRenderer:
             return None
         for vertex in self.graph.vertexes:
             vertex_position_to_draw = [0, 0]
-            vertex_position_to_draw[0] = vertex.position[0] + self.camera.position[0]
-            vertex_position_to_draw[1] = vertex.position[1] + self.camera.position[1]
+            vertex_position_to_draw[0] = (vertex.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
 
-            if (position[0] - vertex_position_to_draw[0]) ** 2 + (position[1] - vertex_position_to_draw[1]) ** 2 \
-                    < self.setting.vertexes_radius ** 2:
+            if (((position[0] - vertex_position_to_draw[0]) * self.camera.scale) ** 2) + \
+                (((position[1] - vertex_position_to_draw[1]) * self.camera.scale) ** 2) \
+                < (self.setting.vertexes_radius ** 2) * self.camera.scale:
                 return vertex
         return None
 
@@ -195,23 +203,6 @@ class GraphRenderer:
             return True
         return False
 
-    # make more buttons (not only info) in future
-    class Button(pygame.sprite.Sprite):
-        def __init__(self):
-            super().__init__()
-            self.image = None
-            self.rect = None
-            self.position_x = 0
-            self.position_y = 0
-            self.type_ = str()
-
-        def set_image(self, image):
-            self.image = image
-            self.recalculate_the_rect()
-
-        def recalculate_the_rect(self):
-            self.rect = pygame.Rect(self.position_x, self.position_y, self.image.get_width(), self.image.get_height())
-
     def render_vertexes(self):
         for vertex in self.graph.vertexes:
             # ## color
@@ -222,8 +213,8 @@ class GraphRenderer:
 
             # ## circle
             vertex_position_to_draw = [0, 0]
-            vertex_position_to_draw[0] = vertex.position[0] + self.camera.position[0]
-            vertex_position_to_draw[1] = vertex.position[1] + self.camera.position[1]
+            vertex_position_to_draw[0] = (vertex.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
 
             pygame.draw.circle(self.display, AREA_COLOR_LOCAL,
                                (vertex_position_to_draw[0], vertex_position_to_draw[1]),

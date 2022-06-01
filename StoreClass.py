@@ -103,7 +103,7 @@ class Graph:
         def __init__(self):
             self.identifier = None
             self.content = None
-            self.position = [0, 0]
+            self.position = list()
             # other
             self.active = False
             self.move_shift_start = [0, 0]
@@ -127,7 +127,7 @@ class Graph:
         def reset(self):
             self.identifier = None
             self.content = None
-            self.position = [0, 0]
+            self.position.clear()
             # other
             self.active = False
             self.move_state = False
@@ -142,11 +142,11 @@ class Graph:
             self.move_shift_start = shift_start
             self.move_shift_finish = shift_finish
 
-        def recalculate_position(self):
+        def recalculate_position(self, scale=1):
             if self.position is None:
-                self.position = [0, 0]
-            shift_x = self.move_shift_finish[0] - self.move_shift_start[0]
-            shift_y = self.move_shift_finish[1] - self.move_shift_start[1]
+                return
+            shift_x = (self.move_shift_finish[0] - self.move_shift_start[0]) * scale
+            shift_y = (self.move_shift_finish[1] - self.move_shift_start[1]) * scale
             self.position[0] += shift_x
             self.position[1] += shift_y
 
