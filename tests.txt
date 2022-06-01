@@ -1,118 +1,32 @@
-TEST 1 -----------------------------
-create graph 1
-create graph 2
-choose graph 2
-print graphs in store
-delete graph 2
-print graphs in store
-choose graph 1
-print graphs in store
-save graph
-print current graph
-print graphs in store
-create graph 1
-print graphs in store
-print current graph
-choose graph 1
-delete graph 1
-print current graph
-print graphs in store
-save graph
-print graphs in store
-print current graph
 
+graph create 1
+graph choose 1
+vertex create v1 content1 50 100
+vertex create v2 content2 50 300
+vertex create v3 content3 100 100
+vertex create v4 content4 410 100
+vertex create v5 content5 310 100
+vertex create v6 content6 223 412
+vertex create v7 content7 90 110
+vertex create v8 content8 100 10
+vertex create v9 content9 390 450
+vertex create v10 content10 300 100
+vertex create v11 content11 325 318
+vertex create v12 content12 200 230
+vertex create v13 content13 230 340
+vertex create v14 content14 430 320
+vertex create v15 content15 155 111
+vertex create v16 content16 109 204
+vertex create v17 content17 236 403
+vertex create v18 content18 35 38
+vertex create v19 content19 440 10
+vertex create v20 content20 45 130
 
-TEST 2 -----------------------------
-
-create graph 1
-choose graph 1
-create vertex v1 content1 50 100
-create vertex v2 content2 50 300
-create vertex v3 content3 100 100
-create vertex v4 content4 410 100
-create vertex v5 content5 310 100
-create vertex v6 content6 223 412
-create vertex v7 content7 90 110
-create vertex v8 content8 100 10
-create vertex v9 content9 390 450
-create vertex v10 content10 300 100
-create vertex v11 content11 325 318
-create vertex v12 content12 200 230
-create vertex v13 content13 230 340
-create vertex v14 content14 430 320
-create vertex v15 content15 155 111
-create vertex v16 content16 109 204
-create vertex v17 content17 236 403
-create vertex v18 content18 35 38
-create vertex v19 content19 440 10
-create vertex v20 content20 45 130
-
-create edge e1 v1 v2 True
-create edge e2 v2 v20 True
-create edge e3 v6 v12 True
-create edge e4 v1 v6 True
-create edge e5 v20 v5 True
-create vertex v21 content21 492 492
-create edge e6 v19 v20 False
-export graph 1
-
---------------------------
-create edge e1 v1 v2 False
-create edge e2 v2 v20 False
-create edge e3 v6 v12 False
-create edge e4 v1 v6 False
-create edge e5 v20 v5 False
-
-
-TEST 3 -----------------------------
-
-create graph 1
-choose graph 1
-create vertex v1 content1 50 100
-create vertex v4 content4 410 100
-create vertex v2 content5 310 100
-create vertex v6 content6 223 412
-create vertex v11 content11 325 318
-create vertex v12 content12 200 230
-create vertex v15 content15 155 111
-
-create edge e1 v1 v2 False
-create edge e2 v2 v4 False
-create edge e3 v6 v12 False
-create edge e4 v1 v6 False
-create edge e5 v15 v5 False
-create edge e6 v19 v20 False
-
-
-print current graph
-export graph 1
-delete graph 1
-create graph 2
-choose graph 2
-import graph 1-0
-choose graph 1-0
-print graphs in store
-choose graph 1
-delete graph 1
-print graphs in store
-print current graph
-choose graph 2
-print graphs in store
-import graph 1-0
-print graphs in store
-choose graph 1
-
-TEST 4 -----------------------------
-
-import graph 1-0
-choose graph 1
-
-edge change oriented status e1
-edge change oriented status e2
-edge change oriented status e3
-edge change oriented status e4
-edge change oriented status e5
-edge change oriented status e6
-
-
-create vertex v21 content21 492 492
+edge create e1 v1 v2 True
+edge create e2 v2 v20 True
+edge create e3 v6 v12 True
+edge create e4 v1 v6 True
+edge create e5 v20 v5 True
+vertex create v21 content21 492 492
+edge create e6 v19 v20 False
+graph export 1

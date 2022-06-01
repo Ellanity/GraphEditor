@@ -66,19 +66,38 @@ class EventsHandler:
                 pass
             self.app.clock.tick(35)
 
+    def command(self, command_get):
+        parsed = list()
+        action = None
+        # parse command
+        for command in self.commands_list:
+            if command_get[:len(command["identifier"])] == command["identifier"]:
+                if command["have_args"] is True:
+                    for arg in command_get[len(command["identifier"]):].split(" "):
+                        parsed.append(arg)
+
+                action = command["action"]
+                if '' in parsed:
+                    parsed.remove('')
+                # ## found needed command
+                break
+        if action is not None:
+            action(parsed)
+        return
+
     def display_handler(self):
         pygame.display.update()
         for event in pygame.event.get():
-            # ## MAIN COMMANDS
+
             if event.type == pygame.QUIT:
                 self.app.stop()
-            # ## ADDITIONAL COMMANDS
-            # right mouse button click
+
+            # ## ### RIGHT MOUSE BUTTON CLICK
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                # camera disable movement
+                # ## camera disable movement
                 self.app.renderer.camera.move_state = False
                 self.app.renderer.camera.reset_shift()
-                # vertex disable movement
+                # ## vertex disable movement
                 if self.app.store.current_vertex is not None:
                     self.app.store.current_vertex.change_the_active_state()
                     self.app.store.current_vertex.reset_shift()
@@ -101,15 +120,30 @@ class EventsHandler:
                     self.app.renderer.camera.move_state = True
                     self.app.renderer.camera.move_shift_start = mouse_position
 
+            # ## ### LEFT MOUSE BUTTON CLICK
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
+                if self.app.store.current_vertex_info is not None:
+                    self.app.store.current_vertex_info.show_info = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                # ## check vertex
+                mouse_position = list(pygame.mouse.get_pos())
+                self.app.store.current_vertex_info = self.app.renderer.get_vertex_by_position(position=mouse_position)
+                if self.app.store.current_vertex_info is not None:
+                    self.app.store.current_vertex_info.show_info = True
+
+            # ## ### MOUSE WHEEL FORWARD
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
                 self.app.renderer.camera.change_scale(0.1)
+            # ## ### MOUSE WHEEL BACKWARD
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
                 self.app.renderer.camera.change_scale(-0.1)
 
-        # right mouse button press
+        # ## ### RIGHT MOUSE BUTTON PRESS
         if pygame.mouse.get_pressed()[0]:
             pass  # pygame.mouse.get_pos()
 
+        # ## ### RIGHT MOUSE BUTTON PRESSED AND MOVED
         # ## Move vertex if mouse change pos
         if self.app.store.current_vertex is not None:
             mouse_position = pygame.mouse.get_pos()
@@ -123,22 +157,3 @@ class EventsHandler:
             self.app.renderer.camera.move_shift_finish = mouse_position
             self.app.renderer.camera.recalculate_position()
             self.app.renderer.camera.move_shift_start = self.app.renderer.camera.move_shift_finish
-
-    def command(self, command_get):
-        parsed = list()
-        action = None
-        # parse command
-        for command in self.commands_list:
-            if command_get[:len(command["identifier"])] == command["identifier"]:
-                if command["have_args"] is True:
-                    for arg in command_get[len(command["identifier"]):].split(" "):
-                        parsed.append(arg)
-
-                action = command["action"]
-                if '' in parsed:
-                    parsed.remove('')
-                # ## found needed command
-                break
-        if action is not None:
-            action(parsed)
-        return

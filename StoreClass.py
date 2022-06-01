@@ -12,6 +12,7 @@ class Store:
         self.buttons = list()
         self.current_graph = None
         self.current_vertex = None
+        self.current_vertex_info = None
 
     def __init_buttons__(self):
         pass
@@ -106,6 +107,7 @@ class Graph:
             self.position = list()
             # other
             self.active = False
+            self.show_info = False
             self.move_shift_start = [0, 0]
             self.move_shift_finish = [0, 0]
             self.move_state = False

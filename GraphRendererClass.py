@@ -42,8 +42,8 @@ class GraphRenderer:
             self.move_shift_finish = shift_finish
 
         def recalculate_position(self):
-            shift_x = self.move_shift_finish[0] - self.move_shift_start[0]
-            shift_y = self.move_shift_finish[1] - self.move_shift_start[1]
+            shift_x = (self.move_shift_finish[0] - self.move_shift_start[0]) / self.scale
+            shift_y = (self.move_shift_finish[1] - self.move_shift_start[1]) / self.scale
             self.position[0] += shift_x
             self.position[1] += shift_y
 
@@ -185,6 +185,7 @@ class GraphRenderer:
             vertex_position_to_draw[0] = (vertex.position[0] + self.camera.position[0]) * self.camera.scale
             vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
 
+            # ## (x-a)^2 + (y-b)^2 <= R^2
             if (((position[0] - vertex_position_to_draw[0]) * self.camera.scale) ** 2) + \
                 (((position[1] - vertex_position_to_draw[1]) * self.camera.scale) ** 2) \
                 < (self.setting.vertexes_radius ** 2) * self.camera.scale:
@@ -233,6 +234,58 @@ class GraphRenderer:
             if vertex_identifier_y + vertex_identifier.get_height() > self.display.get_height():
                 vertex_identifier_y -= (self.setting.vertexes_radius * 2 + vertex_identifier.get_height())
             self.display.blit(vertex_identifier, (vertex_identifier_x, vertex_identifier_y))
+
+            if vertex.show_info is True:
+                font = pygame.font.Font(FONT, int(self.setting.vertexes_radius * 1.5))
+                texts_to_draw = list()
+                vertex_degree = 0
+                for edge in self.graph.edges:
+                    if edge.vertex_identifier_first == vertex.identifier or \
+                            edge.vertex_identifier_second == vertex.identifier:
+                        if edge.oriented:
+                            text = f"({edge.vertex_identifier_first})--[{edge.identifier}]->({edge.vertex_identifier_second})"
+                        else:
+                            text = f"({edge.vertex_identifier_first})--[{edge.identifier}]--({edge.vertex_identifier_second})"
+
+                        texts_to_draw.append(font.render(text, True, self.theme.INFO_TEXT_COLOR))
+                        vertex_degree += 1 if edge.vertex_identifier_first != edge.vertex_identifier_second else 2
+                texts_to_draw.insert(0, font.render(f"degree: {vertex_degree}", True, self.theme.INFO_TEXT_COLOR))
+                texts_to_draw.insert(0, font.render(f"vertex: {vertex.identifier}", True, self.theme.INFO_TEXT_COLOR))
+
+                # ## draw bg
+                # calculate sizes
+                max_width_of_text = 0
+                for text in texts_to_draw:
+                    if text.get_width() >= max_width_of_text:
+                        max_width_of_text = text.get_width()
+                sum_height_of_text = 0
+                for text in texts_to_draw:
+                    sum_height_of_text += text.get_height()
+
+                bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
+                bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
+                # calculate position
+                position_x = vertex_position_to_draw[0] + self.setting.vertexes_radius
+                position_y = vertex_position_to_draw[1] + self.setting.vertexes_radius
+                if position_x + bg_width > self.display.get_width():
+                    position_x -= (self.setting.vertexes_radius * 2 + bg_width)
+                if position_y + bg_height > self.display.get_height():
+                    position_y -= (self.setting.vertexes_radius * 2 + bg_height)
+                # draw bg
+                bg_rectangle = (position_x, position_y, bg_width, bg_height)
+                pygame.draw.rect(self.display, self.theme.INFO_AREA_COLOR, bg_rectangle)
+                pygame.draw.rect(self.display, self.theme.INFO_TEXT_COLOR, bg_rectangle, 1)
+                # draw text
+                for text in texts_to_draw:
+                    text_x = position_x + self.setting.info_margin_horizontal
+                    text_y = position_y + self.setting.info_margin_vertical
+                    for text_ in texts_to_draw:
+                        text_y += self.setting.info_margin_vertical
+                        if text_ != text:
+                            text_y += text_.get_height() + self.setting.info_margin_vertical
+                        else:
+                            break
+                    self.display.blit(text, (text_x, text_y))
 
     def render_graph_info(self):
         # ## create texts with info
