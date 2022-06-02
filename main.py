@@ -3,6 +3,7 @@ import sys
 from GraphRendererClass import GraphRenderer
 from EventsHandlerClass import EventsHandler
 from StoreClass import Store
+from GraphCalculator import GraphCalculator
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 500
@@ -20,6 +21,7 @@ class App:
         self.store = Store()
         self.renderer = GraphRenderer()
         self.events_handler = EventsHandler(self)
+        self.graph_calculator = GraphCalculator(self)
 
     def stop(self):
             pygame.display.quit()
@@ -29,6 +31,11 @@ class App:
     def run(self):
         self.events_handler.command("graph import 1-0")
         self.events_handler.command("graph choose 1")
+        # self.events_handler.command("lab incidence matrix")
+        # self.events_handler.command("lab graph check complete")
+        # self.events_handler.command("lab graph make complete")
+        # self.events_handler.command("lab find min path v1 v4")
+        # self.events_handler.command("lab vertex find by content content20")
         self.events_handler.check_events()
 
 

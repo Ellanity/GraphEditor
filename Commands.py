@@ -201,3 +201,82 @@ class CommandEdgeChangeOrientedState(Command):
         self.events_handler.app.store.current_graph.change_edge_oriented_state(args[0])
         print(args[0], " oriented state changed")
 
+
+#################
+### LAB TASKS ###
+#################
+class CommandLabIncidenceMatrix(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph
+            matrix = self.events_handler.app.graph_calculator.get_incidence_matrix(graph)
+            print("  ", ' '.join([vertex.identifier for vertex in graph.vertexes]))
+            for row in matrix:
+                print(graph.edges[matrix.index(row)].identifier, '  '.join(row))
+        else:
+            print("no graph selected")
+
+
+class CommandLabGraphCheckComplete(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph
+            print(f"graph {graph.identifier} complete: ",
+                  self.events_handler.app.graph_calculator.check_is_the_graph_complete(graph))
+        else:
+            print("no graph selected")
+
+
+class CommandLabGraphMakeComplete(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph
+            if not self.events_handler.app.graph_calculator.check_is_the_graph_complete(graph):
+                self.events_handler.app.graph_calculator.graph_make_complete(graph)
+                print(f"graph {graph.identifier} is complete now")
+            else:
+                print(f"graph already {graph.identifier} complete")
+        else:
+            print("no graph selected")
+
+
+class CommandLabVertexFindByContent(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph
+            vertex_found = False
+            for vertex in graph.vertexes:
+                if str(vertex.content) == str(args[0]):
+                    vertex_found = True
+                    self.events_handler.command(f"vertex paint {vertex.identifier} 255 0 255")
+                    print(f"{vertex.identifier} have content: {args[0]}")
+            if not vertex_found:
+                print("no vertex with such content")
+        else:
+            print("no graph selected")
+
+
+class CommandLabFindMinPath(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph
+            self.events_handler.app.graph_calculator.find_min_path(graph, vertex_first=args[0], vertex_second=args[1])
+            print("ok")
+        else:
+            print("no graph selected")
+

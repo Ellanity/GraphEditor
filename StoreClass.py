@@ -1,5 +1,4 @@
 import pickle
-from GraphCalculator import GraphCalculator
 
 
 ###########################################
@@ -7,7 +6,6 @@ from GraphCalculator import GraphCalculator
 ###########################################
 class Store:
     def __init__(self):
-        self.graph_calculator = GraphCalculator()
         self.graphs = list()
         self.buttons = list()
         self.current_graph = None
@@ -239,6 +237,7 @@ class Graph:
             self.identifier = None
             self.vertex_identifier_first = None
             self.vertex_identifier_second = None
+            self.weight = 1
             # other
             self.oriented = False
             self.color = None
@@ -261,6 +260,7 @@ class Graph:
             self.vertex_identifier_first = None
             self.vertex_identifier_second = None
             self.oriented = False
+            self.weight = 1
 
     # STANDARD
     def add_edge(self, identifier, vertex_identifier_first, vertex_identifier_second, oriented=False):
@@ -309,4 +309,4 @@ class Graph:
             if edge.identifier == identifier:
                 edge.color = color
 
-    # redo graph saving, for convenience of working from a file, as well as backward compatibility
+    # ## ### !!! redo graph saving, for convenience of working from a file, as well as backward compatibility

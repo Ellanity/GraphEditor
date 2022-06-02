@@ -349,6 +349,7 @@ class GraphRenderer:
                         texts_to_draw.append(font.render(text, True, self.theme.BUTTON_TEXT_COLOR))
                         vertex_degree += 1 if edge.vertex_identifier_first != edge.vertex_identifier_second else 2
                 texts_to_draw.insert(0, font.render(f"degree: {vertex_degree}", True, self.theme.BUTTON_TEXT_COLOR))
+                texts_to_draw.insert(0, font.render(f"content: {vertex.content}", True, self.theme.BUTTON_TEXT_COLOR))
                 texts_to_draw.insert(0, font.render(f"vertex: {vertex.identifier}", True, self.theme.BUTTON_TEXT_COLOR))
 
                 # ## draw bg

@@ -58,3 +58,18 @@ edge create e5 v20 v5 True
 edge create e6 v19 v20 False
 graph export 1
 
+TEST 3 _______________________
+
+
+graph create 2
+graph choose 2
+vertex create v1 content1 50 150
+vertex create v2 content2 200 30
+vertex create v3 content3 100 100
+vertex create v4 content4 410 200
+
+edge create e1 v1 v3 False
+edge create e2 v1 v2 False
+edge create e3 v2 v4 False
+edge create e4 v3 v2 False
+graph export 2

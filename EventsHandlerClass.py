@@ -34,6 +34,13 @@ class EventsHandler:
             {"identifier": "edge delete", "have_args": True, "action": CommandEdgeDelete(self).run},
             {"identifier": "edge paint", "have_args":  True, "action": CommandEdgePaint(self).run},
             {"identifier": "edge change oriented state", "have_args": True, "action": CommandEdgeChangeOrientedState(self).run},
+
+            # ## additional (event for my lab)
+            {"identifier": "lab incidence matrix", "have_args": False, "action": CommandLabIncidenceMatrix(self).run},
+            {"identifier": "lab graph check complete", "have_args": False, "action": CommandLabGraphCheckComplete(self).run},
+            {"identifier": "lab graph make complete", "have_args": False, "action": CommandLabGraphMakeComplete(self).run},
+            {"identifier": "lab vertex find by content", "have_args": True, "action": CommandLabVertexFindByContent(self).run},
+            {"identifier": "lab find min path", "have_args": True, "action": CommandLabFindMinPath(self).run},
         ]
 
     class EventThread(threading.Thread):
