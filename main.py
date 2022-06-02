@@ -29,12 +29,12 @@ class App:
             sys.exit()
 
     def run(self):
-        self.events_handler.command("graph import 1-0")
-        self.events_handler.command("graph choose 1")
+        self.events_handler.command("graph import 2-0")
+        self.events_handler.command("graph choose 2")
         # self.events_handler.command("lab incidence matrix")
         # self.events_handler.command("lab graph check complete")
         # self.events_handler.command("lab graph make complete")
-        # self.events_handler.command("lab find min path v1 v4")
+        # self.events_handler.command("lab find min path v1 v20")
         # self.events_handler.command("lab vertex find by content content20")
         self.events_handler.check_events()
 

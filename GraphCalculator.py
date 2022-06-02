@@ -25,7 +25,7 @@ class GraphCalculator:
 
     def get_adjacency_matrix(self, graph):
         # incorrect
-        matrix = [[0] * len(graph.vertexes) for i in range(len(graph.vertexes))]
+        matrix = [[0] * len(graph.vertexes) for _ in range(len(graph.vertexes))]
         for edge in graph.edges:
             vertex_first = vertex_second = None
             for vertex in graph.vertexes:
@@ -34,9 +34,13 @@ class GraphCalculator:
                 if edge.vertex_identifier_second == vertex.identifier:
                     vertex_second = vertex
             if vertex_first.identifier != vertex_second.identifier:
+                vfi = graph.vertexes.index(vertex_first)
+                vsi = graph.vertexes.index(vertex_second)
+                # print(vfi, vsi)
                 if not edge.oriented:
-                    matrix[graph.vertexes.index(vertex_first) - 1][graph.vertexes.index(vertex_second) - 1] = edge.weight
-                matrix[graph.vertexes.index(vertex_second) - 1][graph.vertexes.index(vertex_first) - 1] = edge.weight
+                    # print(vfi, vsi)
+                    matrix[vfi][vsi] = 1  # edge.weight
+                matrix[vsi][vfi] = 1  # edge.weight
         return matrix
 
     def check_is_the_graph_complete(self, graph):
@@ -75,5 +79,64 @@ class GraphCalculator:
                         graph.add_edge((str(datetime.datetime.now()) + "-" + str(random.randint(0, 1000000000))),
                                        vertex.identifier, vertex_.identifier, False)
 
+    def get_adjacency_list(self, graph):
+        adjacency_list = list()
+        for vertex in graph.vertexes:
+            vertex_list = list()
+            for edge in graph.edges:
+                if edge.vertex_identifier_first == vertex.identifier:
+                    vertex_list.append([edge.vertex_identifier_second, 1])
+                elif edge.vertex_identifier_second == vertex.identifier:
+                    vertex_list.append([edge.vertex_identifier_first, 1])
+            adjacency_list.append(vertex_list)
+        return adjacency_list
+
     def find_min_path(self, graph, vertex_first, vertex_second):
-        pass
+        if graph is None:
+            return
+        adjacency_matrix = self.get_adjacency_matrix(graph)
+        # for row in adjacency_matrix:
+        #     print(row)
+
+        get_adjacency_list = self.get_adjacency_list(graph)
+
+        g = get_adjacency_list
+        # print(g)
+        INF = 9999999
+        n = len(graph.vertexes)
+        d = [INF] * n  # d
+        p = [0] * n # d
+        s = graph.vertexes.index(graph.get_vertex_by_identifier(vertex_first))
+        t = graph.vertexes.index(graph.get_vertex_by_identifier(vertex_second))
+        u = [False] * n
+        d[s] = 0
+
+        for i in range(0, n):
+            v = -1
+            for j in range(0, n):
+                if not u[j] and (v == -1 or d[j] < d[v]):
+                    v = j
+            if d[v] == INF:
+                break
+            u[v] = True
+            # print(v, g[v])
+            for j in range(0, len(g[v])):
+                pre_to = g[v][j][0]
+                to = graph.vertexes.index(graph.get_vertex_by_identifier(pre_to))
+                len_ = int(g[v][j][1])
+                if d[v] + len_ < d[to]:
+                    d[to] = d[v] + len_
+                    p[to] = v
+
+        # print(d)
+
+        path = list()
+        v = t
+        while v != s:
+            v = p[v]
+            path.append(v)
+
+        path.append(s)
+        path.reverse()
+        print([graph.vertexes[vp].identifier for vp in path])
+

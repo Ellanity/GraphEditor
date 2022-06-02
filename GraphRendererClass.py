@@ -13,7 +13,7 @@ class GraphRenderer:
         # ## theme
         self.light_theme = BlueLightTheme()
         self.dark_theme = OrangeDarkTheme()
-        self.theme = self.dark_theme
+        self.theme = self.light_theme
         # ## buttons in future
         self.info_location = [0, 0, 0, 0]  # x y width height
         self.buttons = list()

@@ -276,7 +276,6 @@ class CommandLabFindMinPath(Command):
         if self.events_handler.app.store.current_graph is not None:
             graph = self.events_handler.app.store.current_graph
             self.events_handler.app.graph_calculator.find_min_path(graph, vertex_first=args[0], vertex_second=args[1])
-            print("ok")
         else:
             print("no graph selected")
 
