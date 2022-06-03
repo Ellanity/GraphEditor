@@ -53,8 +53,14 @@ class CommandGraphDelete(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        self.events_handler.app.store.delete_graph(args[0])
-        print(f"graph {args[0]} deleted")
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            self.events_handler.app.store.delete_graph(graph)
+            print(f"graph {graph} deleted")
+        else:
+            print(f"no graph selected")
 
 
 class CommandGraphPrintInStore(Command):
@@ -82,8 +88,14 @@ class CommandGraphExport(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        self.events_handler.app.store.export_graph(args[0])
-        print(f"graph {args[0]} exported")
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            self.events_handler.app.store.export_graph(graph)
+            print(f"graph {graph} exported")
+        else:
+            print(f"no graph selected")
 
 
 class CommandGraphImport(Command):
@@ -109,16 +121,17 @@ class CommandGraphResetColor(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        if len(args) > 0:
-            for graph in self.events_handler.app.store.graphs:
-                if graph.identifier == str(args[0]):
-                    graph.reset_graph_color()
-                    print(f"graph {args[0]} color reseted")
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph:
+                    graph_obj.reset_graph_color()
+                    print(f"graph {graph} color reseted")
                     break
         else:
-            if self.events_handler.app.store.current_graph is not None:
-                self.events_handler.app.store.current_graph.reset_graph_color()
-                print(f"current graph color reseted")
+            print(f"no graph selected")
 
 
 ################
@@ -237,14 +250,19 @@ class CommandIncidenceMatrix(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        if self.events_handler.app.store.current_graph is not None:
-            graph = self.events_handler.app.store.current_graph
-            matrix = self.events_handler.app.graph_calculator.get_incidence_matrix(graph)
-            print("  ", ' '.join([vertex.identifier for vertex in graph.vertexes]))
-            for row in matrix:
-                print(graph.edges[matrix.index(row)].identifier, '  '.join(row))
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph:
+                    matrix = self.events_handler.app.graph_calculator.get_incidence_matrix(graph_obj)
+                    print("  ", ' '.join([vertex.identifier for vertex in graph_obj.vertexes]))
+                    for row in matrix:
+                        print(graph_obj.edges[matrix.index(row)].identifier, '  '.join(row))
+                    break
         else:
-            print("no graph selected")
+            print(f"no graph selected")
 
 
 class CommandGraphCheckComplete(Command):
@@ -252,12 +270,17 @@ class CommandGraphCheckComplete(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        if self.events_handler.app.store.current_graph is not None:
-            graph = self.events_handler.app.store.current_graph
-            print(f"graph {graph.identifier} complete: ",
-                  self.events_handler.app.graph_calculator.check_is_the_graph_complete(graph))
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph:
+                    print(f"graph {graph} complete: ",
+                          self.events_handler.app.graph_calculator.check_is_the_graph_complete(graph_obj))
+                    break
         else:
-            print("no graph selected")
+            print(f"no graph selected")
 
 
 class CommandGraphMakeComplete(Command):
@@ -265,15 +288,20 @@ class CommandGraphMakeComplete(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        if self.events_handler.app.store.current_graph is not None:
-            graph = self.events_handler.app.store.current_graph
-            if not self.events_handler.app.graph_calculator.check_is_the_graph_complete(graph):
-                self.events_handler.app.graph_calculator.graph_make_complete(graph)
-                print(f"graph {graph.identifier} is complete now")
-            else:
-                print(f"graph already {graph.identifier} complete")
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph:
+                    if not self.events_handler.app.graph_calculator.check_is_the_graph_complete(graph_obj):
+                        self.events_handler.app.graph_calculator.graph_make_complete(graph_obj)
+                        print(f"graph {graph} is complete now")
+                    else:
+                        print(f"graph {graph} already complete")
+                    break
         else:
-            print("no graph selected")
+            print(f"no graph selected")
 
 
 class CommandVertexFindByContent(Command):
