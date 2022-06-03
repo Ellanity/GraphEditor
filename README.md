@@ -1,9 +1,9 @@
 # GraphEditor
 
-for test 
+for simple start
 
-> import graph 1-0
+> import graph circle-0
 > 
-> choose graph 1
+> choose graph circle
 
 

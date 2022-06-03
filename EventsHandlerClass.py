@@ -19,11 +19,12 @@ class EventsHandler:
             {"identifier": "graph create", "have_args": True, "action": CommandGraphCreate(self).run},
             {"identifier": "graph choose", "have_args": True, "action": CommandGraphChoose(self).run},
             {"identifier": "graph delete", "have_args": True, "action": CommandGraphDelete(self).run},
-            {"identifier": "graph save", "have_args":  False, "action": CommandGraphSave(self).run},
             {"identifier": "graph print in store", "have_args": False, "action": CommandGraphPrintInStore(self).run},
             {"identifier": "graph print current", "have_args":  False, "action": CommandGraphPrintCurrent(self).run},
             {"identifier": "graph export", "have_args": True, "action": CommandGraphExport(self).run},
             {"identifier": "graph import", "have_args": True, "action": CommandGraphImport(self).run},
+            {"identifier": "graph rename", "have_args": True, "action": CommandGraphRename(self).run},
+            {"identifier": "graph reset color", "have_args": True, "action": CommandGraphResetColor(self).run},
             # ## vertex
             {"identifier": "vertex create", "have_args": True, "action": CommandVertexCreate(self).run},
             {"identifier": "vertex delete", "have_args": True, "action": CommandVertexDelete(self).run},
@@ -33,14 +34,15 @@ class EventsHandler:
             {"identifier": "edge create", "have_args": True, "action": CommandEdgeCreate(self).run},
             {"identifier": "edge delete", "have_args": True, "action": CommandEdgeDelete(self).run},
             {"identifier": "edge paint", "have_args":  True, "action": CommandEdgePaint(self).run},
+            {"identifier": "edge rename", "have_args":  True, "action": CommandEdgeRename(self).run},
             {"identifier": "edge change oriented state", "have_args": True, "action": CommandEdgeChangeOrientedState(self).run},
 
-            # ## additional (event for my lab)
-            {"identifier": "lab incidence matrix", "have_args": False, "action": CommandLabIncidenceMatrix(self).run},
-            {"identifier": "lab graph check complete", "have_args": False, "action": CommandLabGraphCheckComplete(self).run},
-            {"identifier": "lab graph make complete", "have_args": False, "action": CommandLabGraphMakeComplete(self).run},
-            {"identifier": "lab vertex find by content", "have_args": True, "action": CommandLabVertexFindByContent(self).run},
-            {"identifier": "lab find min path", "have_args": True, "action": CommandLabFindMinPath(self).run},
+            # ## additional (event for lab)
+            {"identifier": "incidence matrix", "have_args": False, "action": CommandIncidenceMatrix(self).run},
+            {"identifier": "find min path", "have_args": True, "action": CommandFindMinPath(self).run},
+            {"identifier": "graph make complete", "have_args": False, "action": CommandGraphMakeComplete(self).run},
+            {"identifier": "graph check complete", "have_args": False, "action": CommandGraphCheckComplete(self).run},
+            {"identifier": "vertex find by content", "have_args": True,"action": CommandVertexFindByContent(self).run},
         ]
 
     class EventThread(threading.Thread):
@@ -80,8 +82,8 @@ class EventsHandler:
         for command in self.commands_list:
             if command_get[:len(command["identifier"])] == command["identifier"]:
                 if command["have_args"] is True:
-                    for arg in command_get[len(command["identifier"]):].split(" "):
-                        parsed.append(arg)
+                    parsed = command_get[len(command["identifier"]):].split(" ")
+                    # parsed.append(arg)
 
                 action = command["action"]
                 if '' in parsed:
@@ -114,9 +116,6 @@ class EventsHandler:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_position = list(pygame.mouse.get_pos())
                 # ## check button
-                """
-                if self.app.renderer.info_intersection(mouse_position):
-                    self.app.renderer.change_theme()"""
                 button = self.app.renderer.check_buttons_intersection(mouse_position)
                 if button is not None:
                     button.click()

@@ -44,7 +44,8 @@ class CommandGraphChoose(Command):
     def run(self, args):
         self.events_handler.app.store.set_current_graph(args[0])
         print("current graph:" +
-              self.events_handler.app.store.current_graph.identifier if self.events_handler.app.store.current_graph is not None else ";")
+              self.events_handler.app.store.current_graph.identifier
+              if self.events_handler.app.store.current_graph is not None else ";")
 
 
 class CommandGraphDelete(Command):
@@ -56,24 +57,14 @@ class CommandGraphDelete(Command):
         print(f"graph {args[0]} deleted")
 
 
-class CommandGraphSave(Command):
-    def __init__(self, events_handler):
-        super().__init__(events_handler)
-
-    def run(self, args):
-        self.events_handler.app.store.save_current_graph_in_store()
-        print(self.events_handler.app.store.current_graph.identifier if self.events_handler.app.store.current_graph is not None else ";"
-              + "saved in store")
-
-
 class CommandGraphPrintInStore(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
 
     def run(self, args):
         print("graphs in store: ",
-              "; ".join([(graph.identifier if graph is not None else "None") for graph in self.events_handler.app.store.graphs])
-              + ';')
+              "; ".join([(graph.identifier
+                          if graph is not None else "None") for graph in self.events_handler.app.store.graphs]) + ';')
 
 
 class CommandGraphPrintCurrent(Command):
@@ -82,7 +73,8 @@ class CommandGraphPrintCurrent(Command):
 
     def run(self, args):
         print("current graph: ",
-              self.events_handler.app.store.current_graph.identifier if self.events_handler.app.store.current_graph is not None else ";")
+              self.events_handler.app.store.current_graph.identifier
+              if self.events_handler.app.store.current_graph is not None else ";")
 
 
 class CommandGraphExport(Command):
@@ -101,6 +93,32 @@ class CommandGraphImport(Command):
     def run(self, args):
         self.events_handler.app.store.import_graph(args[0])
         print(f"graph {args[0]} imported")
+
+
+class CommandGraphRename(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        self.events_handler.app.store.graph_rename(args[0], args[1])
+        print(f"graph {args[0]}-{args[1]} renamed")
+
+
+class CommandGraphResetColor(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if len(args) > 0:
+            for graph in self.events_handler.app.store.graphs:
+                if graph.identifier == str(args[0]):
+                    graph.reset_graph_color()
+                    print(f"graph {args[0]} color reseted")
+                    break
+        else:
+            if self.events_handler.app.store.current_graph is not None:
+                self.events_handler.app.store.current_graph.reset_graph_color()
+                print(f"current graph color reseted")
 
 
 ################
@@ -193,6 +211,15 @@ class CommandEdgePaint(Command):
         print(f"edge {identifier} painted")
 
 
+class CommandEdgeRename(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        self.events_handler.app.store.current_graph.rename_edge(identifier=args[0], identifier_new=args[1])
+        print(f"edge {args[1]} renamed")
+
+
 class CommandEdgeChangeOrientedState(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
@@ -205,7 +232,7 @@ class CommandEdgeChangeOrientedState(Command):
 #################
 ### LAB TASKS ###
 #################
-class CommandLabIncidenceMatrix(Command):
+class CommandIncidenceMatrix(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
 
@@ -220,7 +247,7 @@ class CommandLabIncidenceMatrix(Command):
             print("no graph selected")
 
 
-class CommandLabGraphCheckComplete(Command):
+class CommandGraphCheckComplete(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
 
@@ -233,7 +260,7 @@ class CommandLabGraphCheckComplete(Command):
             print("no graph selected")
 
 
-class CommandLabGraphMakeComplete(Command):
+class CommandGraphMakeComplete(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
 
@@ -249,7 +276,7 @@ class CommandLabGraphMakeComplete(Command):
             print("no graph selected")
 
 
-class CommandLabVertexFindByContent(Command):
+class CommandVertexFindByContent(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
 
@@ -268,14 +295,14 @@ class CommandLabVertexFindByContent(Command):
             print("no graph selected")
 
 
-class CommandLabFindMinPath(Command):
+class CommandFindMinPath(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
 
     def run(self, args):
         if self.events_handler.app.store.current_graph is not None:
             graph = self.events_handler.app.store.current_graph
+            print(f"finding min path from {args[0]} to {args[1]} in {graph.identifier}...")
             self.events_handler.app.graph_calculator.find_min_path(graph, vertex_first=args[0], vertex_second=args[1])
         else:
             print("no graph selected")
-

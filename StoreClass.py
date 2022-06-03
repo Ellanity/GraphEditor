@@ -23,6 +23,12 @@ class Store:
         except Exception as ex:
             print(ex)
 
+    def graph_rename(self, graph_identifier, graph_identifier_new):
+        for graph in self.graphs:
+            if graph.identifier == graph_identifier:
+                graph.identifier = graph_identifier_new
+                return
+
     def set_current_graph(self, identifier):
         self.current_vertex = None
         self.current_graph = None
@@ -30,12 +36,6 @@ class Store:
         if len(graph_with_id) != 0:
             self.current_graph = graph_with_id[0]
             self.current_graph.calculate_graph_borders()
-
-    def save_current_graph_in_store(self):
-        if self.current_graph is None:
-            raise Exception("Current graph is empty")
-        self.delete_graph(self.current_graph.identifier)
-        self.graphs.append(self.current_graph)
 
     def export_graph(self, identifier):
         graphs_to_save = [graph for graph in self.graphs if graph.identifier == identifier]
@@ -103,6 +103,12 @@ class Graph:
                 self.borders[2] = vertex.position[1]
             if vertex.position[1] > self.borders[3]:
                 self.borders[3] = vertex.position[1]
+
+    def reset_graph_color(self):
+        for vertex in self.vertexes:
+            vertex.color = None
+        for edge in self.edges:
+            edge.color = None
 
     ######################
     ###### VERTEXES ######
@@ -187,14 +193,19 @@ class Graph:
     def delete_vertex(self, identifier):
         if identifier is None:
             raise Exception("The identifier of the vertex being deleted is empty")
+
+        edges_to_delete = list()
+        for edge in self.edges:
+            if edge.vertex_identifier_first == identifier or \
+                    edge.vertex_identifier_second == identifier:
+                edges_to_delete.append(edge)
+
+        for edge in edges_to_delete:
+            self.delete_edge(edge.identifier)
         for vertex in self.vertexes:
             if vertex.identifier == identifier:
                 self.vertexes.remove(vertex)
                 break
-        for edge in self.edges:
-            if edge.vertex_identifier_first == identifier or \
-                    edge.vertex_identifier_second == identifier:
-                self.delete_edge(edge.identifier)
 
     def get_vertex_by_identifier(self, identifier):
         for vertex in self.vertexes:
@@ -294,6 +305,7 @@ class Graph:
         for edge in self.edges:
             if edge.identifier == identifier:
                 self.edges.remove(edge)
+                return
 
     def get_edge_by_identifier(self, identifier):
         for edge in self.edges:
@@ -309,4 +321,11 @@ class Graph:
             if edge.identifier == identifier:
                 edge.color = color
 
-    # ## ### !!! redo graph saving, for convenience of working from a file, as well as backward compatibility
+    def rename_edge(self, identifier, identifier_new):
+        for edge in self.edges:
+            if edge.identifier == identifier:
+                edge.identifier = identifier_new
+                return
+
+
+                # ## ### !!! redo graph saving, for convenience of working from a file, as well as backward compatibility

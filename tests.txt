@@ -25,6 +25,7 @@ graph print current
 
 TEST 2 -----------------------------
 
+
 graph create 1
 graph choose 1
 vertex create v1 content1 50 100
@@ -58,7 +59,8 @@ edge create e5 v20 v5 True
 edge create e6 v19 v20 False
 graph export 1
 
-TEST 3 _______________________
+
+TEST 3 -----------------------------
 
 
 graph create 2
@@ -73,3 +75,70 @@ edge create e2 v1 v2 False
 edge create e3 v2 v4 False
 edge create e4 v3 v2 False
 graph export 2
+
+
+TEST 4 -----------------------------
+
+graph create graph1
+graph choose graph1
+
+vertex create v1 content1 50 150
+vertex create v2 content2 200 30
+vertex create v3 content3 100 100
+vertex create v4 content4 410 200
+
+edge create e1 v1 v3 True
+edge create e2 v1 v2 False
+edge create e3 v2 v4 True
+edge create e4 v3 v2 True
+edge create e5 v4 v4 False
+
+vertex paint v2 255 40 0
+vertex rename v2 v5
+lab vertex find by content content3
+edge delete e1
+edge delete e5
+vertex delete v5
+
+vertex create v2 content2 200 300
+vertex create v5 content5 300 200
+vertex create v6 content6 0 0
+lab graph make complete
+vertex paint v3
+
+lab incidence matrix
+
+TEST 5 -----------------------------
+
+
+graph create graph1
+graph choose graph1
+
+vertex create v1 content1 50 150
+vertex create v2 content2 200 300
+vertex create v3 content3 100 50
+vertex create v4 content4 410 200
+vertex create v5 content5 300 200
+vertex create v6 content6 400 0
+
+edge create e1 v1 v3 True
+edge create e2 v1 v2 False
+edge create e3 v2 v5 True
+edge create e4 v3 v2 True
+edge create e5 v2 v4 False
+edge create e6 v4 v6 False
+edge create e7 v5 v3 False
+
+incidence matrix
+find min path v1 v6
+
+
+graph reset color
+find min path v1 v3
+
+graph reset color
+edge delete e1
+edge create e1 v3 v1 True
+find min path v1 v3
+
+
