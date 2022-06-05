@@ -22,6 +22,7 @@ class CommandRender(Command):
     def run(self, args):
         self.events_handler.app.renderer.set_display(self.events_handler.app.display)
         self.events_handler.app.renderer.set_graph(self.events_handler.app.store.current_graph)
+        self.events_handler.app.renderer.set_selected_area(self.events_handler.app.store.subgraph_area)
         self.events_handler.app.renderer.render()
         
 

@@ -9,6 +9,7 @@ class EventsHandler:
         self.console_event_thread = self.EventThread("Console event thread", 1, self, "console handler")
         self.console_event_thread.setDaemon(True)
         self.commands_list = list()
+        self.display_handler = self.DisplayHandler(self.app)
         self.__init_commands__()
 
     def __init_commands__(self):
@@ -60,16 +61,178 @@ class EventsHandler:
                     if self.purpose == "console handler":
                         self.event = input()
                         self.event_handler.command(self.event)
-                        # self.event_handler.event(self.event)
                     self.event_handler.app.clock.tick(10)
                 except Exception as ex:
                     print(ex)
+
+    class DisplayHandler:
+        def __init__(self, app):
+            self.app = app
+            self.selection_subgraph = False
+            self.selection_area = False
+            self.display_full_screen = False
+            self.display_sizes = (self.app.display.get_width(), self.app.display.get_height())
+
+        def run(self):
+            pygame.display.update()
+            self.reset_event_bools()
+            self.keyboard_pressed(pygame.key.get_pressed())
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.app.stop()
+
+                # ## ### DISPLAY SIZES
+                if pygame.VIDEORESIZE and not self.display_full_screen:
+                    self.display_full_screen = False
+                    self.display_sizes = (self.app.display.get_width(), self.app.display.get_height())
+
+                if event.type == pygame.KEYDOWN:
+                    self.keyboard_down(event)
+
+                # ## ### RIGHT MOUSE BUTTON CLICK
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.right_mouse_down()
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                    self.right_mouse_up()
+                # ## ### LEFT MOUSE BUTTON CLICK
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+                    self.left_mouse_down()
+                if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
+                    self.left_mouse_up()
+                # ## ### MOUSE WHEEL
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                    self.wheel_mouse_forward()
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    self.wheel_mouse_backward()
+
+            self.mouse_movement()
+
+        def reset_event_bools(self):
+            self.selection_subgraph = False
+            self.selection_area = False
+
+        def keyboard_pressed(self, keys_pressed):
+            if keys_pressed[pygame.K_LCTRL]:
+                self.selection_subgraph = True
+            if keys_pressed[pygame.K_LSHIFT]:
+                self.selection_area = True
+                if not self.app.store.subgraph_area["started"]:
+                    mouse_position = pygame.mouse.get_pos()
+                    self.app.store.subgraph_area["x1"] = mouse_position[0]
+                    self.app.store.subgraph_area["y1"] = mouse_position[1]
+                    for vertex in self.app.store.current_subgraph_vertexes:
+                        vertex.active = False
+                    self.app.store.current_subgraph_vertexes.clear()
+                    self.app.store.subgraph_area["started"] = True
+
+        def keyboard_down(self, event):
+            # ## ### DISPLAY SIZE
+            if event.key == pygame.K_F11 or event.key == pygame.K_ESCAPE:
+                if not self.display_full_screen and event.key == pygame.K_F11:
+                    self.app.display = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+                    self.display_full_screen = True
+                else:
+                    self.app.display = pygame.display.set_mode(self.display_sizes, pygame.RESIZABLE)
+                    self.app.display = pygame.display.set_mode(self.display_sizes, pygame.RESIZABLE)
+                    self.display_full_screen = False
+
+        def right_mouse_down(self):
+
+            mouse_position = list(pygame.mouse.get_pos())
+            # ## check button
+            button = self.app.renderer.check_buttons_intersection(mouse_position)
+            if button is not None:
+                button.click()
+            # ## if no button, check vertex
+            else:
+                self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
+            if self.app.store.current_vertex is not None:
+                # check if we choosing subgraph
+                if not self.selection_subgraph:
+                    for vertex in self.app.store.current_subgraph_vertexes:
+                        vertex.active = False
+                    self.app.store.current_subgraph_vertexes.clear()
+                # append current vertex in subgraph
+                if self.app.store.current_vertex not in self.app.store.current_subgraph_vertexes:
+                    self.app.store.current_subgraph_vertexes.append(self.app.store.current_vertex)
+                    self.app.store.current_vertex.active = True
+                # set start shift for all vertexes in subgraph
+                for vertex in self.app.store.current_subgraph_vertexes:
+                    vertex.move_shift_start = mouse_position
+            # ## if no vertex check camera movement
+            else:
+                self.app.renderer.camera.move_state = True
+                self.app.renderer.camera.move_shift_start = mouse_position
+                self.app.store.reset_subgraph_area()
+
+        def right_mouse_up(self):
+            # ## camera disable movement
+            self.app.renderer.camera.move_state = False
+            self.app.renderer.camera.reset_shift()
+            # ## vertex disable movement
+            if not self.selection_subgraph:
+                for vertex in self.app.store.current_subgraph_vertexes:
+                    vertex.active = False
+                self.app.store.current_subgraph_vertexes.clear()
+            for vertex in self.app.store.current_subgraph_vertexes:
+                vertex.reset_shift()
+            self.app.store.current_graph.calculate_graph_borders()
+            self.app.store.current_vertex = None
+
+        def left_mouse_down(self):
+            # ## check vertex
+            mouse_position = list(pygame.mouse.get_pos())
+            self.app.store.current_vertex_info = self.app.renderer.get_vertex_by_position(position=mouse_position)
+            if self.app.store.current_vertex_info is not None:
+                self.app.store.current_vertex_info.show_info = True
+
+        def left_mouse_up(self):
+            if self.app.store.current_vertex_info is not None:
+                self.app.store.current_vertex_info.show_info = False
+
+        def wheel_mouse_forward(self):
+            self.app.renderer.camera.change_scale(0.05)
+
+        def wheel_mouse_backward(self):
+            self.app.renderer.camera.change_scale(-0.1)
+
+        def mouse_movement(self):
+            # ## ### RIGHT MOUSE BUTTON PRESSED AND MOVED
+            # ## Move vertex if mouse change pos
+            if self.app.store.current_vertex is not None:
+                mouse_position = pygame.mouse.get_pos()
+                for vertex in self.app.store.current_subgraph_vertexes:
+                    vertex.move_shift_finish = mouse_position
+                    vertex.recalculate_position(1/self.app.renderer.camera.scale)
+                    vertex.move_shift_start = vertex.move_shift_finish
+
+            # ## Move camera if mouse change pos
+            if self.app.renderer.camera.move_state is True:
+                mouse_position = pygame.mouse.get_pos()
+                self.app.renderer.camera.move_shift_finish = mouse_position
+                self.app.renderer.camera.recalculate_position()
+                self.app.renderer.camera.move_shift_start = self.app.renderer.camera.move_shift_finish
+                self.selection_area = False
+
+            if self.selection_area:
+                for vertex in self.app.store.current_subgraph_vertexes:
+                    vertex.active = False
+                mouse_position = list(pygame.mouse.get_pos())
+                self.app.store.subgraph_area["x2"] = mouse_position[0]
+                self.app.store.subgraph_area["y2"] = mouse_position[1]
+                self.app.store.current_subgraph_vertexes = \
+                    [vertex for vertex in self.app.renderer.get_vertexes_by_area(self.app.store.subgraph_area)]
+                for vertex in self.app.store.current_subgraph_vertexes:
+                    vertex.active = True
+            else:
+                self.app.store.reset_subgraph_area()
 
     def check_events(self):
         self.console_event_thread.start()
         while True:
             try:
-                self.display_handler()
+                self.display_handler.run()
                 self.command("render")
             except Exception as _:
                 pass
@@ -83,9 +246,8 @@ class EventsHandler:
             if command_get[:len(command["identifier"])] == command["identifier"]:
                 if command["have_args"] is True:
                     parsed = command_get[len(command["identifier"]):].split(" ")
-                    # parsed.append(arg)
-
                 action = command["action"]
+                # while '' in parsed:
                 if '' in parsed:
                     parsed.remove('')
                 # ## found needed command
@@ -93,79 +255,3 @@ class EventsHandler:
         if action is not None:
             action(parsed)
         return
-
-    def display_handler(self):
-        pygame.display.update()
-        for event in pygame.event.get():
-
-            if event.type == pygame.QUIT:
-                self.app.stop()
-
-            # ## ### RIGHT MOUSE BUTTON CLICK
-            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-                # ## camera disable movement
-                self.app.renderer.camera.move_state = False
-                self.app.renderer.camera.reset_shift()
-                # ## vertex disable movement
-                if self.app.store.current_vertex is not None:
-                    self.app.store.current_vertex.change_the_active_state()
-                    self.app.store.current_vertex.reset_shift()
-                    self.app.store.current_graph.calculate_graph_borders()
-                self.app.store.current_vertex = None
-
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_position = list(pygame.mouse.get_pos())
-                # ## check button
-                button = self.app.renderer.check_buttons_intersection(mouse_position)
-                if button is not None:
-                    button.click()
-
-                # ## if no button, check vertex
-                else:
-                    self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
-                if self.app.store.current_vertex is not None:
-                    self.app.store.current_vertex.change_the_active_state()
-                    move_shift_start = mouse_position
-                    self.app.store.current_vertex.move_shift_start = move_shift_start
-                # ## if no vertex check camera movement
-                else:
-                    self.app.renderer.camera.move_state = True
-                    self.app.renderer.camera.move_shift_start = mouse_position
-
-            # ## ### LEFT MOUSE BUTTON CLICK
-            if event.type == pygame.MOUSEBUTTONUP and event.button == 3:
-                if self.app.store.current_vertex_info is not None:
-                    self.app.store.current_vertex_info.show_info = False
-
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
-                # ## check vertex
-                mouse_position = list(pygame.mouse.get_pos())
-                self.app.store.current_vertex_info = self.app.renderer.get_vertex_by_position(position=mouse_position)
-                if self.app.store.current_vertex_info is not None:
-                    self.app.store.current_vertex_info.show_info = True
-
-            # ## ### MOUSE WHEEL FORWARD
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
-                self.app.renderer.camera.change_scale(0.05)
-            # ## ### MOUSE WHEEL BACKWARD
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
-                self.app.renderer.camera.change_scale(-0.1)
-
-        # ## ### RIGHT MOUSE BUTTON PRESS
-        if pygame.mouse.get_pressed()[0]:
-            pass  # pygame.mouse.get_pos()
-
-        # ## ### RIGHT MOUSE BUTTON PRESSED AND MOVED
-        # ## Move vertex if mouse change pos
-        if self.app.store.current_vertex is not None:
-            mouse_position = pygame.mouse.get_pos()
-            self.app.store.current_vertex.move_shift_finish = mouse_position
-            self.app.store.current_vertex.recalculate_position(1/self.app.renderer.camera.scale)
-            self.app.store.current_vertex.move_shift_start = self.app.store.current_vertex.move_shift_finish
-
-        # ## Move camera if mouse change pos
-        if self.app.renderer.camera.move_state is True:
-            mouse_position = pygame.mouse.get_pos()
-            self.app.renderer.camera.move_shift_finish = mouse_position
-            self.app.renderer.camera.recalculate_position()
-            self.app.renderer.camera.move_shift_start = self.app.renderer.camera.move_shift_finish

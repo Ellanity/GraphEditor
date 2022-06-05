@@ -11,6 +11,10 @@ class Store:
         self.current_graph = None
         self.current_vertex = None
         self.current_vertex_info = None
+        # subgraph
+        self.current_subgraph_vertexes = list()
+        self.current_subgraph_edges = list()
+        self.subgraph_area = {"x1": 0, "y1": 0, "x2": 0, "y2": 0, "stared": False}
 
     # ## GRAPH
     def create_graph(self, identifier):
@@ -64,6 +68,8 @@ class Store:
     def get_graph_with_id(self, identifier):
         return [graph for graph in self.graphs if graph is not None and graph.identifier == identifier]
 
+    def reset_subgraph_area(self):
+        self.subgraph_area = {"x1": 0, "y1": 0, "x2": 0, "y2": 0, "started": False}
 
 # ## ! For the program to work correctly, ! ## #
 # ## ! the graph must have an established ! ## #
@@ -327,5 +333,4 @@ class Graph:
                 edge.identifier = identifier_new
                 return
 
-
-                # ## ### !!! redo graph saving, for convenience of working from a file, as well as backward compatibility
+    # ## ### !!! redo graph saving, for convenience of working from a file, as well as backward compatibility

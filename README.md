@@ -1,5 +1,6 @@
 # GraphEditor
 
+Interaction via the command line
 ```
 ,____________________________,________________,__________________________________,
 |      Command title         |   Arguments    |          Description             |
@@ -41,6 +42,27 @@
 | * - optional                                                                   |
 |________________________________________________________________________________|
 ```
+Interaction via window 
+```
+,________________________________________________________________________________,
+|    Hotkey    |                        What does it do                          |
+|______________|_________________________________________________________________|
+| RMB          | - if pressed in an empty space, moves the camera                |
+|              | - if a vertex is clicked, moves the vertex                      |
+|              | - buttons clicks                                                |
+|______________|_________________________________________________________________|
+| LMB          | - if a vertex is clicked, shows info                            |
+|______________|_________________________________________________________________|
+| Mouse Wheel  | - change camera scale                                           |
+|______________|_________________________________________________________________|
+| LCTRL + RMB  | - creates subgraph from choosed vertexes                        |
+|              | - if you select a vertex of a subgraph and move it, the entire  |
+|              | subgraph will move                                              |
+|______________|_________________________________________________________________|
+| LSHIFT       | - allows you to select a subgraph by selecting an area          |
+|______________|_________________________________________________________________|
+```
+
 Copyright © 2021 Paplauski Eldar
 
 <contacts: eldarpoplauski111@gmail.com>

@@ -10,7 +10,10 @@ DISPLAY_HEIGHT = 500
 pygame.init()
 display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("GraphEditor :D")
-pygame.display.set_icon(pygame.image.load("icon.png"))
+try:
+    pygame.display.set_icon(pygame.image.load("icon.png"))
+except Exception as ex:
+    print(ex)
 clock = pygame.time.Clock()
 
 
