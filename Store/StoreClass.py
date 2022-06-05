@@ -11,6 +11,7 @@ class Store:
         self.current_graph = None
         self.current_vertex = None
         self.current_vertex_info = None
+        self.vertex_to_rename = None
         # subgraph
         self.current_subgraph_vertexes = list()
         self.current_subgraph_edges = list()
@@ -44,11 +45,11 @@ class Store:
     def export_graph(self, identifier):
         graphs_to_save = [graph for graph in self.graphs if graph.identifier == identifier]
         for graph in graphs_to_save:
-            with open(f'{identifier}-{graphs_to_save.index(graph)}.gepp', 'wb') as file:
+            with open(f'graph/{identifier}-{graphs_to_save.index(graph)}.gepp', 'wb') as file:
                 pickle.dump(graph, file)
 
     def import_graph(self, identifier):
-        with open(f'{identifier}.gepp', 'rb') as file:
+        with open(f'graph/{identifier}.gepp', 'rb') as file:
             graph_new = pickle.load(file)
             # check graph with same identifier
             if len([graph for graph in self.graphs if graph.identifier == identifier]) != 0:
@@ -239,11 +240,19 @@ class Graph:
         for vertex in self.vertexes:
             if vertex.identifier == identifier:
                 vertex.identifier = identifier_new
+                return
 
     def paint_vertex(self, identifier, color):
         for vertex in self.vertexes:
             if vertex.identifier == identifier:
                 vertex.color = color
+                return
+
+    def set_vertex_content(self, identifier, content):
+        for vertex in self.vertexes:
+            if vertex.identifier == identifier:
+                vertex.content = content
+                return
 
     ###################
     ###### EDGES ######

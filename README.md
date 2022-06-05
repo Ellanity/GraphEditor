@@ -23,6 +23,7 @@ Interaction via the command line
 | vertex create              | id content x y | create vertex                    |
 | vertex delete              | id             | delete vertex                    |
 | vertex paint               | id r g b       | set color for vertex             |
+| vertex content             | id content     | set for vertex with id content   |
 | vertex rename              | id id_new      | rename vertex                    |
 |____________________________|________________|__________________________________|
 | # ## edge                  |                | commands for current graph       |
@@ -61,6 +62,8 @@ Interaction via window
 |______________|_________________________________________________________________|
 | LSHIFT       | - allows you to select a subgraph by selecting an area          |
 |______________|_________________________________________________________________|
+| I + RMB      | - changing vertex id (to stop vertex name input click ENTER)    |
+!______________!_________________________________________________________________!
 ```
 
 Copyright © 2021 Paplauski Eldar

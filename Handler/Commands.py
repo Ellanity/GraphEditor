@@ -44,7 +44,7 @@ class CommandGraphChoose(Command):
 
     def run(self, args):
         self.events_handler.app.store.set_current_graph(args[0])
-        print("current graph:" +
+        print("current graph: " +
               self.events_handler.app.store.current_graph.identifier
               if self.events_handler.app.store.current_graph is not None else ";")
 
@@ -182,6 +182,16 @@ class CommandVertexRename(Command):
         identifier_new = args[1]
         self.events_handler.app.store.current_graph.rename_vertex(identifier=identifier, identifier_new=identifier_new)
 
+
+class CommandVertexContent(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        identifier = args[0]
+        content = args[1]
+        self.events_handler.app.store.current_graph.set_vertex_content(identifier=identifier, content=content)
+        print(f"content for vertex {identifier} seted content {content}")
 
 #############
 ### EDGES ###

@@ -1,7 +1,7 @@
 import math
 from math import sqrt
-from ThemeClass import OrangeDarkTheme, BlueLightTheme
-from CustomButtonClass import *
+from Renderer.ThemeClass import OrangeDarkTheme, BlueLightTheme
+from Renderer.CustomButtonClass import *
 
 
 class GraphRenderer:
@@ -370,8 +370,11 @@ class GraphRenderer:
 
                     texts_to_draw.append(font.render(text, True, self.theme.BUTTON_TEXT_COLOR))
                     vertex_degree += 1 if edge.vertex_identifier_first != edge.vertex_identifier_second else 2
+            # degree
             texts_to_draw.insert(0, font.render(f"degree: {vertex_degree}", True, self.theme.BUTTON_TEXT_COLOR))
+            # content
             texts_to_draw.insert(0, font.render(f"content: {vertex.content}", True, self.theme.BUTTON_TEXT_COLOR))
+            # vertex
             texts_to_draw.insert(0, font.render(f"vertex: {vertex.identifier}", True, self.theme.BUTTON_TEXT_COLOR))
 
             # ## draw bg
@@ -383,6 +386,17 @@ class GraphRenderer:
             sum_height_of_text = 0
             for text in texts_to_draw:
                 sum_height_of_text += text.get_height()
+
+            # ## VERTEX CONTENT AS IMG
+            try:
+                img = pygame.image.load(str(vertex.content))
+                img_width = img.get_width()
+                img_height = img.get_height()
+                img = pygame.transform.scale(img, (max_width_of_text, img_height * (max_width_of_text / img_width)))
+                texts_to_draw.insert(1, img)
+                sum_height_of_text += img.get_height()
+            except Exception as _:
+                pass
 
             bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
             bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
@@ -397,6 +411,7 @@ class GraphRenderer:
             bg_rectangle = (position_x, position_y, bg_width, bg_height)
             pygame.draw.rect(self.display, self.theme.BUTTON_AREA_COLOR, bg_rectangle)
             pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, bg_rectangle, 1)
+
             # draw text
             for text in texts_to_draw:
                 text_x = position_x + self.setting.info_margin_horizontal

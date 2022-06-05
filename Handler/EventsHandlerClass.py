@@ -1,6 +1,6 @@
 import pygame
 import threading
-from Commands import *
+from Handler.Commands import *
 
 
 class EventsHandler:
@@ -30,6 +30,7 @@ class EventsHandler:
             {"identifier": "vertex create", "have_args": True, "action": CommandVertexCreate(self).run},
             {"identifier": "vertex delete", "have_args": True, "action": CommandVertexDelete(self).run},
             {"identifier": "vertex paint", "have_args": True, "action": CommandVertexPaint(self).run},
+            {"identifier": "vertex content", "have_args": True, "action": CommandVertexContent(self).run},
             {"identifier": "vertex rename", "have_args": True, "action": CommandVertexRename(self).run},
             # ## edge
             {"identifier": "edge create", "have_args": True, "action": CommandEdgeCreate(self).run},
@@ -72,6 +73,9 @@ class EventsHandler:
             self.selection_area = False
             self.display_full_screen = False
             self.display_sizes = (self.app.display.get_width(), self.app.display.get_height())
+            # input
+            self.input_action = False
+            self.input_text = ""
 
         def run(self):
             pygame.display.update()
@@ -81,12 +85,10 @@ class EventsHandler:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.app.stop()
-
                 # ## ### DISPLAY SIZES
                 if pygame.VIDEORESIZE and not self.display_full_screen:
                     self.display_full_screen = False
                     self.display_sizes = (self.app.display.get_width(), self.app.display.get_height())
-
                 if event.type == pygame.KEYDOWN:
                     self.keyboard_down(event)
 
@@ -127,6 +129,35 @@ class EventsHandler:
                     self.app.store.subgraph_area["started"] = True
 
         def keyboard_down(self, event):
+            # ## ### VERTEX RENAME
+            # get input
+            if self.input_action:
+                if self.app.store.vertex_to_rename is None or event.key == pygame.K_RETURN:
+                    self.input_action = False
+                    self.input_text = ""
+                    self.app.store.vertex_to_rename = None
+                else:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.input_text = self.input_text[:-1]
+                    if event.key == pygame.K_i and self.app.store.current_vertex != self.app.store.vertex_to_rename:
+                        self.app.store.vertex_to_rename = self.app.store.current_vertex
+                        self.input_text = ""
+                    elif event.key != pygame.K_RETURN:
+                        # if len(self.input_text) < 50:
+                        self.input_text += event.unicode
+
+                    self.app.store.current_graph.rename_vertex(identifier=self.app.store.vertex_to_rename.identifier,
+                                                               identifier_new=self.input_text)
+            # restart input
+            if not self.input_action:
+                self.input_text = ""
+                self.app.store.vertex_to_rename = None
+            # start input
+            if event.key == pygame.K_i and len(self.app.store.current_subgraph_vertexes) == 1:
+                self.input_action = True
+                if self.app.store.vertex_to_rename != self.app.store.current_subgraph_vertexes[0]:
+                    self.input_text = ""
+                self.app.store.vertex_to_rename = self.app.store.current_subgraph_vertexes[0]
             # ## ### DISPLAY SIZE
             if event.key == pygame.K_F11 or event.key == pygame.K_ESCAPE:
                 if not self.display_full_screen and event.key == pygame.K_F11:

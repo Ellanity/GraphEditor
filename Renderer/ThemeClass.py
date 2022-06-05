@@ -11,7 +11,7 @@ class Theme:
         self.BUTTON_AREA_COLOR = (255, 255, 255)
         self.GRID_COLOR = (255, 255, 255)
         # text
-        self.FONT = "CONSOLA.ttf"
+        self.FONT = "font/CONSOLA.ttf"
 
 
 class BlueLightTheme(Theme):

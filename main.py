@@ -1,9 +1,9 @@
 import pygame
 import sys
-from GraphRendererClass import GraphRenderer
-from EventsHandlerClass import EventsHandler
-from StoreClass import Store
-from GraphCalculator import GraphCalculator
+from Renderer.GraphRendererClass import GraphRenderer
+from Handler.EventsHandlerClass import EventsHandler
+from Store.StoreClass import Store
+from Calculator.GraphCalculator import GraphCalculator
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 500
@@ -11,7 +11,7 @@ pygame.init()
 display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("GraphEditor :D")
 try:
-    pygame.display.set_icon(pygame.image.load("icon.png"))
+    pygame.display.set_icon(pygame.image.load("img/icon.png"))
 except Exception as ex:
     print(ex)
 clock = pygame.time.Clock()
