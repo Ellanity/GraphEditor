@@ -39,7 +39,7 @@ Interaction via the command line
 | graph make complete        | id*            | add edges to make graph complete |
 | vertex find by content     | content        | find in current graph vertex     |
 | find min path              | v1 v2          | print min path between vertexes  |
-|____________________________!________________!__________________________________|
+|____________________________|________________|__________________________________|
 | * - optional                                                                   |
 |________________________________________________________________________________|
 ```
@@ -52,7 +52,7 @@ Interaction via window
 |              | - if a vertex is clicked, moves the vertex                      |
 |              | - buttons clicks                                                |
 |______________|_________________________________________________________________|
-| LMB          | - if a vertex is clicked, shows info                            |
+| LMB          | - if a vertex or edge is clicked, shows info                    |
 |______________|_________________________________________________________________|
 | Mouse Wheel  | - change camera scale                                           |
 |______________|_________________________________________________________________|
@@ -63,7 +63,7 @@ Interaction via window
 | LSHIFT       | - allows you to select a subgraph by selecting an area          |
 |______________|_________________________________________________________________|
 | I + RMB      | - changing vertex id (to stop vertex name input click ENTER)    |
-!______________!_________________________________________________________________!
+|______________|_________________________________________________________________|
 ```
 
 Copyright © 2021 Paplauski Eldar

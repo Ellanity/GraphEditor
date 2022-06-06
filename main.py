@@ -33,8 +33,8 @@ class App:
             sys.exit()
 
     def run(self):
-        self.events_handler.command("graph import circle-0")
-        self.events_handler.command("graph choose circle")
+        self.events_handler.command("graph import 1-0")
+        self.events_handler.command("graph choose 1")
         self.events_handler.check_events()
 
 

@@ -11,6 +11,8 @@ class Store:
         self.current_graph = None
         self.current_vertex = None
         self.current_vertex_info = None
+        self.current_edge = None
+        self.current_edge_info = None
         self.vertex_to_rename = None
         # subgraph
         self.current_subgraph_vertexes = list()
@@ -265,6 +267,7 @@ class Graph:
             self.vertex_identifier_second = None
             self.weight = 1
             # other
+            self.show_info = False
             self.oriented = False
             self.color = None
 

@@ -178,6 +178,7 @@ class EventsHandler:
             # ## if no button, check vertex
             else:
                 self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
+                # self.app.store.current_edge = self.app.renderer.get_edge_by_position(position=mouse_position)
             if self.app.store.current_vertex is not None:
                 # check if we choosing subgraph
                 if not self.selection_subgraph:
@@ -191,6 +192,8 @@ class EventsHandler:
                 # set start shift for all vertexes in subgraph
                 for vertex in self.app.store.current_subgraph_vertexes:
                     vertex.move_shift_start = mouse_position
+            elif self.app.store.current_edge is not None:
+                print(self.app.store.current_edge.identifier)
             # ## if no vertex check camera movement
             else:
                 self.app.renderer.camera.move_state = True
@@ -215,12 +218,17 @@ class EventsHandler:
             # ## check vertex
             mouse_position = list(pygame.mouse.get_pos())
             self.app.store.current_vertex_info = self.app.renderer.get_vertex_by_position(position=mouse_position)
+            self.app.store.current_edge_info = self.app.renderer.get_edge_by_position(position=mouse_position)
             if self.app.store.current_vertex_info is not None:
                 self.app.store.current_vertex_info.show_info = True
+            if self.app.store.current_edge_info is not None:
+                self.app.store.current_edge_info.show_info = True
 
         def left_mouse_up(self):
             if self.app.store.current_vertex_info is not None:
                 self.app.store.current_vertex_info.show_info = False
+            if self.app.store.current_edge_info is not None:
+                self.app.store.current_edge_info.show_info = False
 
         def wheel_mouse_forward(self):
             self.app.renderer.camera.change_scale(0.05)

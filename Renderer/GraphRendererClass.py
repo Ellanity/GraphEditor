@@ -75,7 +75,103 @@ class GraphRenderer:
         return None
 
     def get_edge_by_position(self, position):
-        return None
+        if self.graph is None:
+            return None
+        for edge in self.graph.edges:
+            vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
+            vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
+            # ## ## defining the points of the square where the transmitted position can be
+            vertex_first_position_to_draw = [0, 0]
+            vertex_first_position_to_draw[0] = (vertex_first.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_first_position_to_draw[1] = (vertex_first.position[1] + self.camera.position[1]) * self.camera.scale
+            vertex_second_position_to_draw = [0, 0]
+            vertex_second_position_to_draw[0] = (vertex_second.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_second_position_to_draw[1] = (vertex_second.position[1] + self.camera.position[1]) * self.camera.scale
+
+            T1 = vertex_first_position_to_draw
+            T2 = vertex_second_position_to_draw
+            T3 = [0, 0]
+            T4 = [0, 0]
+            T5 = [0, 0]
+            T6 = [0, 0]
+
+            distance_between_vertexes = sqrt((abs(T1[0] - T2[0]) ** 2) + (abs(T1[1] - T2[1]) ** 2))
+            dist_x_between_T1_T2 = (abs(T1[0] - T2[0]))
+            dist_y_between_T1_T2 = (abs(T1[1] - T2[1]))
+            coefficient = self.setting.edges_width / distance_between_vertexes
+            dist_x_between_T12_T3456 = dist_y_between_T1_T2 * coefficient
+            dist_y_between_T12_T3456 = dist_x_between_T1_T2 * coefficient
+            T3[0] = T1[0] - dist_x_between_T12_T3456 \
+                if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
+                else T1[0] + dist_x_between_T12_T3456
+            T3[1] = T1[1] + dist_y_between_T12_T3456 \
+                if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
+                else T1[1] - dist_y_between_T12_T3456
+
+            T5[0] = T2[0] - dist_x_between_T12_T3456 \
+                if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
+                else T2[0] + dist_x_between_T12_T3456
+            T5[1] = T2[1] + dist_y_between_T12_T3456 \
+                if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
+                else T2[1] - dist_y_between_T12_T3456
+
+            # ## ###
+            T4[0] = T1[0] + dist_x_between_T12_T3456 \
+                if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
+                else T1[0] - dist_x_between_T12_T3456
+            T4[1] = T1[1] - dist_y_between_T12_T3456 \
+                if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
+                else T1[1] + dist_y_between_T12_T3456
+
+            T6[0] = T2[0] + dist_x_between_T12_T3456 \
+                if vertex_first_position_to_draw[0] < vertex_second_position_to_draw[0] \
+                else T2[0] - dist_x_between_T12_T3456
+            T6[1] = T2[1] - dist_y_between_T12_T3456 \
+                if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
+                else T2[1] + dist_y_between_T12_T3456
+
+            # ## ### draw lines
+            # pygame.draw.aaline(self.display, (255, 40, 0), T1, T2)  # red
+            # pygame.draw.aaline(self.display, (0, 40, 255), T3, T5)  # blue
+            # pygame.draw.aaline(self.display, (40, 255, 0), T4, T6)  # green
+
+            #   T4 .________________. T6
+            #   T1 !________________! T2
+            #   T3 !________________! T5
+
+            # ## ## determining the order of points on the coordinate plane
+            sides_of_the_rectangle = []
+            specified = False
+            if T3[0] > T4[0] > T5[0] > T6[0]:
+                if T4[1] > T3[1] > T6[1] > T5[1]:
+                    sides_of_the_rectangle = [(T5, T3), (T3, T4), (T4, T6), (T6, T5)]
+                else:
+                    sides_of_the_rectangle = [(T6, T4), (T4, T3), (T3, T5), (T5, T6)]
+                specified = True
+
+            if T5[1] > T6[1] > T3[1] > T4[1]:
+                if T3[0] > T4[0] > T5[0] > T6[0]:
+                    sides_of_the_rectangle = [(T6, T4), (T4, T3), (T3, T5), (T5, T6)]
+                else:
+                    sides_of_the_rectangle = [(T5, T3), (T3, T4), (T4, T6), (T6, T5)]
+                specified = True
+
+            if not specified:
+                sides_of_the_rectangle = [(T6, T4), (T4, T3), (T3, T5), (T5, T6)]
+
+            # for side in sides_of_the_rectangle:
+            #     pygame.draw.aaline(self.display, (255, 255, 0), side[0], side[1])  # yellow
+
+            Ds = [0, 0, 0, 0]
+            for side in sides_of_the_rectangle:
+                Ds[sides_of_the_rectangle.index(side)] = (side[1][0] - side[0][0]) * (position[1] - side[0][1]) - \
+                                                         (position[0] - side[0][0]) * (side[1][1] - side[0][1])
+                # D = (x2 - x1) * (yp - y1) - (xp - x1) * (y2 - y1)
+                # If D > 0, the point is on the left-hand side.
+                # If D < 0, the point is on the right-hand side.
+                # If D = 0, the point is on the line.
+            if (min(Ds) <= 0 and max(Ds) <= 0) or (min(Ds) >= 0 and max(Ds) >= 0):
+                return edge
 
     # ## BUTTONS
     def __init_buttons__(self):
@@ -171,7 +267,7 @@ class GraphRenderer:
             self.background_width = 500
             self.background_height = 500
             #
-            self.edges_width = 1
+            self.edges_width = 8
             self.loop_edge_radius = 25
             self.vertexes_radius = 8
             self.graph_scale = 1
@@ -211,6 +307,7 @@ class GraphRenderer:
             pygame.draw.aalines(self.display, self.theme.GRID_COLOR, True, [(x1, y), (x2, y)])
 
     def render_edges(self):
+        edge_show_info = None
         for edge in self.graph.edges:
             color_to_draw = self.theme.EDGE_COLOR if edge.color is None else edge.color
             # ##
@@ -221,10 +318,11 @@ class GraphRenderer:
             vertex_first_position_to_draw[0] = (vertex_first.position[0] + self.camera.position[0]) * self.camera.scale
             vertex_first_position_to_draw[1] = (vertex_first.position[1] + self.camera.position[1]) * self.camera.scale
             vertex_second_position_to_draw = [0, 0]
-            vertex_second_position_to_draw[0] = \
-                (vertex_second.position[0] + self.camera.position[0]) * self.camera.scale
-            vertex_second_position_to_draw[1] = \
-                (vertex_second.position[1] + self.camera.position[1]) * self.camera.scale
+            vertex_second_position_to_draw[0] = (vertex_second.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_second_position_to_draw[1] = (vertex_second.position[1] + self.camera.position[1]) * self.camera.scale
+
+            if edge.show_info:
+                edge_show_info = edge
 
             # ## loops
             loop_radius = self.setting.loop_edge_radius * self.camera.scale
@@ -247,7 +345,7 @@ class GraphRenderer:
                 T2 = [0, 0]
                 T3 = [0, 0]
 
-                # it's fine too
+                # it's fine
                 distance_between_vertexes = \
                     sqrt((abs(vertex_first_position_to_draw[0] - vertex_second_position_to_draw[0]) ** 2) +
                          (abs(vertex_first_position_to_draw[1] - vertex_second_position_to_draw[1]) ** 2))
@@ -313,6 +411,84 @@ class GraphRenderer:
                 #       |T23
                 #       |
                 #      vertex_first
+
+        if edge_show_info is not None:
+            edge = edge_show_info
+
+            vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
+            vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
+            font = pygame.font.Font(self.theme.FONT, int(self.setting.vertexes_radius * 1.5))
+
+            vertex_first_position_to_draw = [0, 0]
+            vertex_first_position_to_draw[0] = (vertex_first.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_first_position_to_draw[1] = (vertex_first.position[1] + self.camera.position[1]) * self.camera.scale
+            vertex_second_position_to_draw = [0, 0]
+            vertex_second_position_to_draw[0] = (vertex_second.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_second_position_to_draw[1] = (vertex_second.position[1] + self.camera.position[1]) * self.camera.scale
+
+            T1 = vertex_first_position_to_draw
+            T2 = vertex_second_position_to_draw
+            T3 = [0, 0]
+
+            # distance_between_vertexes = sqrt((abs(T1[0] - T2[0]) ** 2) + (abs(T1[1] - T2[1]) ** 2))
+            dist_x_between_T1_T2 = (abs(T1[0] - T2[0]))
+            dist_y_between_T1_T2 = (abs(T1[1] - T2[1]))
+
+            T3[0] = T1[0] - dist_x_between_T1_T2 / 2 \
+                if vertex_first_position_to_draw[0] > vertex_second_position_to_draw[0] \
+                else T1[0] + dist_x_between_T1_T2 / 2
+            T3[1] = T1[1] + dist_y_between_T1_T2 / 2 \
+                if vertex_first_position_to_draw[1] < vertex_second_position_to_draw[1] \
+                else T1[1] - dist_y_between_T1_T2 / 2
+
+            texts_to_draw = list()
+            # vertex - edge - vertex
+            if edge.oriented:
+                text = f"({edge.vertex_identifier_first})-" \
+                       f"-[{edge.identifier}]->({edge.vertex_identifier_second})"
+            else:
+                text = f"({edge.vertex_identifier_first})-" \
+                       f"-[{edge.identifier}]--({edge.vertex_identifier_second})"
+
+            texts_to_draw.append(font.render(text, True, self.theme.BUTTON_TEXT_COLOR))
+            # edge
+            texts_to_draw.insert(0, font.render(f"edge: {edge.identifier}", True, self.theme.BUTTON_TEXT_COLOR))
+
+            # ## draw bg
+            # calculate sizes
+            max_width_of_text = 0
+            for text in texts_to_draw:
+                if text.get_width() >= max_width_of_text:
+                    max_width_of_text = text.get_width()
+            sum_height_of_text = 0
+            for text in texts_to_draw:
+                sum_height_of_text += text.get_height()
+
+            bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
+            bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
+            # calculate position
+            position_x = T3[0] + self.setting.vertexes_radius
+            position_y = T3[1] + self.setting.vertexes_radius
+            if position_x + bg_width > self.display.get_width():
+                position_x -= (self.setting.vertexes_radius * 2 + bg_width)
+            if position_y + bg_height > self.display.get_height():
+                position_y -= (self.setting.vertexes_radius * 2 + bg_height)
+            # draw bg
+            bg_rectangle = (position_x, position_y, bg_width, bg_height)
+            pygame.draw.rect(self.display, self.theme.BUTTON_AREA_COLOR, bg_rectangle)
+            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, bg_rectangle, 1)
+
+            # draw text
+            for text in texts_to_draw:
+                text_x = position_x + self.setting.info_margin_horizontal
+                text_y = position_y + self.setting.info_margin_vertical
+                for text_ in texts_to_draw:
+                    text_y += self.setting.info_margin_vertical
+                    if text_ != text:
+                        text_y += text_.get_height() + self.setting.info_margin_vertical
+                    else:
+                        break
+                self.display.blit(text, (text_x, text_y))
 
     def render_vertexes(self):
         vertex_show_info = None
