@@ -1,6 +1,6 @@
 import math
 from math import sqrt
-from Renderer.ThemeClass import OrangeDarkTheme, BlueLightTheme
+from Renderer.ThemeClass import *
 from Renderer.CustomButtonClass import *
 
 
@@ -75,6 +75,43 @@ class GraphRenderer:
             if xa2 + yb2 < r2:
                 return vertex
         return None
+
+    def get_edges_by_area(self, area):
+        if self.graph is None:
+            return []
+        min_x = - self.camera.position[0] + (min(area["x1"], area["x2"]) / self.camera.scale)
+        max_x = - self.camera.position[0] + (max(area["x1"], area["x2"]) / self.camera.scale)
+
+        min_y = - self.camera.position[1] + (min(area["y1"], area["y2"]) / self.camera.scale)
+        max_y = - self.camera.position[1] + (max(area["y1"], area["y2"]) / self.camera.scale)
+
+        edges_to_return = []
+        rectangle = [
+            ((min_x, min_y), (min_x, max_y)),
+            ((min_x, max_y), (max_x, max_y)),
+            ((max_x, max_y), (max_x, min_y)),
+            ((max_x, min_y), (min_x, min_y))
+        ]
+        # https://e-maxx.ru/algo/segments_intersection_checking
+        area = lambda a, b, c: (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
+        intersect_1 = lambda a_, b_, c_, d_: max(min(a_, b_), min(c_, d_)) <= min(max(a_, b_), max(c_, d_))
+        intersect = lambda a, b, c, d: (intersect_1(a[0], b[0], c[0], d[0])
+                                        and intersect_1(a[1], b[1], c[1], d[1])
+                                        and area(a, b, c) * area(a, b, d) <= 0
+                                        and area(c, d, a) * area(c, d, b) <= 0)
+
+        for edge in self.graph.edges:
+            vertex_first_position = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first).position
+            vertex_second_position = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second).position
+            intersection_exist = False
+            for side in rectangle:
+                if intersect(vertex_first_position, vertex_second_position, side[0], side[1]):
+                    intersection_exist = True
+                    break
+            if intersection_exist:
+                edges_to_return.append(edge)
+
+        return edges_to_return
 
     def get_edge_by_position(self, position):
         if self.graph is None:
@@ -326,7 +363,9 @@ class GraphRenderer:
         for edge in self.graph.edges:
             if edge.show_info:
                 self.edge_show_info = edge
-            color_to_draw = self.theme.EDGE_COLOR if edge.color is None else edge.color
+            color_to_draw = self.theme.ACTIVE_EDGE_COLOR if edge.active else self.theme.EDGE_COLOR
+            if edge.color is not None:
+                color_to_draw = edge.color
             # ##
             vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
             vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
@@ -607,8 +646,8 @@ class GraphRenderer:
             bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
             bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
             # calculate position
-            position_x = T3[0] + self.setting.vertexes_radius
-            position_y = T3[1] + self.setting.vertexes_radius
+            position_x = (edge.show_info_position[0] + self.camera.position[0]) * self.camera.scale
+            position_y = (edge.show_info_position[1] + self.camera.position[1]) * self.camera.scale
             if position_x + bg_width > self.display.get_width():
                 position_x -= (self.setting.vertexes_radius * 2 + bg_width)
             if position_y + bg_height > self.display.get_height():
@@ -617,7 +656,6 @@ class GraphRenderer:
             bg_rectangle = (position_x, position_y, bg_width, bg_height)
             pygame.draw.rect(self.display, self.theme.BUTTON_AREA_COLOR, bg_rectangle)
             pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, bg_rectangle, 1)
-
             # draw text
             for text in texts_to_draw:
                 text_x = position_x + self.setting.info_margin_horizontal

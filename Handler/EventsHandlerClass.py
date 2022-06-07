@@ -152,10 +152,13 @@ class EventsHandler:
                     mouse_position = pygame.mouse.get_pos()
                     self.app.store.subgraph_area["x1"] = mouse_position[0]
                     self.app.store.subgraph_area["y1"] = mouse_position[1]
+                    self.app.store.subgraph_area["started"] = True
                     for vertex in self.app.store.current_subgraph_vertexes:
                         vertex.active = False
                     self.app.store.current_subgraph_vertexes.clear()
-                    self.app.store.subgraph_area["started"] = True
+                    for edge in self.app.store.current_subgraph_edges:
+                        edge.active = False
+                    self.app.store.current_subgraph_edges.clear()
 
         def keyboard_down(self, event):
             # ## ### VERTEX RENAME
@@ -196,6 +199,25 @@ class EventsHandler:
                     self.app.display = pygame.display.set_mode(self.display_sizes, pygame.RESIZABLE)
                     self.app.display = pygame.display.set_mode(self.display_sizes, pygame.RESIZABLE)
                     self.display_full_screen = False
+            if event.key == pygame.K_DELETE:
+                # vertex
+                if self.app.store.current_vertex is not None:
+                    self.app.store.current_graph.delete_vertex(self.app.store.current_vertex.identifier)
+                    self.app.store.current_vertex = None
+                # vertexes subgraph
+                if len(self.app.store.current_subgraph_vertexes) is not None:
+                    vertexes_to_delete = self.app.store.current_subgraph_vertexes
+                    for vertex in vertexes_to_delete:
+                        self.app.store.current_graph.delete_vertex(vertex.identifier)
+                    self.app.store.current_subgraph_vertexes.clear()
+                # edge
+                if self.app.store.current_edge is not None:
+                    self.app.store.current_graph.delete_edge(self.app.store.current_edge.identifier)
+                if len(self.app.store.current_subgraph_edges) is not None:
+                    edges_to_delete = self.app.store.current_subgraph_edges
+                    for edge in edges_to_delete:
+                        self.app.store.current_graph.delete_edge(edge.identifier)
+                    self.app.store.current_subgraph_edges.clear()
 
         def right_mouse_down(self):
 
@@ -207,6 +229,7 @@ class EventsHandler:
             # ## if no button, check vertex
             else:
                 self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
+                self.app.store.current_edge = self.app.renderer.get_edge_by_position(position=mouse_position)
             if self.app.store.current_vertex is not None:
                 # check if we choosing subgraph
                 if not self.selection_subgraph:
@@ -216,13 +239,22 @@ class EventsHandler:
                 # append current vertex in subgraph
                 if self.app.store.current_vertex not in self.app.store.current_subgraph_vertexes:
                     self.app.store.current_subgraph_vertexes.append(self.app.store.current_vertex)
-                    self.app.store.current_vertex.active = True
+                self.app.store.current_vertex.active = True
                 # set start shift for all vertexes in subgraph
                 for vertex in self.app.store.current_subgraph_vertexes:
                     vertex.move_shift_start = mouse_position
             # check edge
             elif self.app.store.current_edge is not None:
-                print(self.app.store.current_edge.identifier)
+                self.app.store.current_edge.active = True
+                # check if we choosing subgraph
+                if not self.selection_subgraph:
+                    for edge in self.app.store.current_subgraph_edges:
+                        edge.active = False
+                    self.app.store.current_subgraph_edges.clear()
+                # append current vertex in subgraph
+                if self.app.store.current_edge not in self.app.store.current_subgraph_edges:
+                    self.app.store.current_subgraph_edges.append(self.app.store.current_edge)
+                self.app.store.current_edge.active = True
             # ## if no vertex and edge check camera movement
             else:
                 self.app.renderer.camera.move_state = True
@@ -260,13 +292,21 @@ class EventsHandler:
             self.app.renderer.camera.reset_shift()
             # ## vertex disable movement
             if not self.selection_subgraph:
+                # vertexes
                 for vertex in self.app.store.current_subgraph_vertexes:
                     vertex.active = False
                 self.app.store.current_subgraph_vertexes.clear()
+                # edges
+                for edge in self.app.store.current_subgraph_edges:
+                    edge.active = False
+                self.app.store.current_subgraph_edges.clear()
             for vertex in self.app.store.current_subgraph_vertexes:
                 vertex.reset_shift()
             self.app.store.current_graph.calculate_graph_borders()
             self.app.store.current_vertex = None
+            # ## edges disable
+            self.app.store.current_edge.active = False
+            self.app.store.current_edge = None
 
         def left_mouse_down(self):
             # ## check vertex
@@ -277,7 +317,11 @@ class EventsHandler:
             else:
                 self.app.store.current_edge_info = self.app.renderer.get_edge_by_position(position=mouse_position)
                 if self.app.store.current_edge_info is not None:
+                    mouse_position = pygame.mouse.get_pos()
                     self.app.store.current_edge_info.show_info = True
+                    position = self.app.store.current_edge_info.show_info_position
+                    position[0] = mouse_position[0] / self.app.renderer.camera.scale - self.app.renderer.camera.position[0]
+                    position[1] = mouse_position[1] / self.app.renderer.camera.scale - self.app.renderer.camera.position[1]
 
         def left_mouse_up(self):
             if self.app.store.current_vertex_info is not None:
@@ -310,15 +354,21 @@ class EventsHandler:
                 self.selection_area = False
 
             if self.selection_area:
-                for vertex in self.app.store.current_subgraph_vertexes:
-                    vertex.active = False
                 mouse_position = list(pygame.mouse.get_pos())
                 self.app.store.subgraph_area["x2"] = mouse_position[0]
                 self.app.store.subgraph_area["y2"] = mouse_position[1]
-                self.app.store.current_subgraph_vertexes = \
-                    [vertex for vertex in self.app.renderer.get_vertexes_by_area(self.app.store.subgraph_area)]
+                # ## vertexes
+                for vertex in self.app.store.current_subgraph_vertexes:
+                    vertex.active = False
+                self.app.store.current_subgraph_vertexes = self.app.renderer.get_vertexes_by_area(self.app.store.subgraph_area)
                 for vertex in self.app.store.current_subgraph_vertexes:
                     vertex.active = True
+                # ## edges
+                for edge in self.app.store.current_subgraph_edges:
+                    edge.active = False
+                self.app.store.current_subgraph_edges = self.app.renderer.get_edges_by_area(self.app.store.subgraph_area)
+                for edge in self.app.store.current_subgraph_edges:
+                    edge.active = True
             else:
                 self.app.store.reset_subgraph_area()
 

@@ -68,6 +68,8 @@ Interaction via window
 |______________|_________________________________________________________________|
 | I + RMB      | - changing vertex id (to stop vertex name input click ENTER)    |
 |______________|_________________________________________________________________|
+| DEL          | - deleting selected vertexes and edges                          |
+|______________|_________________________________________________________________|
 ```
 
 Copyright © 2021 Paplauski Eldar

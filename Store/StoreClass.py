@@ -207,6 +207,7 @@ class Graph:
 
         for edge in edges_to_delete:
             self.delete_edge(edge.identifier)
+
         for vertex in self.vertexes:
             if vertex.identifier == identifier:
                 self.vertexes.remove(vertex)
@@ -263,7 +264,9 @@ class Graph:
             self.vertex_identifier_second = None
             self.weight = 1
             # other
+            self.active = False
             self.show_info = False
+            self.show_info_position = [0, 0]
             self.oriented = False
             self.color = None
 
