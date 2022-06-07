@@ -1,9 +1,9 @@
 import pickle
 
 
-###########################################
-###### STORE CAN KEEP SEVERAL GRAPHS ######
-###########################################
+############################################################
+###### STORE KEEPS SEVERAL GRAPHS AND OTHER VARIABLES ######
+############################################################
 class Store:
     def __init__(self):
         self.graphs = list()
@@ -47,7 +47,7 @@ class Store:
     def export_graph(self, identifier):
         graphs_to_save = [graph for graph in self.graphs if graph.identifier == identifier]
         for graph in graphs_to_save:
-            with open(f'graph/{identifier}-{graphs_to_save.index(graph)}.gepp', 'wb') as file:
+            with open(f'graph/{identifier}.gepp', 'wb') as file:
                 pickle.dump(graph, file)
 
     def import_graph(self, identifier):
@@ -73,10 +73,6 @@ class Store:
 
     def reset_subgraph_area(self):
         self.subgraph_area = {"x1": 0, "y1": 0, "x2": 0, "y2": 0, "started": False}
-
-# ## ! For the program to work correctly, ! ## #
-# ## ! the graph must have an established ! ## #
-# ## ! standard structure                 ! ## #
 
 
 ###############################

@@ -24,8 +24,8 @@ class App:
         self.clock = clock
         self.store = Store()
         self.renderer = GraphRenderer()
+        self.graph_calculator = GraphCalculator()
         self.events_handler = EventsHandler(self)
-        self.graph_calculator = GraphCalculator(self)
 
     def stop(self):
             pygame.display.quit()
@@ -33,8 +33,10 @@ class App:
             sys.exit()
 
     def run(self):
-        self.events_handler.command("graph import 1-0")
-        self.events_handler.command("graph choose 1")
+        # ## ### comment out the following three lines to get started with empty storage
+        self.events_handler.command("graph import example")
+        self.events_handler.command("graph choose example")
+        self.events_handler.command("graph rename example MyGraph")
         self.events_handler.check_events()
 
 

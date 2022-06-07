@@ -1,3 +1,6 @@
+import datetime
+import random
+
 import pygame
 import threading
 from Handler.Commands import *
@@ -6,6 +9,7 @@ from Handler.Commands import *
 class EventsHandler:
     def __init__(self, app):
         self.app = app
+        self.fps = 20
         self.console_event_thread = self.EventThread("Console event thread", 1, self, "console handler")
         self.console_event_thread.setDaemon(True)
         self.commands_list = list()
@@ -42,9 +46,12 @@ class EventsHandler:
             # ## additional (event for lab)
             {"identifier": "incidence matrix", "have_args": False, "action": CommandIncidenceMatrix(self).run},
             {"identifier": "find min path", "have_args": True, "action": CommandFindMinPath(self).run},
-            {"identifier": "graph make complete", "have_args": False, "action": CommandGraphMakeComplete(self).run},
             {"identifier": "graph check complete", "have_args": False, "action": CommandGraphCheckComplete(self).run},
-            {"identifier": "vertex find by content", "have_args": True,"action": CommandVertexFindByContent(self).run},
+            {"identifier": "graph make complete", "have_args": False, "action": CommandGraphMakeComplete(self).run},
+            {"identifier": "graph make circle", "have_args": False, "action": CommandGraphMakeCircle(self).run},
+            {"identifier": "graph rename all vertexes", "have_args": False, "action": CommandVertexRenameAll(self).run},
+            {"identifier": "graph rename all edges", "have_args": False, "action": CommandEdgeRenameAll(self).run},
+            {"identifier": "vertex find by content", "have_args": True, "action": CommandVertexFindByContent(self).run},
         ]
 
     class EventThread(threading.Thread):
@@ -73,16 +80,20 @@ class EventsHandler:
             self.selection_area = False
             self.display_full_screen = False
             self.display_sizes = (self.app.display.get_width(), self.app.display.get_height())
-            # input
+            # input text
             self.input_action = False
             self.input_text = ""
+            #
+            self.double_click_timer = 0
+            self.double_click_pos = [0, 0]
 
         def run(self):
             pygame.display.update()
             self.reset_event_bools()
             self.keyboard_pressed(pygame.key.get_pressed())
 
-            for event in pygame.event.get():
+            events = pygame.event.get()
+            for event in events:
                 if event.type == pygame.QUIT:
                     self.app.stop()
                 # ## ### DISPLAY SIZES
@@ -94,7 +105,19 @@ class EventsHandler:
 
                 # ## ### RIGHT MOUSE BUTTON CLICK
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    self.right_mouse_down()
+                    if self.double_click_timer == 0 or self.double_click_timer > 0.25:
+                        # print("first click")
+                        self.double_click_timer = 0.001
+                        self.double_click_pos = pygame.mouse.get_pos()
+                        self.right_mouse_down()
+                    else:
+                        # print("second click")
+                        if self.double_click_timer > 0.25 or pygame.mouse.get_pos() != self.double_click_pos:
+                            self.right_mouse_down()
+                        else:
+                            self.right_mouse_double_click()
+                            # print("doubleclick", self.double_click_timer, self.double_click_pos)
+                        self.double_click_timer = 0
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.right_mouse_up()
                 # ## ### LEFT MOUSE BUTTON CLICK
@@ -108,7 +131,13 @@ class EventsHandler:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
                     self.wheel_mouse_backward()
 
+            if len(events) < 0:
+                return False
+
             self.mouse_movement()
+            if self.double_click_timer != 0:
+                self.double_click_timer += self.app.events_handler.fps / 1000
+            return True
 
         def reset_event_bools(self):
             self.selection_subgraph = False
@@ -139,7 +168,7 @@ class EventsHandler:
                 else:
                     if event.key == pygame.K_BACKSPACE:
                         self.input_text = self.input_text[:-1]
-                    if event.key == pygame.K_i and self.app.store.current_vertex != self.app.store.vertex_to_rename:
+                    elif event.key == pygame.K_i and self.app.store.current_vertex != self.app.store.vertex_to_rename:
                         self.app.store.vertex_to_rename = self.app.store.current_vertex
                         self.input_text = ""
                     elif event.key != pygame.K_RETURN:
@@ -178,7 +207,6 @@ class EventsHandler:
             # ## if no button, check vertex
             else:
                 self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
-                # self.app.store.current_edge = self.app.renderer.get_edge_by_position(position=mouse_position)
             if self.app.store.current_vertex is not None:
                 # check if we choosing subgraph
                 if not self.selection_subgraph:
@@ -192,13 +220,39 @@ class EventsHandler:
                 # set start shift for all vertexes in subgraph
                 for vertex in self.app.store.current_subgraph_vertexes:
                     vertex.move_shift_start = mouse_position
+            # check edge
             elif self.app.store.current_edge is not None:
                 print(self.app.store.current_edge.identifier)
-            # ## if no vertex check camera movement
+            # ## if no vertex and edge check camera movement
             else:
                 self.app.renderer.camera.move_state = True
                 self.app.renderer.camera.move_shift_start = mouse_position
                 self.app.store.reset_subgraph_area()
+
+        def right_mouse_double_click(self):
+
+            mouse_position = list(pygame.mouse.get_pos())
+            # ## check button
+            button = self.app.renderer.check_buttons_intersection(mouse_position)
+            vertex = None
+            edge = None
+            if button is not None:
+                button.click()
+                return
+            # ## check vertex and edge
+            else:
+                vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
+                edge = self.app.renderer.get_edge_by_position(position=mouse_position)
+            if vertex is not None or edge is not None:
+                return
+            # ## if it's empty space => create vertex
+            if self.app.store.current_graph is not None:
+                new_vertex_name = ("vertex_" + str(datetime.datetime.now()) + "-" + str(random.randint(0, 1000000000))).replace(" ", "_")
+                content = "content"
+                position = [0, 0]
+                position[0] = mouse_position[0] / self.app.renderer.camera.scale - self.app.renderer.camera.position[0]
+                position[1] = mouse_position[1] / self.app.renderer.camera.scale - self.app.renderer.camera.position[1]
+                self.app.store.current_graph.add_vertex(identifier=new_vertex_name, content=content, position=position)
 
         def right_mouse_up(self):
             # ## camera disable movement
@@ -218,11 +272,12 @@ class EventsHandler:
             # ## check vertex
             mouse_position = list(pygame.mouse.get_pos())
             self.app.store.current_vertex_info = self.app.renderer.get_vertex_by_position(position=mouse_position)
-            self.app.store.current_edge_info = self.app.renderer.get_edge_by_position(position=mouse_position)
             if self.app.store.current_vertex_info is not None:
                 self.app.store.current_vertex_info.show_info = True
-            if self.app.store.current_edge_info is not None:
-                self.app.store.current_edge_info.show_info = True
+            else:
+                self.app.store.current_edge_info = self.app.renderer.get_edge_by_position(position=mouse_position)
+                if self.app.store.current_edge_info is not None:
+                    self.app.store.current_edge_info.show_info = True
 
         def left_mouse_up(self):
             if self.app.store.current_vertex_info is not None:
@@ -271,11 +326,12 @@ class EventsHandler:
         self.console_event_thread.start()
         while True:
             try:
-                self.display_handler.run()
-                self.command("render")
+                event = self.display_handler.run()
+                if event:
+                    self.command("render")
             except Exception as _:
                 pass
-            self.app.clock.tick(25)
+            self.app.clock.tick(self.fps)
 
     def command(self, command_get):
         parsed = list()

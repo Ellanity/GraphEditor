@@ -35,10 +35,13 @@ Interaction via the command line
 |____________________________|________________|__________________________________|
 | # ## additional            |                | events for lab                   |
 | incidence matrix           | id*            | print incidence matrix           |
+| find min path              | v1 v2          | print min path between vertexes  |
 | graph check complete       | id*            | print if graph is complete       |
 | graph make complete        | id*            | add edges to make graph complete |
+| graph make circle          | id*            | shape of the graph becomes round |
+| graph rename all vertexes  | -              | names all vertices in order      |
+| graph rename all edges     | -              | names all edges in order         |
 | vertex find by content     | content        | find in current graph vertex     |
-| find min path              | v1 v2          | print min path between vertexes  |
 |____________________________|________________|__________________________________|
 | * - optional                                                                   |
 |________________________________________________________________________________|
@@ -50,6 +53,7 @@ Interaction via window
 |______________|_________________________________________________________________|
 | RMB          | - if pressed in an empty space, moves the camera                |
 |              | - if a vertex is clicked, moves the vertex                      |
+|              | - double-clicking on an empty space creates a vertex            |
 |              | - buttons clicks                                                |
 |______________|_________________________________________________________________|
 | LMB          | - if a vertex or edge is clicked, shows info                    |

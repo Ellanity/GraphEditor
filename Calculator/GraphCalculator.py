@@ -1,10 +1,10 @@
 import datetime
+import math
 import random
 
 
 class GraphCalculator:
-    def __init__(self, app):
-        self.app = app
+    def __init__(self):
         self.graph = None
 
     def set_graph(self, graph):
@@ -151,3 +151,22 @@ class GraphCalculator:
                     and (abs(vertexes_in_path.index(edge.vertex_identifier_first) -
                              vertexes_in_path.index(edge.vertex_identifier_second)) <= 1):
                 edge.color = random_color
+
+    def graph_make_circle(self, graph):
+        if len(graph.borders) <= 0:
+            graph.calculate_graph_borders()
+
+        x_circle_diameter = graph.borders[1] - graph.borders[0] if graph.borders[0] < graph.borders[1] else graph.borders[0] - graph.borders[1]
+        y_circle_diameter = graph.borders[3] - graph.borders[2] if graph.borders[2] < graph.borders[3] else graph.borders[2] - graph.borders[3]
+        circle_radius = max(x_circle_diameter, y_circle_diameter) / 2
+
+        x_circle_center = min(graph.borders[0], graph.borders[1]) + circle_radius
+        y_circle_center = min(graph.borders[2], graph.borders[3]) + circle_radius
+
+        # x = r * cos(t) + x_center ; y = r * sin(t) + y_center ; 0 ≤ t < 2pi
+        pi = math.pi
+        indentation_between_vertices_in_radians = (2 * pi) / len(graph.vertexes)
+        for vertex in graph.vertexes:
+            vertex_radian = indentation_between_vertices_in_radians * graph.vertexes.index(vertex)
+            vertex.position[0] = circle_radius * math.cos(vertex_radian) + x_circle_center
+            vertex.position[1] = circle_radius * math.sin(vertex_radian) + y_circle_center

@@ -183,6 +183,22 @@ class CommandVertexRename(Command):
         self.events_handler.app.store.current_graph.rename_vertex(identifier=identifier, identifier_new=identifier_new)
 
 
+class CommandVertexRenameAll(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if self.events_handler.app.store.current_graph is not None:
+            for vertex in self.events_handler.app.store.current_graph.vertexes:
+                self.events_handler.app.store.current_graph.rename_vertex(identifier=vertex.identifier,
+                                                                          identifier_new=vertex.identifier + "_")
+            for vertex in self.events_handler.app.store.current_graph.vertexes:
+                identifier_new = "v" + str(self.events_handler.app.store.current_graph.vertexes.index(vertex) + 1)
+                self.events_handler.app.store.current_graph.rename_vertex(identifier=vertex.identifier,
+                                                                          identifier_new=identifier_new)
+            print("all vertex renamed")
+
+
 class CommandVertexContent(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
@@ -192,6 +208,7 @@ class CommandVertexContent(Command):
         content = args[1]
         self.events_handler.app.store.current_graph.set_vertex_content(identifier=identifier, content=content)
         print(f"content for vertex {identifier} seted content {content}")
+
 
 #############
 ### EDGES ###
@@ -244,6 +261,22 @@ class CommandEdgeRename(Command):
         print(f"edge {args[1]} renamed")
 
 
+class CommandEdgeRenameAll(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        if self.events_handler.app.store.current_graph is not None:
+            for edge in self.events_handler.app.store.current_graph.edges:
+                self.events_handler.app.store.current_graph.rename_edge(identifier=edge.identifier,
+                                                                        identifier_new=edge.identifier + "_")
+            for edge in self.events_handler.app.store.current_graph.edges:
+                identifier_new = "e" + str(self.events_handler.app.store.current_graph.edgees.index(edge) + 1)
+                self.events_handler.app.store.current_graph.rename_edge(identifier=edge.identifier,
+                                                                        identifier_new=identifier_new)
+            print("all edges renamed")
+
+
 class CommandEdgeChangeOrientedState(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
@@ -253,9 +286,9 @@ class CommandEdgeChangeOrientedState(Command):
         print(args[0], " oriented state changed")
 
 
-#################
-### LAB TASKS ###
-#################
+###################
+### OTHER TASKS ###
+###################
 class CommandIncidenceMatrix(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
@@ -310,6 +343,26 @@ class CommandGraphMakeComplete(Command):
                         print(f"graph {graph} is complete now")
                     else:
                         print(f"graph {graph} already complete")
+                    break
+        else:
+            print(f"no graph selected")
+
+
+class CommandGraphMakeCircle(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph:
+                    # ## command body
+                    self.events_handler.app.graph_calculator.graph_make_circle(graph_obj)
+                    print(f"graph {graph} now is circle")
+                    # ## finish
                     break
         else:
             print(f"no graph selected")

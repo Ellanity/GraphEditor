@@ -10,6 +10,8 @@ class GraphRenderer:
         self.setting = self.Settings()
         self.camera = self.Camera()
         self.graph = graph
+        self.vertex_show_info = None
+        self.edge_show_info = None
         self.selected_area = {"x1": 0, "y1": 0, "x2": 0, "y2": 0}
         # ## theme
         self.light_theme = BlueLightTheme()
@@ -67,9 +69,9 @@ class GraphRenderer:
             vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
 
             # ## (x-a)^2 + (y-b)^2 <= R^2
-            xa2 = (((position[0] - vertex_position_to_draw[0]) * self.camera.scale) ** 2)
-            yb2 = (((position[1] - vertex_position_to_draw[1]) * self.camera.scale) ** 2)
-            r2 = (self.setting.vertexes_radius ** 2) * self.camera.scale
+            xa2 = ((position[0] - vertex_position_to_draw[0]) ** 2)
+            yb2 = ((position[1] - vertex_position_to_draw[1]) ** 2)
+            r2 = (self.setting.vertexes_radius ** 2)
             if xa2 + yb2 < r2:
                 return vertex
         return None
@@ -88,17 +90,30 @@ class GraphRenderer:
             vertex_second_position_to_draw[0] = (vertex_second.position[0] + self.camera.position[0]) * self.camera.scale
             vertex_second_position_to_draw[1] = (vertex_second.position[1] + self.camera.position[1]) * self.camera.scale
 
-            T1 = vertex_first_position_to_draw
-            T2 = vertex_second_position_to_draw
+            T01 = vertex_first_position_to_draw
+            T02 = vertex_second_position_to_draw
+            T1 = [0, 0]
+            T2 = [0, 0]
+            distance_between_vertexes = sqrt((abs(T01[0] - T02[0]) ** 2) + (abs(T01[1] - T02[1]) ** 2))
+            coefficient_points = self.setting.vertexes_radius / distance_between_vertexes
+            dist_x_between_T12_T0102 = (abs(T01[0] - T02[0])) * coefficient_points
+            dist_y_between_T12_T0102 = (abs(T01[1] - T02[1])) * coefficient_points
+
+            T1[0] = T01[0] - dist_x_between_T12_T0102 if T01[0] > T02[0] else T01[0] + dist_x_between_T12_T0102
+            T1[1] = T01[1] - dist_y_between_T12_T0102 if T01[1] > T02[1] else T01[1] + dist_y_between_T12_T0102
+
+            T2[1] = T02[1] - dist_y_between_T12_T0102 if T01[1] < T02[1] else T02[1] + dist_y_between_T12_T0102
+            T2[0] = T02[0] - dist_x_between_T12_T0102 if T01[0] < T02[0] else T02[0] + dist_x_between_T12_T0102
+
             T3 = [0, 0]
             T4 = [0, 0]
             T5 = [0, 0]
             T6 = [0, 0]
 
-            distance_between_vertexes = sqrt((abs(T1[0] - T2[0]) ** 2) + (abs(T1[1] - T2[1]) ** 2))
+            distance_between_points = sqrt((abs(T1[0] - T2[0]) ** 2) + (abs(T1[1] - T2[1]) ** 2))
             dist_x_between_T1_T2 = (abs(T1[0] - T2[0]))
             dist_y_between_T1_T2 = (abs(T1[1] - T2[1]))
-            coefficient = self.setting.edges_width / distance_between_vertexes
+            coefficient = self.setting.edges_width / distance_between_points
             dist_x_between_T12_T3456 = dist_y_between_T1_T2 * coefficient
             dist_y_between_T12_T3456 = dist_x_between_T1_T2 * coefficient
             T3[0] = T1[0] - dist_x_between_T12_T3456 \
@@ -135,9 +150,9 @@ class GraphRenderer:
             # pygame.draw.aaline(self.display, (0, 40, 255), T3, T5)  # blue
             # pygame.draw.aaline(self.display, (40, 255, 0), T4, T6)  # green
 
-            #   T4 .________________. T6
-            #   T1 !________________! T2
-            #   T3 !________________! T5
+            #         \          T4 .________________. T6          /
+            #  vertex1| T01 .___ T1 !______EDGE______! T2 ___. T02 |vertex2
+            #         /          T3 !________________! T5          \
 
             # ## ## determining the order of points on the coordinate plane
             sides_of_the_rectangle = []
@@ -307,8 +322,10 @@ class GraphRenderer:
             pygame.draw.aalines(self.display, self.theme.GRID_COLOR, True, [(x1, y), (x2, y)])
 
     def render_edges(self):
-        edge_show_info = None
+        self.edge_show_info = None
         for edge in self.graph.edges:
+            if edge.show_info:
+                self.edge_show_info = edge
             color_to_draw = self.theme.EDGE_COLOR if edge.color is None else edge.color
             # ##
             vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
@@ -320,9 +337,6 @@ class GraphRenderer:
             vertex_second_position_to_draw = [0, 0]
             vertex_second_position_to_draw[0] = (vertex_second.position[0] + self.camera.position[0]) * self.camera.scale
             vertex_second_position_to_draw[1] = (vertex_second.position[1] + self.camera.position[1]) * self.camera.scale
-
-            if edge.show_info:
-                edge_show_info = edge
 
             # ## loops
             loop_radius = self.setting.loop_edge_radius * self.camera.scale
@@ -412,8 +426,135 @@ class GraphRenderer:
                 #       |
                 #      vertex_first
 
-        if edge_show_info is not None:
-            edge = edge_show_info
+    def render_vertexes(self):
+        self.vertex_show_info = None
+        for vertex in self.graph.vertexes:
+            # ## color
+            if vertex.show_info:
+                self.vertex_show_info = vertex
+            AREA_COLOR_LOCAL = self.theme.ACTIVE_AREA_COLOR if vertex.active else self.theme.AREA_COLOR
+            CIRCLE_COLOR_LOCAL = self.theme.ACTIVE_CIRCLE_COLOR if vertex.active else self.theme.CIRCLE_COLOR
+            if vertex.color is not None:
+                CIRCLE_COLOR_LOCAL = vertex.color
+
+            # ## circle
+            vertex_position_to_draw = [0, 0]
+            vertex_position_to_draw[0] = (vertex.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
+
+            pygame.draw.circle(self.display, AREA_COLOR_LOCAL,
+                               (vertex_position_to_draw[0], vertex_position_to_draw[1]),
+                               self.setting.vertexes_radius)
+            pygame.draw.circle(self.display, CIRCLE_COLOR_LOCAL,
+                               (vertex_position_to_draw[0], vertex_position_to_draw[1]),
+                               self.setting.vertexes_radius, 1)
+            # ## identifier
+            font = pygame.font.Font(self.theme.FONT, self.setting.vertexes_radius * 2)
+            vertex_identifier = font.render(vertex.identifier, True, CIRCLE_COLOR_LOCAL)
+
+            vertex_identifier_x = vertex_position_to_draw[0] + self.setting.vertexes_radius
+            vertex_identifier_y = vertex_position_to_draw[1] + self.setting.vertexes_radius
+            if vertex_identifier_x + vertex_identifier.get_width() > self.display.get_width():
+                vertex_identifier_x -= (self.setting.vertexes_radius * 2 + vertex_identifier.get_width())
+            if vertex_identifier_y + vertex_identifier.get_height() > self.display.get_height():
+                vertex_identifier_y -= (self.setting.vertexes_radius * 2 + vertex_identifier.get_height())
+            self.display.blit(vertex_identifier, (vertex_identifier_x, vertex_identifier_y))
+
+    def render_selected_area(self):
+        if self.selected_area != {"x1": 0, "y1": 0, "x2": 0, "y2": 0}:
+            width = abs(self.selected_area["x1"] - self.selected_area["x2"])
+            height = abs(self.selected_area["y1"] - self.selected_area["y2"])
+            position_x = self.selected_area["x1"] if self.selected_area["x1"] < self.selected_area["x2"] else self.selected_area["x2"]
+            position_y = self.selected_area["y1"] if self.selected_area["y1"] < self.selected_area["y2"] else self.selected_area["y2"]
+
+            rect_surface = pygame.Surface((width, height), pygame.SRCALPHA)
+            color = list(self.theme.GRID_COLOR)
+            color.append(96)
+            rect_surface.fill(tuple(color))
+            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, (position_x, position_y, width, height), 1)
+            self.display.blit(rect_surface, (position_x, position_y))
+
+    def render_info(self):
+        # ## ### VERTEX INFO
+        if self.vertex_show_info is not None:
+            vertex = self.vertex_show_info
+            vertex_position_to_draw = [0, 0]
+            vertex_position_to_draw[0] = (vertex.position[0] + self.camera.position[0]) * self.camera.scale
+            vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
+            font = pygame.font.Font(self.theme.FONT, int(self.setting.vertexes_radius * 1.5))
+            texts_to_draw = list()
+            vertex_degree = 0
+            for edge in self.graph.edges:
+                if edge.vertex_identifier_first == vertex.identifier or \
+                        edge.vertex_identifier_second == vertex.identifier:
+                    if edge.oriented:
+                        text = f"({edge.vertex_identifier_first})-" \
+                               f"-[{edge.identifier}]->({edge.vertex_identifier_second})"
+                    else:
+                        text = f"({edge.vertex_identifier_first})-" \
+                               f"-[{edge.identifier}]--({edge.vertex_identifier_second})"
+
+                    texts_to_draw.append(font.render(text, True, self.theme.BUTTON_TEXT_COLOR))
+                    vertex_degree += 1 if edge.vertex_identifier_first != edge.vertex_identifier_second else 2
+            # degree
+            texts_to_draw.insert(0, font.render(f"degree: {vertex_degree}", True, self.theme.BUTTON_TEXT_COLOR))
+            # content
+            texts_to_draw.insert(0, font.render(f"content: {vertex.content}", True, self.theme.BUTTON_TEXT_COLOR))
+            # vertex
+            texts_to_draw.insert(0, font.render(f"y:{str(vertex.position[1])}", True, self.theme.BUTTON_TEXT_COLOR))
+            texts_to_draw.insert(0, font.render(f"x:{str(vertex.position[0])}", True, self.theme.BUTTON_TEXT_COLOR))
+            texts_to_draw.insert(0, font.render(f"vertex: {vertex.identifier}", True, self.theme.BUTTON_TEXT_COLOR))
+
+            # ## draw bg
+            # calculate sizes
+            max_width_of_text = 0
+            for text in texts_to_draw:
+                if text.get_width() >= max_width_of_text:
+                    max_width_of_text = text.get_width()
+            sum_height_of_text = 0
+            for text in texts_to_draw:
+                sum_height_of_text += text.get_height()
+
+            # ## VERTEX CONTENT AS IMG
+            try:
+                img = pygame.image.load(str(vertex.content))
+                img_width = img.get_width()
+                img_height = img.get_height()
+                img = pygame.transform.scale(img, (max_width_of_text, img_height * (max_width_of_text / img_width)))
+                texts_to_draw.insert(1, img)
+                sum_height_of_text += img.get_height()
+            except Exception as _:
+                pass
+
+            bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
+            bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
+            # calculate position
+            position_x = vertex_position_to_draw[0] + self.setting.vertexes_radius
+            position_y = vertex_position_to_draw[1] + self.setting.vertexes_radius
+            if position_x + bg_width > self.display.get_width():
+                position_x -= (self.setting.vertexes_radius * 2 + bg_width)
+            if position_y + bg_height > self.display.get_height():
+                position_y -= (self.setting.vertexes_radius * 2 + bg_height)
+            # draw bg
+            bg_rectangle = (position_x, position_y, bg_width, bg_height)
+            pygame.draw.rect(self.display, self.theme.BUTTON_AREA_COLOR, bg_rectangle)
+            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, bg_rectangle, 1)
+
+            # draw text
+            for text in texts_to_draw:
+                text_x = position_x + self.setting.info_margin_horizontal
+                text_y = position_y + self.setting.info_margin_vertical
+                for text_ in texts_to_draw:
+                    text_y += self.setting.info_margin_vertical
+                    if text_ != text:
+                        text_y += text_.get_height() + self.setting.info_margin_vertical
+                    else:
+                        break
+                self.display.blit(text, (text_x, text_y))
+
+        # ## ### EDGE INFO
+        if self.edge_show_info is not None:
+            edge = self.edge_show_info
 
             vertex_first = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
             vertex_second = self.graph.get_vertex_by_identifier(edge.vertex_identifier_second)
@@ -430,7 +571,6 @@ class GraphRenderer:
             T2 = vertex_second_position_to_draw
             T3 = [0, 0]
 
-            # distance_between_vertexes = sqrt((abs(T1[0] - T2[0]) ** 2) + (abs(T1[1] - T2[1]) ** 2))
             dist_x_between_T1_T2 = (abs(T1[0] - T2[0]))
             dist_y_between_T1_T2 = (abs(T1[1] - T2[1]))
 
@@ -490,116 +630,6 @@ class GraphRenderer:
                         break
                 self.display.blit(text, (text_x, text_y))
 
-    def render_vertexes(self):
-        vertex_show_info = None
-
-        for vertex in self.graph.vertexes:
-            # ## color
-            AREA_COLOR_LOCAL = self.theme.ACTIVE_AREA_COLOR if vertex.active else self.theme.AREA_COLOR
-            CIRCLE_COLOR_LOCAL = self.theme.ACTIVE_CIRCLE_COLOR if vertex.active else self.theme.CIRCLE_COLOR
-            if vertex.color is not None:
-                CIRCLE_COLOR_LOCAL = vertex.color
-
-            # ## circle
-            vertex_position_to_draw = [0, 0]
-            vertex_position_to_draw[0] = (vertex.position[0] + self.camera.position[0]) * self.camera.scale
-            vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
-
-            pygame.draw.circle(self.display, AREA_COLOR_LOCAL,
-                               (vertex_position_to_draw[0], vertex_position_to_draw[1]),
-                               self.setting.vertexes_radius)
-            pygame.draw.circle(self.display, CIRCLE_COLOR_LOCAL,
-                               (vertex_position_to_draw[0], vertex_position_to_draw[1]),
-                               self.setting.vertexes_radius, 1)
-            # ## identifier
-            font = pygame.font.Font(self.theme.FONT, self.setting.vertexes_radius * 2)
-            vertex_identifier = font.render(vertex.identifier, True, CIRCLE_COLOR_LOCAL)
-
-            vertex_identifier_x = vertex_position_to_draw[0] + self.setting.vertexes_radius
-            vertex_identifier_y = vertex_position_to_draw[1] + self.setting.vertexes_radius
-            if vertex_identifier_x + vertex_identifier.get_width() > self.display.get_width():
-                vertex_identifier_x -= (self.setting.vertexes_radius * 2 + vertex_identifier.get_width())
-            if vertex_identifier_y + vertex_identifier.get_height() > self.display.get_height():
-                vertex_identifier_y -= (self.setting.vertexes_radius * 2 + vertex_identifier.get_height())
-            self.display.blit(vertex_identifier, (vertex_identifier_x, vertex_identifier_y))
-
-            if vertex.show_info is True:
-                vertex_show_info = vertex
-
-        if vertex_show_info is not None:
-            vertex = vertex_show_info
-            vertex_position_to_draw = [0, 0]
-            vertex_position_to_draw[0] = (vertex.position[0] + self.camera.position[0]) * self.camera.scale
-            vertex_position_to_draw[1] = (vertex.position[1] + self.camera.position[1]) * self.camera.scale
-            font = pygame.font.Font(self.theme.FONT, int(self.setting.vertexes_radius * 1.5))
-            texts_to_draw = list()
-            vertex_degree = 0
-            for edge in self.graph.edges:
-                if edge.vertex_identifier_first == vertex.identifier or \
-                        edge.vertex_identifier_second == vertex.identifier:
-                    if edge.oriented:
-                        text = f"({edge.vertex_identifier_first})-" \
-                               f"-[{edge.identifier}]->({edge.vertex_identifier_second})"
-                    else:
-                        text = f"({edge.vertex_identifier_first})-" \
-                               f"-[{edge.identifier}]--({edge.vertex_identifier_second})"
-
-                    texts_to_draw.append(font.render(text, True, self.theme.BUTTON_TEXT_COLOR))
-                    vertex_degree += 1 if edge.vertex_identifier_first != edge.vertex_identifier_second else 2
-            # degree
-            texts_to_draw.insert(0, font.render(f"degree: {vertex_degree}", True, self.theme.BUTTON_TEXT_COLOR))
-            # content
-            texts_to_draw.insert(0, font.render(f"content: {vertex.content}", True, self.theme.BUTTON_TEXT_COLOR))
-            # vertex
-            texts_to_draw.insert(0, font.render(f"vertex: {vertex.identifier}", True, self.theme.BUTTON_TEXT_COLOR))
-
-            # ## draw bg
-            # calculate sizes
-            max_width_of_text = 0
-            for text in texts_to_draw:
-                if text.get_width() >= max_width_of_text:
-                    max_width_of_text = text.get_width()
-            sum_height_of_text = 0
-            for text in texts_to_draw:
-                sum_height_of_text += text.get_height()
-
-            # ## VERTEX CONTENT AS IMG
-            try:
-                img = pygame.image.load(str(vertex.content))
-                img_width = img.get_width()
-                img_height = img.get_height()
-                img = pygame.transform.scale(img, (max_width_of_text, img_height * (max_width_of_text / img_width)))
-                texts_to_draw.insert(1, img)
-                sum_height_of_text += img.get_height()
-            except Exception as _:
-                pass
-
-            bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
-            bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
-            # calculate position
-            position_x = vertex_position_to_draw[0] + self.setting.vertexes_radius
-            position_y = vertex_position_to_draw[1] + self.setting.vertexes_radius
-            if position_x + bg_width > self.display.get_width():
-                position_x -= (self.setting.vertexes_radius * 2 + bg_width)
-            if position_y + bg_height > self.display.get_height():
-                position_y -= (self.setting.vertexes_radius * 2 + bg_height)
-            # draw bg
-            bg_rectangle = (position_x, position_y, bg_width, bg_height)
-            pygame.draw.rect(self.display, self.theme.BUTTON_AREA_COLOR, bg_rectangle)
-            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, bg_rectangle, 1)
-
-            # draw text
-            for text in texts_to_draw:
-                text_x = position_x + self.setting.info_margin_horizontal
-                text_y = position_y + self.setting.info_margin_vertical
-                for text_ in texts_to_draw:
-                    text_y += self.setting.info_margin_vertical
-                    if text_ != text:
-                        text_y += text_.get_height() + self.setting.info_margin_vertical
-                    else:
-                        break
-                self.display.blit(text, (text_x, text_y))
-
     def render_buttons(self):
         self.update_buttons()
         for button in self.buttons:
@@ -607,20 +637,6 @@ class GraphRenderer:
                 button.render()
             except Exception as _:
                 pass
-
-    def render_selected_area(self):
-        if self.selected_area != {"x1": 0, "y1": 0, "x2": 0, "y2": 0}:
-            width = abs(self.selected_area["x1"] - self.selected_area["x2"])
-            height = abs(self.selected_area["y1"] - self.selected_area["y2"])
-            position_x = self.selected_area["x1"] if self.selected_area["x1"] < self.selected_area["x2"] else self.selected_area["x2"]
-            position_y = self.selected_area["y1"] if self.selected_area["y1"] < self.selected_area["y2"] else self.selected_area["y2"]
-
-            rect_surface = pygame.Surface((width, height), pygame.SRCALPHA)
-            color = list(self.theme.GRID_COLOR)
-            color.append(96)
-            rect_surface.fill(tuple(color))
-            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, (position_x, position_y, width, height), 1)
-            self.display.blit(rect_surface, (position_x, position_y))
 
     def render(self):
         if self.display is None:
@@ -632,6 +648,7 @@ class GraphRenderer:
         self.render_edges()
         self.render_vertexes()
         self.render_selected_area()
+        self.render_info()
         self.render_buttons()
 
         pygame.display.flip()
