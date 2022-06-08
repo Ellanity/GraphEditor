@@ -39,8 +39,8 @@ Interaction via the command line
 | graph check complete       | id*            | print if graph is complete       |
 | graph make complete        | id*            | add edges to make graph complete |
 | graph make circle          | id*            | shape of the graph becomes round |
-| graph rename all vertexes  | -              | names all vertices in order      |
-| graph rename all edges     | -              | names all edges in order         |
+| graph rename all vertexes  | id*            | names all vertices in order      |
+| graph rename all edges     | id*            | names all edges in order         |
 | vertex find by content     | content        | find in current graph vertex     |
 |____________________________|________________|__________________________________|
 | * - optional                                                                   |
@@ -59,6 +59,7 @@ Interaction via window
 | LMB          | - if a vertex or edge is clicked, shows info                    |
 |______________|_________________________________________________________________|
 | Mouse Wheel  | - change camera scale                                           |
+|              | - scrolls through the graphs in the storage                     |
 |______________|_________________________________________________________________|
 | LCTRL + RMB  | - creates subgraph from choosed vertexes                        |
 |              | - if you select a vertex of a subgraph and move it, the entire  |
@@ -69,6 +70,12 @@ Interaction via window
 | I + RMB      | - changing vertex id (to stop vertex name input click ENTER)    |
 |______________|_________________________________________________________________|
 | DEL          | - deleting selected vertexes and edges                          |
+|______________|_________________________________________________________________|
+| E            | - creates edges between selected vertexes                       |
+|______________|_________________________________________________________________|
+| N            | - changes the orientation status of the selected edges          |
+|______________|_________________________________________________________________|
+| O            | - changes the orientation direction of the selected edges       |
 |______________|_________________________________________________________________|
 ```
 

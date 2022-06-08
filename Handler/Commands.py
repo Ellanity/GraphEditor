@@ -1,3 +1,7 @@
+import datetime
+import random
+
+
 class Command:
     def __init__(self, events_handler=None):
         self.events_handler = events_handler
@@ -21,10 +25,13 @@ class CommandRender(Command):
 
     def run(self, args):
         self.events_handler.app.renderer.set_display(self.events_handler.app.display)
-        self.events_handler.app.renderer.set_graph(self.events_handler.app.store.current_graph)
-        self.events_handler.app.renderer.set_selected_area(self.events_handler.app.store.subgraph_area)
+        # graph
+        if self.events_handler.app.store.current_graph is not None:
+            self.events_handler.app.renderer.set_graph(self.events_handler.app.store.current_graph)
+            self.events_handler.app.renderer.set_selected_area(self.events_handler.app.store.subgraph_area)
+        self.events_handler.app.renderer.set_buttons(self.events_handler.buttons)
         self.events_handler.app.renderer.render()
-        
+
 
 #############
 ### GRAPH ###
@@ -188,15 +195,22 @@ class CommandVertexRenameAll(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        if self.events_handler.app.store.current_graph is not None:
-            for vertex in self.events_handler.app.store.current_graph.vertexes:
-                self.events_handler.app.store.current_graph.rename_vertex(identifier=vertex.identifier,
-                                                                          identifier_new=vertex.identifier + "_")
-            for vertex in self.events_handler.app.store.current_graph.vertexes:
-                identifier_new = "v" + str(self.events_handler.app.store.current_graph.vertexes.index(vertex) + 1)
-                self.events_handler.app.store.current_graph.rename_vertex(identifier=vertex.identifier,
-                                                                          identifier_new=identifier_new)
-            print("all vertex renamed")
+        graph_id = args[0] if len(args) > 0 else None
+        if graph_id is None and self.events_handler.app.store.current_graph is not None:
+            graph_id = self.events_handler.app.store.current_graph.identifier
+        if graph_id is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph_id:
+                    # command body
+                    for vertex in graph_obj.vertexes:
+                        graph_obj.rename_vertex(identifier=vertex.identifier, identifier_new=vertex.identifier + "_")
+                    for vertex in graph_obj.vertexes:
+                        identifier_new = "v" + str(graph_obj.vertexes.index(vertex) + 1)
+                        graph_obj.rename_vertex(identifier=vertex.identifier, identifier_new=identifier_new)
+                    print("all vertex renamed")
+                    break
+        else:
+            print(f"no graph selected")
 
 
 class CommandVertexContent(Command):
@@ -218,10 +232,20 @@ class CommandEdgeCreate(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        edge_identifier = args[0]
-        vertex_identifier_first = args[1]
-        vertex_identifier_second = args[2]
-        oriented = True if args[3] == "True" else False
+        print("creating edge", args)
+        if len(args) > 2:
+            edge_identifier = args[0]
+            vertex_identifier_first = args[1]
+            vertex_identifier_second = args[2]
+            oriented = True if args[3] == "True" else False
+        elif len(args) == 2:
+            edge_identifier = "e" + str(datetime.datetime.now()) + "-" + str(random.randint(0, 1000000))
+            vertex_identifier_first = args[0]
+            vertex_identifier_second = args[1]
+            oriented = False
+        else:
+            print(f"can not create edge")
+            return
         self.events_handler.app.store.current_graph.add_edge(
             identifier=edge_identifier,
             vertex_identifier_first=vertex_identifier_first,
@@ -266,15 +290,22 @@ class CommandEdgeRenameAll(Command):
         super().__init__(events_handler)
 
     def run(self, args):
-        if self.events_handler.app.store.current_graph is not None:
-            for edge in self.events_handler.app.store.current_graph.edges:
-                self.events_handler.app.store.current_graph.rename_edge(identifier=edge.identifier,
-                                                                        identifier_new=edge.identifier + "_")
-            for edge in self.events_handler.app.store.current_graph.edges:
-                identifier_new = "e" + str(self.events_handler.app.store.current_graph.edgees.index(edge) + 1)
-                self.events_handler.app.store.current_graph.rename_edge(identifier=edge.identifier,
-                                                                        identifier_new=identifier_new)
-            print("all edges renamed")
+        graph_id = args[0] if len(args) > 0 else None
+        if graph_id is None and self.events_handler.app.store.current_graph is not None:
+            graph_id = self.events_handler.app.store.current_graph.identifier
+        if graph_id is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph_id:
+                    # command body
+                    for edge in graph_obj.edges:
+                        graph_obj.rename_edge(identifier=edge.identifier, identifier_new=edge.identifier + "_")
+                    for edge in graph_obj.edges:
+                        identifier_new = "e" + str(graph_obj.edges.index(edge) + 1)
+                        graph_obj.rename_edge(identifier=edge.identifier, identifier_new=identifier_new)
+                    print("all edges renamed")
+                    break
+        else:
+            print(f"no graph selected")
 
 
 class CommandEdgeChangeOrientedState(Command):

@@ -64,6 +64,14 @@ class Store:
         if self.current_graph.identifier == identifier:
             self.current_graph = None
             self.current_vertex = None
+            self.current_vertex_info = None
+            self.current_edge = None
+            self.current_edge_info = None
+            self.vertex_to_rename = None
+            # subgraph
+            self.current_subgraph_vertexes = list()
+            self.current_subgraph_edges = list()
+            self.subgraph_area = {"x1": 0, "y1": 0, "x2": 0, "y2": 0, "stared": False}
         for graph in self.graphs:
             if graph is None or graph.identifier == identifier:
                 self.graphs.remove(graph)

@@ -1,7 +1,7 @@
 import math
 from math import sqrt
 from Renderer.ThemeClass import *
-from Renderer.CustomButtonClass import *
+import pygame
 
 
 class GraphRenderer:
@@ -19,19 +19,22 @@ class GraphRenderer:
         self.theme = self.dark_theme
         # ## buttons
         self.buttons = list()
-        self.__init_buttons__()
 
     def set_graph(self, graph):
         self.graph = graph
         camera_borders = [0, 0, 0, 0]
-        camera_borders[0] = graph.borders[0] - (self.display.get_width() / self.camera.scale)
-        camera_borders[1] = graph.borders[1]
-        camera_borders[2] = graph.borders[2] - (self.display.get_height() / self.camera.scale)
-        camera_borders[3] = graph.borders[3]
+        if graph is not None and len(graph.borders) >= 4:
+            camera_borders[0] = graph.borders[0] - (self.display.get_width() / self.camera.scale)
+            camera_borders[1] = graph.borders[1]
+            camera_borders[2] = graph.borders[2] - (self.display.get_height() / self.camera.scale)
+            camera_borders[3] = graph.borders[3]
         self.camera.set_borders([-border for border in camera_borders])
 
     def set_display(self, display):
         self.display = display
+
+    def set_buttons(self, buttons):
+        self.buttons = buttons
 
     def set_selected_area(self, sizes):
         self.selected_area = sizes
@@ -225,45 +228,11 @@ class GraphRenderer:
             if (min(Ds) <= 0 and max(Ds) <= 0) or (min(Ds) >= 0 and max(Ds) >= 0):
                 return edge
 
-    # ## BUTTONS
-    def __init_buttons__(self):
-        # graph info button
-        graph_info_button = CustomButton("graph info button", self.display)
-        graph_info_button.set_theme(self.theme)
-        graph_info_button.position = [5, 5]
-        graph_info_button.on_click = self.change_theme
-        self.buttons.append(graph_info_button)
-
-    def add_button(self, button):
-        self.buttons.append(button)
-
-    def delete_button(self, identifier):
-        for button in self.buttons:
-            if button.identifier == identifier:
-                self.buttons.remove(button)
-                return
-
     def check_buttons_intersection(self, position):
         for button in self.buttons:
-            if button.check_intersection(position):
+            if button["button"].check_intersection(position):
                 return button
         return None
-
-    def update_buttons(self):
-        self.update_button_graph_info()
-
-    def update_button_graph_info(self):
-        if self.graph is None:
-            return
-        for button in self.buttons:
-            if button.identifier == "graph info button":
-                # {string, color(r,g,b), size}
-                content = list()
-                content.append({'string': f"Graph: {self.graph.identifier}"})
-                content.append({'string': f"Vertexes: {len(self.graph.vertexes)}"})
-                content.append({'string': f"Edges: {len(self.graph.edges)}"})
-                button.set_content(content)
-                button.display = self.display
 
     # ## MAIN
     class Camera:
@@ -336,10 +305,17 @@ class GraphRenderer:
     def render_background(self):
         self.display.fill(self.theme.BG_COLOR)
 
-        x1 = (self.graph.borders[0] + self.camera.position[0]) * self.camera.scale
-        x2 = (self.graph.borders[1] + self.camera.position[0]) * self.camera.scale
-        y1 = (self.graph.borders[2] + self.camera.position[1]) * self.camera.scale
-        y2 = (self.graph.borders[3] + self.camera.position[1]) * self.camera.scale
+        if self.graph is None:
+            return
+
+        if len(self.graph.borders) >= 4:
+            x1 = (self.graph.borders[0] + self.camera.position[0]) * self.camera.scale
+            x2 = (self.graph.borders[1] + self.camera.position[0]) * self.camera.scale
+            y1 = (self.graph.borders[2] + self.camera.position[1]) * self.camera.scale
+            y2 = (self.graph.borders[3] + self.camera.position[1]) * self.camera.scale
+        else:
+            x1 = x2 = self.camera.position[0] * self.camera.scale
+            y1 = y2 = self.camera.position[1] * self.camera.scale
 
         uneven_border_width = 15
         cell_size = 20
@@ -359,11 +335,14 @@ class GraphRenderer:
             pygame.draw.aalines(self.display, self.theme.GRID_COLOR, True, [(x1, y), (x2, y)])
 
     def render_edges(self):
+        if self.graph is None:
+            return
+
         self.edge_show_info = None
         for edge in self.graph.edges:
             if edge.show_info:
                 self.edge_show_info = edge
-            color_to_draw = self.theme.ACTIVE_EDGE_COLOR if edge.active else self.theme.EDGE_COLOR
+            color_to_draw = self.theme.EDGE_COLOR_ACTIVE if edge.active else self.theme.EDGE_COLOR
             if edge.color is not None:
                 color_to_draw = edge.color
             # ##
@@ -466,13 +445,16 @@ class GraphRenderer:
                 #      vertex_first
 
     def render_vertexes(self):
+        if self.graph is None:
+            return
+
         self.vertex_show_info = None
         for vertex in self.graph.vertexes:
             # ## color
             if vertex.show_info:
                 self.vertex_show_info = vertex
-            AREA_COLOR_LOCAL = self.theme.ACTIVE_AREA_COLOR if vertex.active else self.theme.AREA_COLOR
-            CIRCLE_COLOR_LOCAL = self.theme.ACTIVE_CIRCLE_COLOR if vertex.active else self.theme.CIRCLE_COLOR
+            AREA_COLOR_LOCAL = self.theme.AREA_COLOR_ACTIVE if vertex.active else self.theme.AREA_COLOR
+            CIRCLE_COLOR_LOCAL = self.theme.CIRCLE_COLOR_ACTIVE if vertex.active else self.theme.CIRCLE_COLOR
             if vertex.color is not None:
                 CIRCLE_COLOR_LOCAL = vertex.color
 
@@ -510,7 +492,7 @@ class GraphRenderer:
             color = list(self.theme.GRID_COLOR)
             color.append(96)
             rect_surface.fill(tuple(color))
-            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, (position_x, position_y, width, height), 1)
+            pygame.draw.rect(self.display, self.theme.BUTTON_COLOR_TEXT, (position_x, position_y, width, height), 1)
             self.display.blit(rect_surface, (position_x, position_y))
 
     def render_info(self):
@@ -533,16 +515,16 @@ class GraphRenderer:
                         text = f"({edge.vertex_identifier_first})-" \
                                f"-[{edge.identifier}]--({edge.vertex_identifier_second})"
 
-                    texts_to_draw.append(font.render(text, True, self.theme.BUTTON_TEXT_COLOR))
+                    texts_to_draw.append(font.render(text, True, self.theme.BUTTON_COLOR_TEXT))
                     vertex_degree += 1 if edge.vertex_identifier_first != edge.vertex_identifier_second else 2
             # degree
-            texts_to_draw.insert(0, font.render(f"degree: {vertex_degree}", True, self.theme.BUTTON_TEXT_COLOR))
+            texts_to_draw.insert(0, font.render(f"degree: {vertex_degree}", True, self.theme.BUTTON_COLOR_TEXT))
             # content
-            texts_to_draw.insert(0, font.render(f"content: {vertex.content}", True, self.theme.BUTTON_TEXT_COLOR))
+            texts_to_draw.insert(0, font.render(f"content: {vertex.content}", True, self.theme.BUTTON_COLOR_TEXT))
             # vertex
-            texts_to_draw.insert(0, font.render(f"y:{str(vertex.position[1])}", True, self.theme.BUTTON_TEXT_COLOR))
-            texts_to_draw.insert(0, font.render(f"x:{str(vertex.position[0])}", True, self.theme.BUTTON_TEXT_COLOR))
-            texts_to_draw.insert(0, font.render(f"vertex: {vertex.identifier}", True, self.theme.BUTTON_TEXT_COLOR))
+            texts_to_draw.insert(0, font.render(f"y:{str(vertex.position[1])}", True, self.theme.BUTTON_COLOR_TEXT))
+            texts_to_draw.insert(0, font.render(f"x:{str(vertex.position[0])}", True, self.theme.BUTTON_COLOR_TEXT))
+            texts_to_draw.insert(0, font.render(f"vertex: {vertex.identifier}", True, self.theme.BUTTON_COLOR_TEXT))
 
             # ## draw bg
             # calculate sizes
@@ -576,8 +558,8 @@ class GraphRenderer:
                 position_y -= (self.setting.vertexes_radius * 2 + bg_height)
             # draw bg
             bg_rectangle = (position_x, position_y, bg_width, bg_height)
-            pygame.draw.rect(self.display, self.theme.BUTTON_AREA_COLOR, bg_rectangle)
-            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, bg_rectangle, 1)
+            pygame.draw.rect(self.display, self.theme.BUTTON_COLOR_AREA, bg_rectangle)
+            pygame.draw.rect(self.display, self.theme.BUTTON_COLOR_TEXT, bg_rectangle, 1)
 
             # draw text
             for text in texts_to_draw:
@@ -629,9 +611,11 @@ class GraphRenderer:
                 text = f"({edge.vertex_identifier_first})-" \
                        f"-[{edge.identifier}]--({edge.vertex_identifier_second})"
 
-            texts_to_draw.append(font.render(text, True, self.theme.BUTTON_TEXT_COLOR))
+            texts_to_draw.append(font.render(text, True, self.theme.BUTTON_COLOR_TEXT))
             # edge
-            texts_to_draw.insert(0, font.render(f"edge: {edge.identifier}", True, self.theme.BUTTON_TEXT_COLOR))
+            texts_to_draw.insert(0, font.render(f"edge: {edge.identifier}", True, self.theme.BUTTON_COLOR_TEXT))
+            texts_to_draw.append(font.render(f"weight: {edge.weight}", True, self.theme.BUTTON_COLOR_TEXT))
+            texts_to_draw.append(font.render(f"oriented: {edge.oriented}", True, self.theme.BUTTON_COLOR_TEXT))
 
             # ## draw bg
             # calculate sizes
@@ -654,8 +638,8 @@ class GraphRenderer:
                 position_y -= (self.setting.vertexes_radius * 2 + bg_height)
             # draw bg
             bg_rectangle = (position_x, position_y, bg_width, bg_height)
-            pygame.draw.rect(self.display, self.theme.BUTTON_AREA_COLOR, bg_rectangle)
-            pygame.draw.rect(self.display, self.theme.BUTTON_TEXT_COLOR, bg_rectangle, 1)
+            pygame.draw.rect(self.display, self.theme.BUTTON_COLOR_AREA, bg_rectangle)
+            pygame.draw.rect(self.display, self.theme.BUTTON_COLOR_TEXT, bg_rectangle, 1)
             # draw text
             for text in texts_to_draw:
                 text_x = position_x + self.setting.info_margin_horizontal
@@ -669,18 +653,15 @@ class GraphRenderer:
                 self.display.blit(text, (text_x, text_y))
 
     def render_buttons(self):
-        self.update_buttons()
         for button in self.buttons:
             try:
-                button.render()
-            except Exception as _:
-                pass
+                button["button"].render()
+            except Exception as ex:
+                print(ex)
 
     def render(self):
         if self.display is None:
             raise Exception("No display in graph renderer")
-        if self.graph is None:
-            raise Exception("No graph in graph renderer")
 
         self.render_background()
         self.render_edges()
