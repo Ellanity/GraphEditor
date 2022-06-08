@@ -79,6 +79,6 @@ Interaction via window
 |______________|_________________________________________________________________|
 ```
 
-Copyright © 2021 Paplauski Eldar
+Copyright © 2022 Paplauski Eldar
 
 <contacts: eldarpoplauski111@gmail.com>
