@@ -3,7 +3,7 @@ import threading
 from copy import copy
 
 from Handler.Commands import *
-from Renderer.CustomButtonClass import *
+from Handler.CustomButtonClass import *
 
 
 class EventsHandler:
@@ -79,13 +79,30 @@ class EventsHandler:
 
     def __init_buttons__(self):
         self.buttons = [
-            {"type": "graph info", "button": ButtonGraphInfo(self)},
+            {"type": "main info", "button": ButtonGraphInfo(self)},
+
+            {"type": "GRAPH COMMANDS", "button": ButtonGraphCommands(self)},
             {"type": "graph create", "button": ButtonGraphCreate(self)},
             {"type": "graph rename", "button": ButtonGraphRename(self)},
             {"type": "graph export", "button": ButtonGraphExport(self)},
+            {"type": "graph import", "button": ButtonGraphImport(self)},
             {"type": "graph reset color", "button": ButtonGraphResetColor(self)},
+            {"type": "graph make circle", "button": ButtonGraphMakeCircle(self)},
+            {"type": "graph make complete", "button": ButtonGraphMakeComplete(self)},
+            {"type": "graph rename all vertexes", "button": ButtonGraphRenameAllVertexes(self)},
+            {"type": "graph rename all edges", "button": ButtonGraphRenameAllEdges(self)},
+
+            {"type": "EDGE COMMANDS", "button": ButtonEdgeCommands(self)},
             {"type": "edge create", "button": ButtonEdgeCreate(self)},
+            {"type": "edge delete", "button": ButtonEdgeDelete(self)},
+            {"type": "edge rename", "button": ButtonEdgeRename(self)},
+            {"type": "edge set weight", "button": ButtonEdgeSetWeight(self)},
+
+            {"type": "VERTEX COMMANDS", "button": ButtonVertexCommands(self)},
             {"type": "vertex create", "button": ButtonVertexCreate(self)},
+            {"type": "vertex delete", "button": ButtonVertexDelete(self)},
+            {"type": "vertex rename", "button": ButtonVertexRename(self)},
+            {"type": "vertex content", "button": ButtonVertexContent(self)},
 
             {"type": "graph delete", "button": ButtonGraphDelete(self)},
         ]
@@ -125,10 +142,18 @@ class EventsHandler:
             self.display_full_screen = False
             self.display_sizes = (self.app.display.get_width(), self.app.display.get_height())
             # input text
-            self.input_action = False
-            self.input_text = ""
-            self.graph_renaming = False
-            self.graph_renaming_text = ""
+            self.renaming_vertex = False
+            self.renaming_vertex_text = ""
+            self.renaming_edge = False
+            self.renaming_edge_text = ""
+            self.renaming_graph = False
+            self.renaming_graph_text = ""
+            self.typing_graph_to_import = False
+            self.typing_graph_to_import_text = ""
+            self.typing_vertex_content = False
+            self.typing_vertex_content_text = ""
+            self.typing_edge_weight = False
+            self.typing_edge_weight_text = ""
             #
             self.double_click_timer = 0
             self.double_click_pos = [0, 0]
@@ -147,26 +172,22 @@ class EventsHandler:
                 if pygame.VIDEORESIZE and not self.display_full_screen:
                     self.display_full_screen = False
                     self.display_sizes = (self.app.display.get_width(), self.app.display.get_height())
-                    """for button in self.app.events_handler.buttons:
-                        if button["type"] == "graph choose":
-                            button["button"].height_shift = 0"""
                 if event.type == pygame.KEYDOWN:
                     self.keyboard_down(event)
 
                 # ## ### RIGHT MOUSE BUTTON CLICK
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if self.double_click_timer == 0 or self.double_click_timer > 0.25:
-                        # print("first click")
+                        # first click
                         self.double_click_timer = 0.001
                         self.double_click_pos = pygame.mouse.get_pos()
                         self.right_mouse_down()
                     else:
-                        # print("second click")
+                        # second click
                         if self.double_click_timer > 0.25 or pygame.mouse.get_pos() != self.double_click_pos:
                             self.right_mouse_down()
                         else:
                             self.right_mouse_double_click()
-                            # print("doubleclick", self.double_click_timer, self.double_click_pos)
                         self.double_click_timer = 0
                 if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.right_mouse_up()
@@ -213,58 +234,131 @@ class EventsHandler:
         def keyboard_down(self, event):
             # ## ### VERTEX RENAME
             # get input
-            if self.input_action:
+            if self.renaming_vertex:
                 if self.app.store.vertex_to_rename is None or event.key == pygame.K_RETURN:
-                    self.input_action = False
-                    self.input_text = ""
+                    self.renaming_vertex = False
+                    self.renaming_vertex_text = ""
                     self.app.store.vertex_to_rename = None
                 else:
                     if event.key == pygame.K_BACKSPACE:
-                        self.input_text = self.input_text[:-1]
+                        self.renaming_vertex_text = self.renaming_vertex_text[:-1]
                     elif event.key == pygame.K_i and self.app.store.current_vertex != self.app.store.vertex_to_rename:
                         self.app.store.vertex_to_rename = self.app.store.current_vertex
-                        self.input_text = ""
+                        self.renaming_vertex_text = ""
                     elif event.key != pygame.K_RETURN:
-                        # if len(self.input_text) < 50:
-                        self.input_text += event.unicode
+                        # if len(self.renaming_vertex_text) < 50:
+                        self.renaming_vertex_text += event.unicode
 
                     self.app.store.current_graph.rename_vertex(identifier=self.app.store.vertex_to_rename.identifier,
-                                                               identifier_new=self.input_text)
+                                                               identifier_new=self.renaming_vertex_text)
             # restart input
-            if not self.input_action:
-                self.input_text = ""
+            if not self.renaming_vertex:
+                self.renaming_vertex_text = ""
                 self.app.store.vertex_to_rename = None
             # start input
-            if event.key == pygame.K_i and len(self.app.store.current_subgraph_vertexes) == 1:
-                self.input_action = True
-                if self.app.store.vertex_to_rename != self.app.store.current_subgraph_vertexes[0]:
-                    self.input_text = ""
-                self.app.store.vertex_to_rename = self.app.store.current_subgraph_vertexes[0]
+            if not self.typing_vertex_content and not self.renaming_graph_text and not self.typing_graph_to_import:
+                if event.key == pygame.K_i and len(self.app.store.current_subgraph_vertexes) == 1:
+                    self.renaming_vertex = True
+                    if self.app.store.vertex_to_rename != self.app.store.current_subgraph_vertexes[0]:
+                        self.renaming_vertex_text = ""
+                    self.app.store.vertex_to_rename = self.app.store.current_subgraph_vertexes[0]
 
             # ## ### GRAPH RENAME
             # get input
-            if self.graph_renaming:
+            if self.renaming_graph:
                 if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
-                    self.graph_renaming = False
-                    self.graph_renaming_text = ""
+                    self.renaming_graph = False
+                    self.renaming_graph_text = ""
                     self.app.store.vertex_to_rename = None
                 else:
                     if event.key == pygame.K_BACKSPACE:
-                        self.graph_renaming_text = self.graph_renaming_text[:-1]
+                        self.renaming_graph_text = self.renaming_graph_text[:-1]
                     elif event.key != pygame.K_RETURN:
-                        self.graph_renaming_text += event.unicode
+                        self.renaming_graph_text += event.unicode
 
-                    self.app.store.current_graph.identifier = self.graph_renaming_text
+                    self.app.store.current_graph.identifier = self.renaming_graph_text
+            if not self.renaming_graph:
+                self.renaming_graph_text = ""
+
+            # ## ### IMPORT GRAPH
+            # get input
+            if self.typing_graph_to_import:
+                if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
+                    self.typing_graph_to_import = False
+                    self.app.store.import_graph(self.typing_graph_to_import_text)
+                    self.typing_graph_to_import_text = ""
+                else:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.typing_graph_to_import_text = self.typing_graph_to_import_text[:-1]
+                    elif event.key != pygame.K_RETURN:
+                        self.typing_graph_to_import_text += event.unicode
+            if not self.typing_graph_to_import:
+                self.typing_graph_to_import_text = ""
+
+            # ## ### VERTEX CONTENT
+            # get input
+            if self.typing_vertex_content:
+                if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
+                    self.typing_vertex_content = False
+                    if len(self.app.store.current_subgraph_vertexes) == 1:
+                        # noinspection PyUnresolvedReferences
+                        self.app.store.current_graph.set_vertex_content(
+                            identifier=self.app.store.current_subgraph_vertexes[0].identifier,
+                            content=self.typing_vertex_content_text)
+                    self.app.store.import_graph(self.typing_vertex_content_text)
+                    self.typing_vertex_content_text = ""
+                else:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.typing_vertex_content_text = self.typing_vertex_content_text[:-1]
+                    elif event.key != pygame.K_RETURN:
+                        self.typing_vertex_content_text += event.unicode
+            if not self.typing_vertex_content:
+                self.typing_vertex_content_text = ""
+
+            # ## ### EDGE WEIGHT
+            # get input
+            if self.typing_edge_weight:
+                if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
+                    self.typing_edge_weight = False
+                    if len(self.app.store.current_subgraph_edges) == 1:
+                        # noinspection PyUnresolvedReferences
+                        self.app.store.current_graph.set_edge_weight(
+                            identifier=self.app.store.current_subgraph_edges[0].identifier,
+                            content=self.typing_edge_weight_text)
+                    self.app.store.import_graph(self.typing_edge_weight_text)
+                    self.typing_edge_weight_text = ""
+                else:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.typing_edge_weight_text = self.typing_edge_weight_text[:-1]
+                    elif event.key != pygame.K_RETURN:
+                        self.typing_edge_weight_text += event.unicode
+            if not self.typing_edge_weight:
+                self.typing_edge_weight_text = ""
+
+            # ## ### EDGE RENAME
+            # get input
+            if self.renaming_edge:
+                if self.app.store.edge_to_rename is None or event.key == pygame.K_RETURN:
+                    self.renaming_edge = False
+                    self.renaming_edge_text = ""
+                    self.app.store.edge_to_rename = None
+                else:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.renaming_edge_text = self.renaming_edge_text[:-1]
+                    elif event.key == pygame.K_i and self.app.store.current_edge != self.app.store.edge_to_rename:
+                        self.app.store.edge_to_rename = self.app.store.current_edge
+                        self.renaming_edge_text = ""
+                    elif event.key != pygame.K_RETURN:
+                        # if len(self.renaming_edge_text) < 50:
+                        self.renaming_edge_text += event.unicode
+
+                    self.app.store.current_graph.rename_edge(identifier=self.app.store.edge_to_rename.identifier,
+                                                             identifier_new=self.renaming_edge_text)
             # restart input
-            if not self.graph_renaming:
-                self.graph_renaming_text = ""
-                self.app.store.vertex_to_rename = None
+            if not self.renaming_edge:
+                self.renaming_edge_text = ""
+                self.app.store.edge_to_rename = None
             # start input
-            if event.key == pygame.K_i and len(self.app.store.current_subgraph_vertexes) == 1:
-                self.graph_renaming = True
-                if self.app.store.vertex_to_rename != self.app.store.current_subgraph_vertexes[0]:
-                    self.graph_renaming_text = ""
-                self.app.store.vertex_to_rename = self.app.store.current_subgraph_vertexes[0]
 
             # ## ### DISPLAY SIZE
             if event.key == pygame.K_F11 or event.key == pygame.K_ESCAPE:
@@ -276,6 +370,8 @@ class EventsHandler:
                     self.app.display = pygame.display.set_mode(self.display_sizes, pygame.RESIZABLE)
                     self.display_full_screen = False
             # ## ### OTHER KEYS
+            if self.renaming_vertex_text or self.renaming_graph_text:
+                return
             if event.key == pygame.K_DELETE:
                 # vertex
                 if self.app.store.current_vertex is not None:
@@ -356,11 +452,6 @@ class EventsHandler:
                 self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
                 self.app.store.current_edge = self.app.renderer.get_edge_by_position(position=mouse_position)
             if self.app.store.current_vertex is not None:
-                # check if we choosing subgraph
-                if not self.selection_subgraph:
-                    for vertex in self.app.store.current_subgraph_vertexes:
-                        vertex.active = False
-                    self.app.store.current_subgraph_vertexes.clear()
                 # append current vertex in subgraph
                 if self.app.store.current_vertex not in self.app.store.current_subgraph_vertexes:
                     self.app.store.current_subgraph_vertexes.append(self.app.store.current_vertex)
@@ -371,11 +462,6 @@ class EventsHandler:
             # check edge
             elif self.app.store.current_edge is not None:
                 self.app.store.current_edge.active = True
-                # check if we choosing subgraph
-                if not self.selection_subgraph:
-                    for edge in self.app.store.current_subgraph_edges:
-                        edge.active = False
-                    self.app.store.current_subgraph_edges.clear()
                 # append current vertex in subgraph
                 if self.app.store.current_edge not in self.app.store.current_subgraph_edges:
                     self.app.store.current_subgraph_edges.append(self.app.store.current_edge)
@@ -385,6 +471,20 @@ class EventsHandler:
                 self.app.renderer.camera.move_state = True
                 self.app.renderer.camera.move_shift_start = mouse_position
                 self.app.store.reset_subgraph_area()
+
+            if not self.selection_subgraph:
+                if self.app.store.current_vertex is not None:
+                    for vertex in self.app.store.current_subgraph_vertexes:
+                        vertex.active = False
+                    self.app.store.current_subgraph_vertexes.clear()
+                    self.app.store.current_vertex.active = True
+                    self.app.store.current_subgraph_vertexes.append(self.app.store.current_vertex)
+                if self.app.store.current_edge is not None:
+                    for edge in self.app.store.current_subgraph_edges:
+                        edge.active = False
+                    self.app.store.current_subgraph_edges.clear()
+                    self.app.store.current_vertex.edge = True
+                    self.app.store.current_subgraph_edges.append(self.app.store.current_edge)
 
         def right_mouse_double_click(self):
 
@@ -430,8 +530,8 @@ class EventsHandler:
                 vertex.reset_shift()
             if self.app.store.current_graph is not None:
                 self.app.store.current_graph.calculate_graph_borders()
-            if self.app.store.current_edge is not None:
-                self.app.store.current_edge.active = False
+            # if self.app.store.current_edge is not None:
+            #     self.app.store.current_edge.active = False
 
             self.app.store.current_vertex = None
             self.app.store.current_edge = None
@@ -516,6 +616,7 @@ class EventsHandler:
                     vertex.active = False
                 self.app.store.current_subgraph_vertexes = self.app.renderer.get_vertexes_by_area(
                     self.app.store.subgraph_area)
+
                 for vertex in self.app.store.current_subgraph_vertexes:
                     vertex.active = True
                 # ## edges

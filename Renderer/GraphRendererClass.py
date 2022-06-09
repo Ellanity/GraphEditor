@@ -80,15 +80,19 @@ class GraphRenderer:
         return None
 
     def get_edges_by_area(self, area):
+        edges_to_return = []
         if self.graph is None:
-            return []
+            return edges_to_return
+
+        if area["x1"] == area["x2"] and area["y1"] == area["y2"]:
+            return edges_to_return
+
         min_x = - self.camera.position[0] + (min(area["x1"], area["x2"]) / self.camera.scale)
         max_x = - self.camera.position[0] + (max(area["x1"], area["x2"]) / self.camera.scale)
 
         min_y = - self.camera.position[1] + (min(area["y1"], area["y2"]) / self.camera.scale)
         max_y = - self.camera.position[1] + (max(area["y1"], area["y2"]) / self.camera.scale)
 
-        edges_to_return = []
         rectangle = [
             ((min_x, min_y), (min_x, max_y)),
             ((min_x, max_y), (max_x, max_y)),
@@ -113,6 +117,36 @@ class GraphRenderer:
                     break
             if intersection_exist:
                 edges_to_return.append(edge)
+            # checking the case when both edges vertexes are inside the selected area
+            else:
+                Ds_vertex_first = [0, 0, 0, 0]
+                Ds_vertex_second = [0, 0, 0, 0]
+                for side in rectangle:
+                    vertex1 = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
+                    vertex2 = self.graph.get_vertex_by_identifier(edge.vertex_identifier_first)
+                    Ds_vertex_first[rectangle.index(side)] = (side[1][0] - side[0][0]) * (vertex1.position[1] - side[0][1]) - \
+                                                             (vertex1.position[0] - side[0][0]) * (side[1][1] - side[0][1])
+                    Ds_vertex_second[rectangle.index(side)] = (side[1][0] - side[0][0]) * (vertex2.position[1] - side[0][1]) - \
+                                                             (vertex2.position[0] - side[0][0]) * (side[1][1] - side[0][1])
+                    # D = (x2 - x1) * (yp - y1) - (xp - x1) * (y2 - y1)
+                    # If D > 0, the point is on the left-hand side.
+                    # If D < 0, the point is on the right-hand side.
+                    # If D = 0, the point is on the line.
+                if (
+                    (
+                        (min(Ds_vertex_first) <= 0 and max(Ds_vertex_first) <= 0)
+                        or
+                        (min(Ds_vertex_first) >= 0 and max(Ds_vertex_first) >= 0)
+                    )
+                    or
+                    (
+                        (min(Ds_vertex_second) <= 0 and max(Ds_vertex_second) <= 0)
+                        or
+                        (min(Ds_vertex_second) >= 0 and max(Ds_vertex_second) >= 0)
+                    )
+                ):
+                    if edge not in edges_to_return:
+                        edges_to_return.append(edge)
 
         return edges_to_return
 

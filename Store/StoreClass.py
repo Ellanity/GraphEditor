@@ -14,6 +14,7 @@ class Store:
         self.current_edge = None
         self.current_edge_info = None
         self.vertex_to_rename = None
+        self.edge_to_rename = None
         # subgraph
         self.current_subgraph_vertexes = list()
         self.current_subgraph_edges = list()
@@ -261,6 +262,11 @@ class Graph:
                 vertex.content = content
                 return
 
+    def set_edge_weight(self, identifier, weight):
+        for edge in self.edges:
+            if edge.identifier == identifier:
+                edge.content = weight
+                return
     ###################
     ###### EDGES ######
     ###################

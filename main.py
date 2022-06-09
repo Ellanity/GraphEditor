@@ -1,4 +1,6 @@
 import pygame
+# from OpenGL.GL import *
+
 import sys
 from Renderer.GraphRendererClass import GraphRenderer
 from Handler.EventsHandlerClass import EventsHandler
@@ -6,9 +8,10 @@ from Store.StoreClass import Store
 from Calculator.GraphCalculator import GraphCalculator
 
 DISPLAY_WIDTH = 800
-DISPLAY_HEIGHT = 500
+DISPLAY_HEIGHT = 800
 pygame.init()
-display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE)
+display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE )
+# display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE |pygame.DOUBLEBUF |pygame.OPENGL)
 pygame.display.set_caption("GraphEditor :D")
 try:
     pygame.display.set_icon(pygame.image.load("img/icon.png"))
