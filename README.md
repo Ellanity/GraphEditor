@@ -78,7 +78,14 @@ Interaction via window
 | O            | - changes the orientation direction of the selected edges       |
 |______________|_________________________________________________________________|
 ```
-
+Before first start:
+```
+python setup.py install
+```
+Start:
+```
+python main.py
+```
 Copyright © 2022 Paplauski Eldar
 
 <contacts: eldarpoplauski111@gmail.com>
