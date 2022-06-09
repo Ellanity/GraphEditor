@@ -86,6 +86,12 @@ Start:
 ```
 python3 main.py
 ```
+
+You can export the graph in two types of json and gepp. When exporting as grep, the possibility of backward compatibility of the graph is very low, in subsequent versions of the program the graph may simply not be imported, this type of file is better used for large graphs. 
+As for json, it can be easily changed and imported even in new versions, but it is better to store small graphs in this form.
+
+Do not allow storing graphs with the same identifiers in the same storage.
+
 Copyright © 2022 Paplauski Eldar
 
 <contacts: eldarpoplauski111@gmail.com>

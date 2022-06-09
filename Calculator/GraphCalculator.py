@@ -36,9 +36,7 @@ class GraphCalculator:
             if vertex_first.identifier != vertex_second.identifier:
                 vfi = graph.vertexes.index(vertex_first)
                 vsi = graph.vertexes.index(vertex_second)
-                # print(vfi, vsi)
                 if not edge.oriented:
-                    # print(vfi, vsi)
                     matrix[vfi][vsi] = 1  # edge.weight
                 matrix[vsi][vfi] = 1  # edge.weight
         return matrix

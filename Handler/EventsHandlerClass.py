@@ -28,7 +28,8 @@ class EventsHandler:
             {"identifier": "graph delete", "have_args": True, "action": CommandGraphDelete(self).run},
             {"identifier": "graph print in store", "have_args": False, "action": CommandGraphPrintInStore(self).run},
             {"identifier": "graph print current", "have_args": False, "action": CommandGraphPrintCurrent(self).run},
-            {"identifier": "graph export", "have_args": True, "action": CommandGraphExport(self).run},
+            {"identifier": "graph export gepp", "have_args": True, "action": CommandGraphExportGepp(self).run},
+            {"identifier": "graph export json", "have_args": True, "action": CommandGraphExportJson(self).run},
             {"identifier": "graph import", "have_args": True, "action": CommandGraphImport(self).run},
             {"identifier": "graph rename", "have_args": True, "action": CommandGraphRename(self).run},
             {"identifier": "graph reset color", "have_args": True, "action": CommandGraphResetColor(self).run},
@@ -82,7 +83,8 @@ class EventsHandler:
             {"type": "GRAPH COMMANDS", "button": ButtonGraphCommands(self)},
             {"type": "graph create", "button": ButtonGraphCreate(self)},
             {"type": "graph rename", "button": ButtonGraphRename(self)},
-            {"type": "graph export", "button": ButtonGraphExport(self)},
+            {"type": "graph export gepp", "button": ButtonGraphExportGepp(self)},
+            {"type": "graph export json", "button": ButtonGraphExportJson(self)},
             {"type": "graph import", "button": ButtonGraphImport(self)},
             {"type": "graph reset color", "button": ButtonGraphResetColor(self)},
             {"type": "graph find min path", "button": ButtonGraphFindMinPath(self)},
@@ -250,8 +252,7 @@ class EventsHandler:
                         self.renaming_vertex_text = self.renaming_vertex_text[:-1]
                     elif event.key == pygame.K_i:
                         if self.app.store.current_vertex is not None and self.app.store.vertex_to_rename is not None \
-                            and self.app.store.current_vertex != self.app.store.vertex_to_rename:
-                            print(self.app.store.current_vertex.identifier, self.app.store.vertex_to_rename.identifier)
+                                and self.app.store.current_vertex != self.app.store.vertex_to_rename:
                             self.app.store.vertex_to_rename = self.app.store.current_vertex
                             self.renaming_vertex_text = ""
 

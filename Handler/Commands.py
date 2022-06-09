@@ -91,7 +91,7 @@ class CommandGraphPrintCurrent(Command):
               if self.events_handler.app.store.current_graph is not None else ";")
 
 
-class CommandGraphExport(Command):
+class CommandGraphExportGepp(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
 
@@ -100,8 +100,23 @@ class CommandGraphExport(Command):
         if graph is None and self.events_handler.app.store.current_graph is not None:
             graph = self.events_handler.app.store.current_graph.identifier
         if graph is not None:
-            self.events_handler.app.store.export_graph(graph)
-            print(f"graph {graph} exported")
+            self.events_handler.app.store.export_graph_gepp(graph)
+            print(f"graph {graph}.gepp exported")
+        else:
+            print(f"no graph selected")
+
+
+class CommandGraphExportJson(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            self.events_handler.app.store.export_graph_json(graph)
+            print(f"graph {graph}.json exported")
         else:
             print(f"no graph selected")
 

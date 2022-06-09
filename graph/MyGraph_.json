@@ -1,0 +1,1892 @@
+{
+    "identifier": "MyGraph",
+    "vertexes": [
+        {
+            "identifier": "v1",
+            "content": "content",
+            "position": [
+                659.9999999999986,
+                -260.1415415962024
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v2",
+            "content": "img/cat.jpg",
+            "position": [
+                618.5203975601412,
+                -0.7496388634344839
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v3",
+            "content": "content",
+            "position": [
+                498.14190273276654,
+                238.0064597216683
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v4",
+            "content": "content",
+            "position": [
+                310.6480013178698,
+                425.50036113656506
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v5",
+            "content": "content",
+            "position": [
+                74.391902732767,
+                545.8788559639397
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v6",
+            "content": "content",
+            "position": [
+                -187.5000000000009,
+                587.3584584037972
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v7",
+            "content": "content",
+            "position": [
+                -449.3919027327686,
+                545.8788559639397
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v8",
+            "content": "content",
+            "position": [
+                -685.6480013178716,
+                425.50036113656506
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v9",
+            "content": "content",
+            "position": [
+                -873.1419027327684,
+                238.0064597216683
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v10",
+            "content": "content",
+            "position": [
+                -993.520397560143,
+                1.750361136565516
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v11",
+            "content": "content",
+            "position": [
+                -1035.0000000000005,
+                -260.1415415962024
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v12",
+            "content": "content",
+            "position": [
+                -993.5203975601432,
+                -522.0334443289701
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v13",
+            "content": "content",
+            "position": [
+                -873.1419027327684,
+                -758.2895429140731
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v14",
+            "content": "content",
+            "position": [
+                -685.6480013178716,
+                -945.7834443289698
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v15",
+            "content": "content",
+            "position": [
+                -449.3919027327688,
+                -1066.1619391563445
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v16",
+            "content": "content",
+            "position": [
+                -187.50000000000114,
+                -1107.641541596202
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v17",
+            "content": "content",
+            "position": [
+                74.39190273276654,
+                -1066.1619391563447
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v18",
+            "content": "content",
+            "position": [
+                310.6480013178698,
+                -945.7834443289701
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v19",
+            "content": "content",
+            "position": [
+                498.14190273276654,
+                -758.2895429140733
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v20",
+            "content": "content",
+            "position": [
+                618.5203975601412,
+                -522.0334443289703
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v21",
+            "content": "content",
+            "position": [
+                1789.642857142855,
+                -671.071428571429
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v22",
+            "content": "content",
+            "position": [
+                1829.9999999999968,
+                -1010.7142857142858
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v23",
+            "content": "content",
+            "position": [
+                2084.999999999998,
+                -252.5000000000009
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v24",
+            "content": "content",
+            "position": [
+                1652.4999999999982,
+                -2.5000000000009095
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v25",
+            "content": "content",
+            "position": [
+                1957.4999999999982,
+                177.4999999999991
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v26",
+            "content": "content",
+            "position": [
+                1707.4999999999982,
+                349.9999999999991
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v27",
+            "content": "content",
+            "position": [
+                1181.7857142857129,
+                -216.42857142857247
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v28",
+            "content": "content",
+            "position": [
+                1287.8571428571413,
+                -839.6428571428579
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v29",
+            "content": "content",
+            "position": [
+                1426.4285714285697,
+                -588.2142857142862
+            ],
+            "color": null
+        }
+    ],
+    "edges": [
+        {
+            "identifier": "e1",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v2",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e2",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v3",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e3",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v4",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e4",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e5",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e6",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e7",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e8",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e9",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e10",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e11",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e12",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e13",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e14",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e15",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v3",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e16",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v4",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e17",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e18",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e19",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e20",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e21",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e22",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e23",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e24",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e25",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e26",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e27",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e28",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e29",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v4",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e30",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e31",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e32",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e33",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e34",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e35",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e36",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e37",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e38",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e39",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e40",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e41",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e42",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e43",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e44",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e45",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e46",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e47",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e48",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e49",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e50",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e51",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e52",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e53",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e54",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e55",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e56",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e57",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e58",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e59",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e60",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e61",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e62",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e63",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e64",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e65",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e66",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e67",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e68",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e69",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e70",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e71",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e72",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e73",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e74",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e75",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e76",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e77",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e78",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e79",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e80",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e81",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e82",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e83",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e84",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e85",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e86",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e87",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e88",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e89",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e90",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e91",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e92",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e93",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e94",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e95",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e96",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e97",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e98",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e99",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e100",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e101",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e102",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e103",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e104",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e105",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e106",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e107",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e108",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e109",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e110",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e111",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e112",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e113",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e114",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e115",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e116",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e117",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e118",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e119",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e120",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e121",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e122",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e123",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e124",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e125",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e126",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e127",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e128",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e129",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e130",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e131",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e132",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e133",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e134",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e135",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e136",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e137",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e138",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e139",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e140",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e141",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e142",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e143",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e144",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e145",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e146",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e147",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e148",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e149",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e150",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e151",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e152",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e153",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e154",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e155",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e156",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e157",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e158",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e159",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e160",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e161",
+            "vertex_identifier_first": "v15",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e162",
+            "vertex_identifier_first": "v15",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e163",
+            "vertex_identifier_first": "v15",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e164",
+            "vertex_identifier_first": "v15",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e165",
+            "vertex_identifier_first": "v15",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e166",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e167",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e168",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e169",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e170",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e171",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e172",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e173",
+            "vertex_identifier_first": "v18",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e174",
+            "vertex_identifier_first": "v18",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e175",
+            "vertex_identifier_first": "v19",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e176",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e177",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e178",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e179",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e180",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e181",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e182",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e183",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e184",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e185",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e186",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e187",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e188",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e189",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e190",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v21-v22-828339",
+            "vertex_identifier_first": "v21",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v21-v23-629891",
+            "vertex_identifier_first": "v23",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": true,
+            "color": null
+        },
+        {
+            "identifier": "e-v21-v29-857806",
+            "vertex_identifier_first": "v21",
+            "vertex_identifier_second": "v29",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v22-v23-953901",
+            "vertex_identifier_first": "v22",
+            "vertex_identifier_second": "v23",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v22-v29-760834",
+            "vertex_identifier_first": "v22",
+            "vertex_identifier_second": "v29",
+            "weight": 1,
+            "oriented": true,
+            "color": null
+        },
+        {
+            "identifier": "e-v23-v29-605609",
+            "vertex_identifier_first": "v23",
+            "vertex_identifier_second": "v29",
+            "weight": 1,
+            "oriented": true,
+            "color": null
+        },
+        {
+            "identifier": "e-v24-v25-936467",
+            "vertex_identifier_first": "v25",
+            "vertex_identifier_second": "v24",
+            "weight": 1,
+            "oriented": true,
+            "color": null
+        },
+        {
+            "identifier": "e-v24-v26-981549",
+            "vertex_identifier_first": "v24",
+            "vertex_identifier_second": "v26",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v25-v26-927201",
+            "vertex_identifier_first": "v25",
+            "vertex_identifier_second": "v26",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v27-v28-586010",
+            "vertex_identifier_first": "v27",
+            "vertex_identifier_second": "v28",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v27-v29-496149",
+            "vertex_identifier_first": "v29",
+            "vertex_identifier_second": "v27",
+            "weight": 1,
+            "oriented": true,
+            "color": null
+        },
+        {
+            "identifier": "e-v28-v29-693461",
+            "vertex_identifier_first": "v28",
+            "vertex_identifier_second": "v29",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "e-v23-v24-772404",
+            "vertex_identifier_first": "v23",
+            "vertex_identifier_second": "v24",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        }
+    ]
+}

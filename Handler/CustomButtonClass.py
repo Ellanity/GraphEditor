@@ -220,16 +220,28 @@ class ButtonGraphRename(CustomButton):
         self.event_handler.display_handler.renaming_graph_text = ""
 
 
-class ButtonGraphExport(CustomButton):
+class ButtonGraphExportGepp(CustomButton):
     def __init__(self, event_handler):
         super().__init__(event_handler)
-        self.content = [{'string': f"graph export"}]
+        self.content = [{'string': f"graph export gepp"}]
 
     def update(self):
         self.calculate_height()
 
     def on_click_self(self):
-        self.event_handler.app.store.export_graph(self.event_handler.app.store.current_graph.identifier)
+        self.event_handler.app.store.export_graph_gepp(self.event_handler.app.store.current_graph.identifier)
+
+
+class ButtonGraphExportJson(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"graph export json"}]
+
+    def update(self):
+        self.calculate_height()
+
+    def on_click_self(self):
+        self.event_handler.app.store.export_graph_json(self.event_handler.app.store.current_graph.identifier)
 
 
 class ButtonGraphImport(CustomButton):
@@ -474,7 +486,6 @@ class ButtonEdgeSetWeight(CustomButton):
             self.event_handler.display_handler.typing_edge_weight = True
         else:
             if len(self.event_handler.app.store.current_subgraph_edges) == 1:
-                print(self.event_handler.display_handler.typing_edge_weight_text)
                 self.event_handler.app.store.current_graph.set_edge_weight(identifier=self.event_handler.app.store.current_subgraph_edges[0].identifier,
                                                                            weight=self.event_handler.display_handler.typing_edge_weight_text)
             self.event_handler.display_handler.typing_edge_weight = False
@@ -657,7 +668,6 @@ class ButtonVertexFindByContent(CustomButton):
         if not self.event_handler.display_handler.typing_vertex_content_find:
             self.event_handler.display_handler.typing_vertex_content_find = True
         else:
-            print("lol")
             if self.event_handler.app.store.current_graph.vertexes is None:
                 return
             for vertex in self.event_handler.app.store.current_graph.vertexes:

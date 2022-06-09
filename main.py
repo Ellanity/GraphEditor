@@ -37,9 +37,9 @@ class App:
 
     def run(self):
         # ## ### comment out the following three lines to get started with empty storage
-        self.events_handler.command("graph import MyGraph")
-        self.events_handler.command("graph choose MyGraph")
-        # self.events_handler.command("graph rename example MyGraph")
+        self.events_handler.command("graph import example")
+        self.events_handler.command("graph choose example")
+        self.events_handler.command("graph rename example MyGraph")
         self.events_handler.check_events()
 
 

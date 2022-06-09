@@ -1,0 +1,1837 @@
+{
+    "identifier": "heart",
+    "vertexes": [
+        {
+            "identifier": "v1",
+            "content": "content1",
+            "position": [
+                5523.333333333334,
+                1346.666666666666
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v2",
+            "content": "content2",
+            "position": [
+                5195.598681132021,
+                2426.887936027261
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v3",
+            "content": "content3",
+            "position": [
+                4825.596935789987,
+                3288.3001451590553
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v4",
+            "content": "content4",
+            "position": [
+                4448.724504646836,
+                4111.245372836742
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v5",
+            "content": "content5",
+            "position": [
+                3620.019227582655,
+                5273.851038277176
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v6",
+            "content": "content6",
+            "position": [
+                2313.491900632727,
+                4866.342826286282
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v7",
+            "content": "content7",
+            "position": [
+                1303.6976651092143,
+                4473.986447121227
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v8",
+            "content": "content8",
+            "position": [
+                296.6666666666663,
+                3868.39684279443
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v9",
+            "content": "content9",
+            "position": [
+                -555.2963462412321,
+                3256.4318444272985
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v10",
+            "content": "content10",
+            "position": [
+                -1141.75550308938,
+                2647.3760144605612
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v11",
+            "content": "content11",
+            "position": [
+                -1568.0770655628212,
+                1808.605665440436
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v12",
+            "content": "content12",
+            "position": [
+                -1454.7437322294882,
+                791.7276678928973
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v13",
+            "content": "content13",
+            "position": [
+                -801.7555030893814,
+                -5.376014460561528
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v14",
+            "content": "content14",
+            "position": [
+                77.37032042543422,
+                -430.4318444272988
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v15",
+            "content": "content15",
+            "position": [
+                1043.333333333334,
+                -358.39684279443037
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v16",
+            "content": "content16",
+            "position": [
+                2148.3643317758797,
+                -633.9864471212258
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v17",
+            "content": "content17",
+            "position": [
+                2758.1585672993933,
+                -1129.676159619617
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v18",
+            "content": "content18",
+            "position": [
+                3828.0192275826544,
+                -1373.8510382771772
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v19",
+            "content": "content19",
+            "position": [
+                4913.391171313502,
+                -1084.578706170075
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v20",
+            "content": "content20",
+            "position": [
+                5593.5969357899885,
+                -371.6334784923883
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v21",
+            "content": "content21",
+            "position": [
+                5676.932014465353,
+                603.1120639727403
+            ],
+            "color": null
+        },
+        {
+            "identifier": "v22",
+            "content": "content",
+            "position": [
+                1780.1904761904768,
+                -81.76190476190416
+            ],
+            "color": null
+        }
+    ],
+    "edges": [
+        {
+            "identifier": "2022-06-07_19:04:46.555214-491887819",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v2",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-759038381",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v3",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-971685654",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v4",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-491087361",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-432845894",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-526773890",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-415895854",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-41618852",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-943964623",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-139762749",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-417281872",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-177343118",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-844885452",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-79997933",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-760713523",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-800091666",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-732203362",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-130732462",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-380931054",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-232396618",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-335670067",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v3",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-264246327",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v4",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-335385488",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-8158826",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-729573035",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-388292802",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-605746380",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-226058042",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-863686986",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-588686328",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-775777906",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-457735080",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-203627872",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-997985972",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-166446383",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-810615669",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-268914751",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-952284983",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-703866402",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-32292268",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v4",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-632623020",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-476505847",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-490646018",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-104155333",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-830659743",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-104439407",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-327265822",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-513291262",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-60137826",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-18833927",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-190345614",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-634616043",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-639918314",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-292577937",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-526812843",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-537056472",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-97168506",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-305607503",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v5",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-650101434",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-650390924",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-312754956",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-100440475",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-802678145",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-649016507",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.555214-206465812",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-904793616",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-484242771",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-501338679",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-667536917",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-691581937",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-482086799",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-259505656",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-749629197",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-863325892",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-363716558",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v6",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-602830561",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-680766682",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-100884810",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-976634242",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-433336467",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-283103138",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-732710041",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-270205242",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-108519839",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-457484322",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-704126798",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-614700664",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-549754584",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-849751589",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-105822562",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-196414090",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v7",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-523153711",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-702860660",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-499659310",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-66897171",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-534187152",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-181253829",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-824557789",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-269737304",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-651146142",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-580188822",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-710429486",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-757309275",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-256345073",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-399371492",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-550358899",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v8",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-29035859",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-562032075",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-394886995",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-219904719",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-472234217",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-477888424",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-659932788",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-332083131",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-393472208",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-397909040",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-5220489",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-118164708",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-528876712",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-898148896",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v9",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-534086512",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-813410449",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-700610936",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.556214-287123312",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-367007323",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-31684126",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-403006497",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v16",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-183078062",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-633096171",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-705235907",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-994340926",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-409341298",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-265954380",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v10",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-826279295",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-639639225",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-916577362",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-228481065",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-310115108",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-215618300",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-866368833",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-975000779",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-27981399",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-662574250",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-996090340",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v11",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-13564691",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-712174080",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-930423197",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-445394064",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-593243173",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-602378840",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-145196684",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-824347158",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-122235131",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v12",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-646596819",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-101278464",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-682303354",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-647600034",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-979853965",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-44962246",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-452536220",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v13",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.557210-689936151",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-723498192",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-63847609",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-958011809",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-622342001",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v14",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-826760586",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-403676034",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-950128565",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v15",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-177643080",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v17",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-82424218",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-898675235",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-526925174",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-292987939",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-599942928",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v18",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.558208-365441913",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-256055530",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-574554660",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-494853962",
+            "vertex_identifier_first": "v18",
+            "vertex_identifier_second": "v19",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-487317547",
+            "vertex_identifier_first": "v18",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-234566745",
+            "vertex_identifier_first": "v18",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-663132023",
+            "vertex_identifier_first": "v19",
+            "vertex_identifier_second": "v20",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-758675424",
+            "vertex_identifier_first": "v19",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:04:46.559205-473249371",
+            "vertex_identifier_first": "v20",
+            "vertex_identifier_second": "v21",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-75506496",
+            "vertex_identifier_first": "v1",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-807266162",
+            "vertex_identifier_first": "v2",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-301869677",
+            "vertex_identifier_first": "v3",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-428534456",
+            "vertex_identifier_first": "v4",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-483318004",
+            "vertex_identifier_first": "v5",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-39474292",
+            "vertex_identifier_first": "v6",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-188392344",
+            "vertex_identifier_first": "v7",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.867979-784466111",
+            "vertex_identifier_first": "v8",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-332834796",
+            "vertex_identifier_first": "v9",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-838100153",
+            "vertex_identifier_first": "v10",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-596251456",
+            "vertex_identifier_first": "v11",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-849568157",
+            "vertex_identifier_first": "v12",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-822583128",
+            "vertex_identifier_first": "v13",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-154861701",
+            "vertex_identifier_first": "v14",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-315750655",
+            "vertex_identifier_first": "v15",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-857759430",
+            "vertex_identifier_first": "v16",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-471384787",
+            "vertex_identifier_first": "v17",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-381723349",
+            "vertex_identifier_first": "v18",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.868977-298339047",
+            "vertex_identifier_first": "v19",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.869974-799481078",
+            "vertex_identifier_first": "v20",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        },
+        {
+            "identifier": "2022-06-07_19:17:26.869974-383972342",
+            "vertex_identifier_first": "v21",
+            "vertex_identifier_second": "v22",
+            "weight": 1,
+            "oriented": false,
+            "color": null
+        }
+    ]
+}

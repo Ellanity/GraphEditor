@@ -1,5 +1,5 @@
+import json
 import pickle
-
 
 ############################################################
 ###### STORE KEEPS SEVERAL GRAPHS AND OTHER VARIABLES ######
@@ -48,19 +48,85 @@ class Store:
             self.current_graph = graph_with_id[0]
             self.current_graph.calculate_graph_borders()
 
-    def export_graph(self, identifier):
+    def export_graph_gepp(self, identifier):
         graphs_to_save = [graph for graph in self.graphs if graph.identifier == identifier]
         for graph in graphs_to_save:
             with open(f'graph/{identifier}.gepp', 'wb') as file:
                 pickle.dump(graph, file)
 
+    def export_graph_json(self, identifier):
+        graphs_to_save = [graph for graph in self.graphs if graph.identifier == identifier]
+        for graph in graphs_to_save:
+            vertexes = []
+            edges = []
+            for vertex in graph.vertexes:
+                vertexes.append(
+                    {
+                        "identifier": vertex.identifier,
+                        "content": vertex.content,
+                        "position": vertex.position,
+                        "color": vertex.color
+                    }
+                )
+            for edge in graph.edges:
+                edges.append(
+                    {
+                        "identifier": edge.identifier,
+                        "vertex_identifier_first": edge.vertex_identifier_first,
+                        "vertex_identifier_second": edge.vertex_identifier_second,
+                        "weight": edge.weight,
+                        "oriented": edge.oriented,
+                        "color": edge.color
+                    }
+                )
+            graph_dict = {
+                "identifier": graph.identifier,
+                "vertexes": vertexes,
+                "edges": edges
+            }
+            with open(f'graph/{graph.identifier}.json', 'w') as file:
+                ready_json_data = json.dumps(graph_dict, indent=4)
+                file.write(ready_json_data)
+
     def import_graph(self, identifier):
-        with open(f'graph/{identifier}.gepp', 'rb') as file:
-            graph_new = pickle.load(file)
-            # check graph with same identifier
-            if len([graph for graph in self.graphs if graph.identifier == identifier]) != 0:
-                raise Exception("Such graph already exists, rename file with graph to import it")
-            self.graphs.append(graph_new)
+        try:
+            with open(f'graph/{identifier}.gepp', 'rb') as file:
+                graph_new = pickle.load(file)
+                # check graph with same identifier
+                if len([graph for graph in self.graphs if graph.identifier == identifier]) != 0:
+                    raise Exception("Such graph already exists, rename file with graph to import it")
+                self.graphs.append(graph_new)
+        except Exception as ex:
+            print("import gepp graph:", ex)
+
+        try:
+            with open(f'graph/{identifier}.json', 'r') as file:
+                data = json.load(file)
+                new_graph_identifier = str(data["identifier"])
+                if len([graph for graph in self.graphs if graph.identifier == new_graph_identifier]) != 0:
+                    raise Exception("Such graph already exists, rename file with graph to import it")
+                # creating objects
+                graph_new = Graph()
+                graph_new.identifier = new_graph_identifier
+                for vertex in data["vertexes"]:
+                    vertex_obj = Graph.Vertex()
+                    vertex_obj.identifier = vertex["identifier"]
+                    vertex_obj.content = vertex["content"]
+                    vertex_obj.position = vertex["position"]
+                    vertex_obj.color = vertex["color"]
+                    graph_new.vertexes.append(vertex_obj)
+                for edge in data["edges"]:
+                    edge_obj = Graph.Edge()
+                    edge_obj.identifier = edge["identifier"]
+                    edge_obj.vertex_identifier_first = edge["vertex_identifier_first"]
+                    edge_obj.vertex_identifier_second = edge["vertex_identifier_second"]
+                    edge_obj.oriented = edge["oriented"]
+                    edge_obj.weight = edge["weight"]
+                    edge_obj.color = edge["color"]
+                    graph_new.edges.append(edge_obj)
+                self.graphs.append(graph_new)
+        except Exception as ex:
+            print("import json graph:", ex)
 
     def delete_graph(self, identifier):
         if identifier is None or "":
