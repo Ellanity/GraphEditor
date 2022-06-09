@@ -80,11 +80,11 @@ Interaction via window
 ```
 Before first start:
 ```
-python setup.py install
+python3 setup.py install
 ```
 Start:
 ```
-python main.py
+python3 main.py
 ```
 Copyright © 2022 Paplauski Eldar
 

@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
       name='GraphEditor',
@@ -6,6 +6,6 @@ setup(
       description='Tool to work with graphs',
       author='Eldar Paplauski',
       author_email='eldarpoplauski111@gmail.com',
-      packages=['GraphEditor'],  # same as name
+      packages=find_packages('src', exclude=['GraphEditor']),  # same as name
       install_requires=['pygame'],  # external packages as dependencies
 )
