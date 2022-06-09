@@ -92,9 +92,28 @@ class GraphCalculator:
             adjacency_list.append(vertex_list)
         return adjacency_list
 
-    # it seems to me that it works a bit wrong
+    def dfs(self, graph, vertex_first, vertex_second, visited):
+        if vertex_first == vertex_second:
+            return True
+        visited.append(vertex_first)
+        for edge in graph.edges:
+            vertex_to_check = None
+            if edge.vertex_identifier_first == vertex_first:
+                vertex_to_check = edge.vertex_identifier_second
+            if edge.vertex_identifier_second == vertex_first and not edge.oriented:
+                vertex_to_check = edge.vertex_identifier_first
+            if vertex_to_check is not None and vertex_to_check not in visited:
+                if self.dfs(graph, vertex_to_check, vertex_second, visited):
+                    return True
+        return False
+
     def find_min_path(self, graph, vertex_first, vertex_second):
         if graph is None:
+            return
+        random_color = (random.randint(100, 200), random.randint(100, 200), random.randint(100, 200))
+        way_exist = self.dfs(graph, vertex_first, vertex_second, [])
+        if not way_exist:
+            graph.get_vertex_by_identifier(vertex_first).color = random_color
             return
 
         g = self.get_adjacency_list(graph)
@@ -139,8 +158,6 @@ class GraphCalculator:
         # print(path)
         vertexes_in_path = [graph.vertexes[vp].identifier for vp in path]
         print("->".join(vertexes_in_path))
-
-        random_color = (random.randint(100, 200), random.randint(100, 200), random.randint(100, 200))
 
         for vp in path:
             graph.vertexes[vp].color = random_color

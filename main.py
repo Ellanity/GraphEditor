@@ -8,7 +8,7 @@ from Store.StoreClass import Store
 from Calculator.GraphCalculator import GraphCalculator
 
 DISPLAY_WIDTH = 800
-DISPLAY_HEIGHT = 800
+DISPLAY_HEIGHT = 700
 pygame.init()
 display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE )
 # display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), pygame.RESIZABLE |pygame.DOUBLEBUF |pygame.OPENGL)
@@ -37,9 +37,9 @@ class App:
 
     def run(self):
         # ## ### comment out the following three lines to get started with empty storage
-        self.events_handler.command("graph import example")
-        self.events_handler.command("graph choose example")
-        self.events_handler.command("graph rename example MyGraph")
+        self.events_handler.command("graph import MyGraph")
+        self.events_handler.command("graph choose MyGraph")
+        # self.events_handler.command("graph rename example MyGraph")
         self.events_handler.check_events()
 
 

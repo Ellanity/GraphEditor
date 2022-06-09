@@ -4,6 +4,9 @@ import pickle
 ############################################################
 ###### STORE KEEPS SEVERAL GRAPHS AND OTHER VARIABLES ######
 ############################################################
+from copy import copy
+
+
 class Store:
     def __init__(self):
         self.graphs = list()
@@ -262,11 +265,6 @@ class Graph:
                 vertex.content = content
                 return
 
-    def set_edge_weight(self, identifier, weight):
-        for edge in self.edges:
-            if edge.identifier == identifier:
-                edge.content = weight
-                return
     ###################
     ###### EDGES ######
     ###################
@@ -358,4 +356,13 @@ class Graph:
                 edge.identifier = identifier_new
                 return
 
-    # ## ### !!! redo graph saving, for convenience of working from a file, as well as backward compatibility
+    def set_edge_weight(self, identifier, weight):
+        for edge in self.edges:
+            if edge.identifier == identifier:
+                try:
+                    weight = int(weight)
+                except Exception as _:
+                    weight = 0
+                weight = weight if weight > 0 else 0
+                edge.weight = copy(weight)
+                return

@@ -1,5 +1,6 @@
 import datetime
 import random
+from copy import copy
 
 import pygame
 
@@ -265,6 +266,27 @@ class ButtonGraphResetColor(CustomButton):
         self.event_handler.app.store.current_graph.reset_graph_color()
 
 
+class ButtonGraphFindMinPath(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"graph find min path"}]
+
+    def update(self):
+        self.calculate_height()
+        if len(self.event_handler.app.store.current_subgraph_vertexes) == 2:
+            v1 = self.event_handler.app.store.current_subgraph_vertexes[0].identifier
+            v2 = self.event_handler.app.store.current_subgraph_vertexes[1].identifier
+            self.content = [{'string': f"graph find min path {v1} -> {v2}"}]
+        else:
+            self.content = [{'string': f"graph find min path"}]
+
+    def on_click_self(self):
+        if len(self.event_handler.app.store.current_subgraph_vertexes) == 2:
+            v1 = self.event_handler.app.store.current_subgraph_vertexes[0].identifier
+            v2 = self.event_handler.app.store.current_subgraph_vertexes[1].identifier
+            self.event_handler.app.graph_calculator.find_min_path(self.event_handler.app.store.current_graph, v1, v2)
+
+
 class ButtonGraphMakeCircle(CustomButton):
     def __init__(self, event_handler):
         super().__init__(event_handler)
@@ -452,11 +474,58 @@ class ButtonEdgeSetWeight(CustomButton):
             self.event_handler.display_handler.typing_edge_weight = True
         else:
             if len(self.event_handler.app.store.current_subgraph_edges) == 1:
+                print(self.event_handler.display_handler.typing_edge_weight_text)
                 self.event_handler.app.store.current_graph.set_edge_weight(identifier=self.event_handler.app.store.current_subgraph_edges[0].identifier,
-                                                                           content=self.event_handler.display_handler.typing_edge_weight_text)
+                                                                           weight=self.event_handler.display_handler.typing_edge_weight_text)
             self.event_handler.display_handler.typing_edge_weight = False
             self.event_handler.display_handler.typing_edge_weight_text = ""
             self.content = [{'string': f"edge_weight"}]
+
+
+class ButtonEdgeChangeOrientationSide(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"edge change orientation side"}]
+
+    def update(self):
+        self.calculate_height()
+
+    def on_click_self(self):
+            if self.event_handler.app.store.current_graph is not None:
+                for edge in self.event_handler.app.store.current_subgraph_edges:
+                    if edge.oriented:
+                        ev1 = copy(edge.vertex_identifier_first)
+                        ev2 = copy(edge.vertex_identifier_second)
+                        edge.vertex_identifier_first = ev2
+                        edge.vertex_identifier_second = ev1
+
+
+class ButtonEdgeChangeStatusOriented(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"edge change status oriented"}]
+
+    def update(self):
+        self.calculate_height()
+
+    def on_click_self(self):
+            if self.event_handler.app.store.current_graph is not None:
+                for edge in self.event_handler.app.store.current_subgraph_edges:
+                    edge.oriented = not edge.oriented
+
+
+class ButtonEdgeResetColor(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"edge reset color"}]
+
+    def update(self):
+        self.calculate_height()
+
+    def on_click_self(self):
+        if self.event_handler.app.store.current_graph is not None:
+            for edge in self.event_handler.app.store.current_subgraph_edges:
+                edge.color = None
 
 
 ########################
@@ -570,7 +639,50 @@ class ButtonVertexContent(CustomButton):
                                                                               content=self.event_handler.display_handler.typing_vertex_content_text)
             self.event_handler.display_handler.typing_vertex_content = False
             self.event_handler.display_handler.typing_vertex_content_text = ""
-            self.content = [{'string': f"vertex_content"}]
+
+
+class ButtonVertexFindByContent(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"vertex find by content"}]
+
+    def update(self):
+        self.calculate_height()
+        if self.event_handler.display_handler.typing_vertex_content_find:
+            self.content = [{'string': f"vertex find by content: {self.event_handler.display_handler.typing_vertex_content_find_text}"}]
+        else:
+            self.content = [{'string': f"vertex find by content"}]
+
+    def on_click_self(self):
+        if not self.event_handler.display_handler.typing_vertex_content_find:
+            self.event_handler.display_handler.typing_vertex_content_find = True
+        else:
+            print("lol")
+            if self.event_handler.app.store.current_graph.vertexes is None:
+                return
+            for vertex in self.event_handler.app.store.current_graph.vertexes:
+                if str(vertex.content) == str(self.event_handler.display_handler.typing_vertex_content_find_text):
+                    vertex.color = (255, 0, 255)
+                    self.event_handler.app.renderer.camera.position[0] = \
+                        -(vertex.position[0]) + (self.event_handler.app.display.get_width() / 2) / self.event_handler.app.renderer.camera.scale
+                    self.event_handler.app.renderer.camera.position[1] = \
+                        -(vertex.position[1]) + (self.event_handler.app.display.get_height() / 2) / self.event_handler.app.renderer.camera.scale
+                    break
+            self.event_handler.display_handler.typing_vertex_content_find = False
+
+
+class ButtonVertexResetColor(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"vertex reset color"}]
+
+    def update(self):
+        self.calculate_height()
+
+    def on_click_self(self):
+        if self.event_handler.app.store.current_graph is not None:
+            for vertex in self.event_handler.app.store.current_subgraph_vertexes:
+                vertex.color = None
 
 
 ### ### ### DELETE GRAPH BUTTON ### ### ###

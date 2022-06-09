@@ -1,6 +1,4 @@
-# import pygame
 import threading
-from copy import copy
 
 from Handler.Commands import *
 from Handler.CustomButtonClass import *
@@ -87,6 +85,7 @@ class EventsHandler:
             {"type": "graph export", "button": ButtonGraphExport(self)},
             {"type": "graph import", "button": ButtonGraphImport(self)},
             {"type": "graph reset color", "button": ButtonGraphResetColor(self)},
+            {"type": "graph find min path", "button": ButtonGraphFindMinPath(self)},
             {"type": "graph make circle", "button": ButtonGraphMakeCircle(self)},
             {"type": "graph make complete", "button": ButtonGraphMakeComplete(self)},
             {"type": "graph rename all vertexes", "button": ButtonGraphRenameAllVertexes(self)},
@@ -97,12 +96,17 @@ class EventsHandler:
             {"type": "edge delete", "button": ButtonEdgeDelete(self)},
             {"type": "edge rename", "button": ButtonEdgeRename(self)},
             {"type": "edge set weight", "button": ButtonEdgeSetWeight(self)},
+            {"type": "edge reset color", "button": ButtonEdgeResetColor(self)},
+            {"type": "edge change orientation side", "button": ButtonEdgeChangeOrientationSide(self)},
+            {"type": "edge change status oriented", "button": ButtonEdgeChangeStatusOriented(self)},
 
             {"type": "VERTEX COMMANDS", "button": ButtonVertexCommands(self)},
             {"type": "vertex create", "button": ButtonVertexCreate(self)},
             {"type": "vertex delete", "button": ButtonVertexDelete(self)},
             {"type": "vertex rename", "button": ButtonVertexRename(self)},
             {"type": "vertex content", "button": ButtonVertexContent(self)},
+            {"type": "vertex find by content", "button": ButtonVertexFindByContent(self)},
+            {"type": "vertex reset color", "button": ButtonVertexResetColor(self)},
 
             {"type": "graph delete", "button": ButtonGraphDelete(self)},
         ]
@@ -154,6 +158,8 @@ class EventsHandler:
             self.typing_vertex_content_text = ""
             self.typing_edge_weight = False
             self.typing_edge_weight_text = ""
+            self.typing_vertex_content_find = False
+            self.typing_vertex_content_find_text = ""
             #
             self.double_click_timer = 0
             self.double_click_pos = [0, 0]
@@ -242,12 +248,19 @@ class EventsHandler:
                 else:
                     if event.key == pygame.K_BACKSPACE:
                         self.renaming_vertex_text = self.renaming_vertex_text[:-1]
-                    elif event.key == pygame.K_i and self.app.store.current_vertex != self.app.store.vertex_to_rename:
-                        self.app.store.vertex_to_rename = self.app.store.current_vertex
-                        self.renaming_vertex_text = ""
-                    elif event.key != pygame.K_RETURN:
+                    elif event.key == pygame.K_i:
+                        if self.app.store.current_vertex is not None and self.app.store.vertex_to_rename is not None \
+                            and self.app.store.current_vertex != self.app.store.vertex_to_rename:
+                            print(self.app.store.current_vertex.identifier, self.app.store.vertex_to_rename.identifier)
+                            self.app.store.vertex_to_rename = self.app.store.current_vertex
+                            self.renaming_vertex_text = ""
+
+                    if event.key != pygame.K_RETURN and event.key != pygame.K_BACKSPACE:
                         # if len(self.renaming_vertex_text) < 50:
-                        self.renaming_vertex_text += event.unicode
+                        try:
+                            self.renaming_vertex_text += event.unicode
+                        except Exception as ex:
+                            print("vertex renaming: ", ex)
 
                     self.app.store.current_graph.rename_vertex(identifier=self.app.store.vertex_to_rename.identifier,
                                                                identifier_new=self.renaming_vertex_text)
@@ -256,15 +269,42 @@ class EventsHandler:
                 self.renaming_vertex_text = ""
                 self.app.store.vertex_to_rename = None
             # start input
-            if not self.typing_vertex_content and not self.renaming_graph_text and not self.typing_graph_to_import:
+            if not self.renaming_vertex \
+                    and not self.renaming_edge \
+                    and not self.renaming_graph \
+                    and not self.typing_graph_to_import \
+                    and not self.typing_vertex_content \
+                    and not self.typing_edge_weight \
+                    and not self.typing_vertex_content_find:
                 if event.key == pygame.K_i and len(self.app.store.current_subgraph_vertexes) == 1:
                     self.renaming_vertex = True
                     if self.app.store.vertex_to_rename != self.app.store.current_subgraph_vertexes[0]:
                         self.renaming_vertex_text = ""
                     self.app.store.vertex_to_rename = self.app.store.current_subgraph_vertexes[0]
 
+            # ## ### EDGE RENAME\
+            if self.renaming_edge:
+                if self.app.store.edge_to_rename is None or event.key == pygame.K_RETURN:
+                    self.renaming_edge = False
+                    self.renaming_edge_text = ""
+                    self.app.store.edge_to_rename = None
+                else:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.renaming_edge_text = self.renaming_edge_text[:-1]
+                    elif event.key == pygame.K_i and self.app.store.current_edge != self.app.store.edge_to_rename:
+                        self.app.store.edge_to_rename = self.app.store.current_edge
+                        self.renaming_edge_text = ""
+                    elif event.key != pygame.K_RETURN:
+                        # if len(self.renaming_edge_text) < 50:
+                        self.renaming_edge_text += event.unicode
+
+                    self.app.store.current_graph.rename_edge(identifier=self.app.store.edge_to_rename.identifier,
+                                                             identifier_new=self.renaming_edge_text)
+            if not self.renaming_edge:
+                self.renaming_edge_text = ""
+                self.app.store.edge_to_rename = None
+
             # ## ### GRAPH RENAME
-            # get input
             if self.renaming_graph:
                 if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
                     self.renaming_graph = False
@@ -281,7 +321,6 @@ class EventsHandler:
                 self.renaming_graph_text = ""
 
             # ## ### IMPORT GRAPH
-            # get input
             if self.typing_graph_to_import:
                 if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
                     self.typing_graph_to_import = False
@@ -296,7 +335,6 @@ class EventsHandler:
                 self.typing_graph_to_import_text = ""
 
             # ## ### VERTEX CONTENT
-            # get input
             if self.typing_vertex_content:
                 if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
                     self.typing_vertex_content = False
@@ -316,7 +354,6 @@ class EventsHandler:
                 self.typing_vertex_content_text = ""
 
             # ## ### EDGE WEIGHT
-            # get input
             if self.typing_edge_weight:
                 if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
                     self.typing_edge_weight = False
@@ -324,8 +361,7 @@ class EventsHandler:
                         # noinspection PyUnresolvedReferences
                         self.app.store.current_graph.set_edge_weight(
                             identifier=self.app.store.current_subgraph_edges[0].identifier,
-                            content=self.typing_edge_weight_text)
-                    self.app.store.import_graph(self.typing_edge_weight_text)
+                            weight=self.typing_edge_weight_text)
                     self.typing_edge_weight_text = ""
                 else:
                     if event.key == pygame.K_BACKSPACE:
@@ -335,30 +371,30 @@ class EventsHandler:
             if not self.typing_edge_weight:
                 self.typing_edge_weight_text = ""
 
-            # ## ### EDGE RENAME
+            # ## ### FIND BY CONTENT
             # get input
-            if self.renaming_edge:
-                if self.app.store.edge_to_rename is None or event.key == pygame.K_RETURN:
-                    self.renaming_edge = False
-                    self.renaming_edge_text = ""
-                    self.app.store.edge_to_rename = None
+            if self.typing_vertex_content_find:
+                if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
+                    self.typing_vertex_content_find = False
+                    # ## ### body
+                    if self.app.store.current_graph is not None:
+                        for vertex in self.app.store.current_graph.vertexes:
+                            if str(vertex.content) == str(self.typing_vertex_content_find_text):
+                                vertex.color = (255, 0, 255)
+                                self.app.renderer.camera.position[0] = \
+                                    -(vertex.position[0]) + (self.app.display.get_width() / 2) / self.app.renderer.camera.scale
+                                self.app.renderer.camera.position[1] = \
+                                    -(vertex.position[1]) + (self.app.display.get_height() / 2) / self.app.renderer.camera.scale
+                                break
+                    # ## ###
+                    self.typing_vertex_content_find_text = ""
                 else:
                     if event.key == pygame.K_BACKSPACE:
-                        self.renaming_edge_text = self.renaming_edge_text[:-1]
-                    elif event.key == pygame.K_i and self.app.store.current_edge != self.app.store.edge_to_rename:
-                        self.app.store.edge_to_rename = self.app.store.current_edge
-                        self.renaming_edge_text = ""
+                        self.typing_vertex_content_find_text = self.typing_vertex_content_find_text[:-1]
                     elif event.key != pygame.K_RETURN:
-                        # if len(self.renaming_edge_text) < 50:
-                        self.renaming_edge_text += event.unicode
-
-                    self.app.store.current_graph.rename_edge(identifier=self.app.store.edge_to_rename.identifier,
-                                                             identifier_new=self.renaming_edge_text)
-            # restart input
-            if not self.renaming_edge:
-                self.renaming_edge_text = ""
-                self.app.store.edge_to_rename = None
-            # start input
+                        self.typing_vertex_content_find_text += event.unicode
+            if not self.typing_vertex_content_find:
+                self.typing_vertex_content_find_text = ""
 
             # ## ### DISPLAY SIZE
             if event.key == pygame.K_F11 or event.key == pygame.K_ESCAPE:
@@ -465,7 +501,6 @@ class EventsHandler:
                 # append current vertex in subgraph
                 if self.app.store.current_edge not in self.app.store.current_subgraph_edges:
                     self.app.store.current_subgraph_edges.append(self.app.store.current_edge)
-                self.app.store.current_edge.active = True
             # ## if no vertex and edge check camera movement
             else:
                 self.app.renderer.camera.move_state = True
@@ -483,7 +518,7 @@ class EventsHandler:
                     for edge in self.app.store.current_subgraph_edges:
                         edge.active = False
                     self.app.store.current_subgraph_edges.clear()
-                    self.app.store.current_vertex.edge = True
+                    self.app.store.current_edge.active = True
                     self.app.store.current_subgraph_edges.append(self.app.store.current_edge)
 
         def right_mouse_double_click(self):
