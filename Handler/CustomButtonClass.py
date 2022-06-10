@@ -26,6 +26,7 @@ class CustomButton:
         self.padding = 5
         self.text_size = 16
         #
+        self.active = False
         self.show_info = False
         self.info = []
 
@@ -45,6 +46,11 @@ class CustomButton:
         if self.on_press is not None:
             self.on_press()
 
+    def update(self):
+        if self.theme is not None:
+            self.set_theme(self.theme)
+        self.update_self()
+
     def set_position(self, position):
         self.position = position
 
@@ -60,6 +66,11 @@ class CustomButton:
         self.border_color = theme.BUTTON_COLOR_TEXT
         self.text_color = theme.BUTTON_COLOR_TEXT
         self.font = theme.FONT
+
+        if self.active:
+            self.background_color = theme.AREA_COLOR_ACTIVE
+            self.border_color = theme.CIRCLE_COLOR_ACTIVE
+            self.text_color = theme.CIRCLE_COLOR_ACTIVE
 
     def render(self):
         self.set_theme(self.event_handler.app.renderer.theme)
@@ -122,7 +133,7 @@ class CustomButton:
 
         self.position[1] = height
 
-    def update(self):
+    def update_self(self):
         pass
 
     def on_click_self(self):
@@ -136,7 +147,7 @@ class ButtonGraphInfo(CustomButton):
         self.text_size = 18
         self.info = ["> Main info about current graph", "> Also it can change program color theme"]
 
-    def update(self):
+    def update_self(self):
         if self.event_handler.app.store.current_graph is None:
             return
         self.calculate_height()
@@ -158,7 +169,7 @@ class ButtonGraphCommands(CustomButton):
         self.show_buttons = True
         self.info = ["> Click to show or hide graph commands"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -182,7 +193,7 @@ class ButtonGraphCreate(CustomButton):
         self.content = [{'string': f"graph create"}]
         self.info = ["> An empty graph is created"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -200,7 +211,7 @@ class ButtonGraphCreateErdosRenyiModel(CustomButton):
                      "> n - count of vertexes",
                      "> p - probability of existence of each of all possible edges"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.display_handler.typing_erdos_renyi_model_args:
             args = str(self.event_handler.display_handler.typing_erdos_renyi_model_args_text).split(" ")
@@ -224,13 +235,27 @@ class ButtonGraphCreateErdosRenyiModel(CustomButton):
             self.event_handler.display_handler.typing_erdos_renyi_model_args = False
 
 
+class ButtonGraphColorizeSubgraphs(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"graph colorize subgraphs"}]
+        self.info = ["> Colorize subgraphs"]
+
+    def update_self(self):
+        self.calculate_height()
+
+    def on_click_self(self):
+        if self.event_handler.app.store.current_graph is not None:
+            self.event_handler.app.graph_calculator.colorize_subgraphs(self.event_handler.app.store.current_graph)
+
+
 class ButtonGraphExportGepp(CustomButton):
     def __init__(self, event_handler):
         super().__init__(event_handler)
         self.content = [{'string': f"graph export gepp"}]
         self.info = ["> Export graph in gepp file"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -243,7 +268,7 @@ class ButtonGraphExportJson(CustomButton):
         self.content = [{'string': f"graph export json"}]
         self.info = ["> Export graph in json file"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -256,7 +281,7 @@ class ButtonGraphImport(CustomButton):
         self.content = [{'string': f"graph import"}]
         self.info = ["> Import graph from any type of file"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.display_handler.typing_graph_to_import:
             self.content = [{'string': f"graph name to import: {self.event_handler.display_handler.typing_graph_to_import_text}"}]
@@ -279,7 +304,7 @@ class ButtonGraphFindMinPath(CustomButton):
         self.content = [{'string': f"graph find min path"}]
         self.info = ["> Find min path between first and second vertexes", "> if it exists, lol"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if len(self.event_handler.app.store.current_subgraph_vertexes) == 2 and self.position[0] > 0:
             v1 = self.event_handler.app.store.current_subgraph_vertexes[0].identifier
@@ -303,7 +328,7 @@ class ButtonGraphMakeCircle(CustomButton):
                      "> choosing the maximum radius",
                      "> and the same indentation between the vertices "]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -316,7 +341,7 @@ class ButtonGraphMakeComplete(CustomButton):
         self.content = [{'string': f"graph make complete"}]
         self.info = ["> make graph complete..."]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -329,7 +354,7 @@ class ButtonGraphRename(CustomButton):
         self.content = [{'string': f"graph rename"}]
         self.info = ["> Don't even try to enter the same names for different graphs"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.display_handler.renaming_graph:
             self.content = [{'string': f"graph renaming: {self.event_handler.display_handler.renaming_graph_text}"}]
@@ -351,7 +376,7 @@ class ButtonGraphRenameAllEdges(CustomButton):
         self.content = [{'string': f"graph rename all edges"}]
         self.info = ["> Makes normal names for edges"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -371,7 +396,7 @@ class ButtonGraphRenameAllVertexes(CustomButton):
         self.content = [{'string': f"graph rename all vertexes"}]
         self.info = ["> Makes normal names for vertexes"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -391,7 +416,7 @@ class ButtonGraphResetColor(CustomButton):
         self.content = [{'string': f"graph reset color"}]
         self.info = ["> All vertexes and edges become normal color"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -405,7 +430,7 @@ class ButtonGraphChoose(CustomButton):
         self.height_shift = 0
         self.info = ["> U can choose this graph"]
 
-    def update(self):
+    def update_self(self):
         self.position[0] = self.event_handler.app.display.get_width() - self.width - 5
         height = 5
         for button in self.event_handler.buttons:
@@ -426,7 +451,7 @@ class ButtonGraphDelete(CustomButton):
         self.content = [{'string': f"graph delete"}]
         self.info = ["> Please don't touch this button if u didn't export your graph before"]
 
-    def update(self):
+    def update_self(self):
         if self.event_handler.app.store.current_graph is None:
             return
         self.position[1] = self.event_handler.app.display.get_height() - self.height - 5
@@ -448,7 +473,7 @@ class ButtonEdgeCommands(CustomButton):
         self.info = ["> Click to show or hide edge commands"]
         self.show_buttons = True
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -471,7 +496,7 @@ class ButtonEdgeCreate(CustomButton):
                      "> [all vertexes in subgraph]",
                      "> Better use E button on your keyboard"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -512,7 +537,7 @@ class ButtonEdgeChangeOrientationSide(CustomButton):
         self.content = [{'string': f"edge change orientation side"}]
         self.info = ["> Change orientation of all selected edges [O on keyboard]"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -531,7 +556,7 @@ class ButtonEdgeChangeStatusOriented(CustomButton):
         self.content = [{'string': f"edge change status oriented"}]
         self.info = ["Change all selected edges orientation state [N on keyboard]"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -548,7 +573,7 @@ class ButtonEdgeDelete(CustomButton):
                      "> really, it just delete all selected edges, what i can say more?",
                      "> Use DEL on keyboard", "> Vertexes same"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -566,7 +591,7 @@ class ButtonEdgeRename(CustomButton):
                      "> Life hack, click on the button, then select the desired edge with LCTRL",
                      "> It seems to work"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.app.store.edge_to_rename:
             self.content = [{'string': f"edge renaming: {self.event_handler.app.store.edge_to_rename.identifier}"}]
@@ -594,7 +619,7 @@ class ButtonEdgeResetColor(CustomButton):
         self.info = ["> edge reset color? hm... what can this button do?",
                      "> resets all selected edges color, if u really dont understand"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -609,7 +634,7 @@ class ButtonEdgeSetWeight(CustomButton):
         self.content = [{'string': f"edge set weight"}]
         self.info = ["> Enter weight (0 or more) and click here again, or press Enter"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.display_handler.typing_edge_weight \
                 and len(self.event_handler.app.store.current_subgraph_edges) >= 1:
@@ -641,7 +666,7 @@ class ButtonVertexCommands(CustomButton):
         self.info = ["> Click to show or hide vertex commands"]
         self.show_buttons = True
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -663,7 +688,7 @@ class ButtonVertexCreate(CustomButton):
         self.info = ["> Vertex is created in center of window",
                      "> Better use double click [in such way u can choose position!]"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -686,7 +711,7 @@ class ButtonVertexDelete(CustomButton):
         self.content = [{'string': f"vertex delete"}]
         self.info = ["> Read [edge delete] button info", "> Use DEL on keyboard."]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):
@@ -702,7 +727,7 @@ class ButtonVertexContent(CustomButton):
         self.content = [{'string': f"vertex content"}]
         self.info = ["> I still believe that u can do it", "> Life hack in [edge rename] button, try it here too"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.display_handler.typing_vertex_content \
                 and len(self.event_handler.app.store.current_subgraph_vertexes) >= 1:
@@ -729,7 +754,7 @@ class ButtonVertexFindByContent(CustomButton):
         self.content = [{'string': f"vertex find by content"}]
         self.info = ["Its cool, u enter content and it finds vertex, color it and moves camera"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.display_handler.typing_vertex_content_find:
             self.content = [{'string': f"vertex find by content: {self.event_handler.display_handler.typing_vertex_content_find_text}"}]
@@ -760,7 +785,7 @@ class ButtonVertexRename(CustomButton):
         self.info = ["> Lol, u can... Life hack in [edge rename]",
                      "> Can try to use LCTRL + I on keyboard, maybe it will be easier"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
         if self.event_handler.app.store.vertex_to_rename:
             self.content = [{'string': f"vertex renaming: {self.event_handler.app.store.vertex_to_rename.identifier}"}]
@@ -787,7 +812,7 @@ class ButtonVertexResetColor(CustomButton):
         self.content = [{'string': f"vertex reset color"}]
         self.info = ["> Just resets all selected vertexes color"]
 
-    def update(self):
+    def update_self(self):
         self.calculate_height()
 
     def on_click_self(self):

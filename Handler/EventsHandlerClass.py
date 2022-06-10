@@ -34,6 +34,7 @@ class EventsHandler:
             {"identifier": "graph rename", "have_args": True, "action": CommandGraphRename(self).run},
             {"identifier": "graph reset color", "have_args": True, "action": CommandGraphResetColor(self).run},
             {"identifier": "graph create erdos renyi", "have_args": True, "action": CommandGraphCreateErdosRenyiModel(self).run},
+            {"identifier": "graph colorize subgraphs", "have_args": True, "action": CommandGraphColorizeSubgraphs(self).run},
             # ## vertex
             {"identifier": "vertex create", "have_args": True, "action": CommandVertexCreate(self).run},
             {"identifier": "vertex delete", "have_args": True, "action": CommandVertexDelete(self).run},
@@ -85,6 +86,7 @@ class EventsHandler:
             {"type": "GRAPH COMMANDS", "button": ButtonGraphCommands(self)},
             {"type": "graph create", "button": ButtonGraphCreate(self)},
             {"type": "graph create erdos-renyi", "button": ButtonGraphCreateErdosRenyiModel(self)},
+            {"type": "graph colorize subgraphs", "button": ButtonGraphColorizeSubgraphs(self)},
             {"type": "graph export gepp", "button": ButtonGraphExportGepp(self)},
             {"type": "graph export json", "button": ButtonGraphExportJson(self)},
             {"type": "graph import", "button": ButtonGraphImport(self)},
@@ -501,14 +503,27 @@ class EventsHandler:
                                 vertex_identifier_second=vertex_identifier_second,
                                 oriented=oriented)
                     connected_vertexes.append(vertex1.identifier)
+            if event.key == pygame.K_PRINTSCREEN: # and self.selection_subgraph:
+                graph_name = self.app.store.current_graph.identifier if self.app.store.current_graph is not None else "none"
+                screenshot_name = f"graph_editor_screenshot_{graph_name}_date_{datetime.datetime.now()}.png"
+                path = f"screenshots/{screenshot_name}".replace(" ", "_").replace(":", "-")
+                try:
+                    with open(path, 'wb') as file:
+                        pass
+                    pygame.image.save(self.app.display, str(path))
+                    print(f"picture saved to {path}")
+                except Exception as ex:
+                    print(ex)
 
         def right_mouse_down(self):
 
             mouse_position = list(pygame.mouse.get_pos())
             # ## check button
-            button = self.app.renderer.check_buttons_intersection(mouse_position)
-            if button is not None:
-                button["button"].click()
+            self.app.store.current_button = self.app.renderer.check_buttons_intersection(mouse_position)
+            if self.app.store.current_button is not None:
+                self.app.store.current_button["button"].active = True
+                self.app.store.current_button["button"].click()
+                return
             # ## if no button, check vertex
             else:
                 self.app.store.current_vertex = self.app.renderer.get_vertex_by_position(position=mouse_position)
@@ -553,9 +568,10 @@ class EventsHandler:
             # ## check button
             vertex = None
             edge = None
-            button = self.app.renderer.check_buttons_intersection(mouse_position)
-            if button is not None:
-                button["button"].click()
+            self.app.store.current_button = self.app.renderer.check_buttons_intersection(mouse_position)
+            if self.app.store.current_button is not None:
+                self.app.store.current_button["button"].active = True
+                self.app.store.current_button["button"].click()
                 return
             # ## check vertex and edge
             else:
@@ -596,6 +612,9 @@ class EventsHandler:
 
             self.app.store.current_vertex = None
             self.app.store.current_edge = None
+            if self.app.store.current_button:
+                self.app.store.current_button["button"].active = False
+                self.app.store.current_button = None
 
         def left_mouse_down(self):
             # ## check vertex

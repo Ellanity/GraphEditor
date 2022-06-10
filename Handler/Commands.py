@@ -166,6 +166,24 @@ class CommandGraphResetColor(Command):
             print(f"no graph selected")
 
 
+class CommandGraphColorizeSubgraphs(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        graph = args[0] if len(args) > 0 else None
+        if graph is None and self.events_handler.app.store.current_graph is not None:
+            graph = self.events_handler.app.store.current_graph.identifier
+        if graph is not None:
+            for graph_obj in self.events_handler.app.store.graphs:
+                if graph_obj.identifier == graph:
+                    self.events_handler.app.graph_calculator.colorize_subgraphs(graph_obj)
+                    print(f"graph {graph} subgraphs colorized")
+                    break
+        else:
+            print(f"no graph selected")
+
+
 ################
 ### VERTEXES ###
 ################

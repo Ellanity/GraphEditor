@@ -8,6 +8,8 @@ import pickle
 import random
 from copy import copy
 
+MAX_COORDS_FOR_RANDOM_GRAPH = 3000
+
 
 class Store:
     def __init__(self):
@@ -16,6 +18,7 @@ class Store:
         self.current_graph = None
         self.current_vertex = None
         self.current_edge = None
+        self.current_button = None
         self.current_vertex_info = None
         self.current_edge_info = None
         self.current_button_info = None
@@ -52,7 +55,7 @@ class Store:
             vertex = Graph.Vertex()
             vertex.identifier = f"v{index}"
             vertex.content = "content"
-            vertex.position = [random.randint(-1500, 1500), random.randint(-1500, 1500)]
+            vertex.position = [random.randint(-MAX_COORDS_FOR_RANDOM_GRAPH, MAX_COORDS_FOR_RANDOM_GRAPH), random.randint(-MAX_COORDS_FOR_RANDOM_GRAPH, MAX_COORDS_FOR_RANDOM_GRAPH)]
             graph.vertexes.append(vertex)
         visited = []
         # ## edges

@@ -185,3 +185,43 @@ class GraphCalculator:
             vertex_radian = indentation_between_vertices_in_radians * graph.vertexes.index(vertex)
             vertex.position[0] = circle_radius * math.cos(vertex_radian) + x_circle_center
             vertex.position[1] = circle_radius * math.sin(vertex_radian) + y_circle_center
+
+    def colorize_subgraphs(self, graph):
+        subgraphs = []
+        for edge in graph.edges:
+            subgraph_of_first_vertex = None
+            subgraph_of_second_vertex = None
+            for subgraph in subgraphs:
+                if edge.vertex_identifier_first in subgraph:
+                    subgraph_of_first_vertex = subgraph
+                if edge.vertex_identifier_second in subgraph:
+                    subgraph_of_second_vertex = subgraph
+            if subgraph_of_first_vertex == subgraph_of_second_vertex and subgraph_of_second_vertex is not None:
+                continue
+            elif subgraph_of_first_vertex is None and subgraph_of_second_vertex is None:
+                subgraphs.append([edge.vertex_identifier_first, edge.vertex_identifier_second])
+            else:
+                if subgraph_of_first_vertex is not None and subgraph_of_second_vertex is None:
+                    subgraph_of_first_vertex.append(edge.vertex_identifier_second)
+                if subgraph_of_second_vertex is not None and subgraph_of_first_vertex is None:
+                    subgraph_of_second_vertex.append(edge.vertex_identifier_first)
+                if subgraph_of_first_vertex is not None and subgraph_of_second_vertex is not None:
+                    if len(subgraph_of_first_vertex) < len(subgraph_of_second_vertex):
+                        for vertex in subgraph_of_second_vertex:
+                            subgraph_of_first_vertex.append(vertex)
+                        subgraph_of_second_vertex.clear()
+                        subgraphs.remove(subgraph_of_second_vertex)
+                    else:
+                        for vertex in subgraph_of_first_vertex:
+                            subgraph_of_second_vertex.append(vertex)
+                        subgraph_of_first_vertex.clear()
+                        subgraphs.remove(subgraph_of_first_vertex)
+
+        # print(subgraphs)
+        for subgraph in subgraphs:
+            subgraph_color = (random.randint(100, 200), random.randint(100, 200), random.randint(100, 200))
+            for vertex in subgraph:
+                graph.get_vertex_by_identifier(vertex).color = subgraph_color
+            for edge in graph.edges:
+                if edge.vertex_identifier_first in subgraph or edge.vertex_identifier_second in subgraph:
+                    edge.color = subgraph_color

@@ -79,6 +79,8 @@ Interaction via window
 |______________|_________________________________________________________________|
 | O            | - changes the orientation direction of the selected edges       |
 |______________|_________________________________________________________________|
+| PrtScreen    | - makes screenshot, save it in png                              |
+|______________|_________________________________________________________________|
 ```
 Before first start:
 ```
