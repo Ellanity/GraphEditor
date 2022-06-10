@@ -15,9 +15,10 @@ class Store:
         self.buttons = list()
         self.current_graph = None
         self.current_vertex = None
-        self.current_vertex_info = None
         self.current_edge = None
+        self.current_vertex_info = None
         self.current_edge_info = None
+        self.current_button_info = None
         self.vertex_to_rename = None
         self.edge_to_rename = None
         # subgraph

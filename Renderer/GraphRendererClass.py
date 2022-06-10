@@ -12,6 +12,7 @@ class GraphRenderer:
         self.graph = graph
         self.vertex_show_info = None
         self.edge_show_info = None
+        self.button_show_info = None
         self.selected_area = {"x1": 0, "y1": 0, "x2": 0, "y2": 0}
         # ## theme
         self.light_theme = BlueLightTheme()
@@ -687,11 +688,58 @@ class GraphRenderer:
                 self.display.blit(text, (text_x, text_y))
 
     def render_buttons(self):
+        self.button_show_info = None
         for button in self.buttons:
+            if button["button"].show_info:
+                self.button_show_info = button
             try:
                 button["button"].render()
             except Exception as ex:
                 print(ex)
+
+        if self.button_show_info:
+            font = pygame.font.Font(self.theme.FONT, int(self.setting.vertexes_radius * 1.5))
+            lines = self.button_show_info['button'].info
+            if len(lines) <= 0:
+                return
+
+            texts_to_draw = []
+            for line in lines:
+                texts_to_draw.append(font.render(f"{line}", True, self.theme.BUTTON_COLOR_TEXT))
+
+            max_width_of_text = 0
+            for text in texts_to_draw:
+                if text.get_width() >= max_width_of_text:
+                    max_width_of_text = text.get_width()
+            sum_height_of_text = 0
+            for text in texts_to_draw:
+                sum_height_of_text += text.get_height()
+
+            bg_width = max_width_of_text + self.setting.info_margin_horizontal * 2
+            bg_height = sum_height_of_text + self.setting.info_margin_vertical * 2 * (len(texts_to_draw) + 1)
+            # calculate position
+            position_x = self.button_show_info["button"].position[0] + self.button_show_info["button"].width - 20
+            position_y = self.button_show_info["button"].position[1] + self.button_show_info["button"].height / 2
+            if position_x + bg_width > self.display.get_width():
+                position_x -= bg_width + self.button_show_info["button"].width
+            if position_y + bg_height > self.display.get_height():
+                position_y -= bg_height
+            # draw bg
+            bg_rectangle = (position_x, position_y, bg_width, bg_height)
+            pygame.draw.rect(self.display, self.theme.BUTTON_COLOR_AREA, bg_rectangle)
+            pygame.draw.rect(self.display, self.theme.BUTTON_COLOR_TEXT, bg_rectangle, 1)
+
+            # draw text
+            for text in texts_to_draw:
+                text_x = position_x + self.setting.info_margin_horizontal
+                text_y = position_y + self.setting.info_margin_vertical
+                for text_ in texts_to_draw:
+                    text_y += self.setting.info_margin_vertical
+                    if text_ != text:
+                        text_y += text_.get_height() + self.setting.info_margin_vertical
+                    else:
+                        break
+                self.display.blit(text, (text_x, text_y))
 
     def render(self):
         if self.display is None:

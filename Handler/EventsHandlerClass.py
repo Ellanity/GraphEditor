@@ -84,33 +84,33 @@ class EventsHandler:
 
             {"type": "GRAPH COMMANDS", "button": ButtonGraphCommands(self)},
             {"type": "graph create", "button": ButtonGraphCreate(self)},
-            {"type": "graph rename", "button": ButtonGraphRename(self)},
+            {"type": "graph create erdos-renyi", "button": ButtonGraphCreateErdosRenyiModel(self)},
             {"type": "graph export gepp", "button": ButtonGraphExportGepp(self)},
             {"type": "graph export json", "button": ButtonGraphExportJson(self)},
             {"type": "graph import", "button": ButtonGraphImport(self)},
-            {"type": "graph reset color", "button": ButtonGraphResetColor(self)},
             {"type": "graph find min path", "button": ButtonGraphFindMinPath(self)},
             {"type": "graph make circle", "button": ButtonGraphMakeCircle(self)},
             {"type": "graph make complete", "button": ButtonGraphMakeComplete(self)},
-            {"type": "graph rename all vertexes", "button": ButtonGraphRenameAllVertexes(self)},
+            {"type": "graph rename", "button": ButtonGraphRename(self)},
             {"type": "graph rename all edges", "button": ButtonGraphRenameAllEdges(self)},
-            {"type": "graph create erdos-renyi model", "button": ButtonGraphCreateErdosRenyiModel(self)},
+            {"type": "graph rename all vertexes", "button": ButtonGraphRenameAllVertexes(self)},
+            {"type": "graph reset color", "button": ButtonGraphResetColor(self)},
 
             {"type": "EDGE COMMANDS", "button": ButtonEdgeCommands(self)},
             {"type": "edge create", "button": ButtonEdgeCreate(self)},
-            {"type": "edge delete", "button": ButtonEdgeDelete(self)},
-            {"type": "edge rename", "button": ButtonEdgeRename(self)},
-            {"type": "edge set weight", "button": ButtonEdgeSetWeight(self)},
-            {"type": "edge reset color", "button": ButtonEdgeResetColor(self)},
             {"type": "edge change orientation side", "button": ButtonEdgeChangeOrientationSide(self)},
             {"type": "edge change status oriented", "button": ButtonEdgeChangeStatusOriented(self)},
+            {"type": "edge delete", "button": ButtonEdgeDelete(self)},
+            {"type": "edge rename", "button": ButtonEdgeRename(self)},
+            {"type": "edge reset color", "button": ButtonEdgeResetColor(self)},
+            {"type": "edge set weight", "button": ButtonEdgeSetWeight(self)},
 
             {"type": "VERTEX COMMANDS", "button": ButtonVertexCommands(self)},
             {"type": "vertex create", "button": ButtonVertexCreate(self)},
             {"type": "vertex delete", "button": ButtonVertexDelete(self)},
-            {"type": "vertex rename", "button": ButtonVertexRename(self)},
             {"type": "vertex content", "button": ButtonVertexContent(self)},
             {"type": "vertex find by content", "button": ButtonVertexFindByContent(self)},
+            {"type": "vertex rename", "button": ButtonVertexRename(self)},
             {"type": "vertex reset color", "button": ButtonVertexResetColor(self)},
 
             {"type": "graph delete", "button": ButtonGraphDelete(self)},
@@ -600,25 +600,34 @@ class EventsHandler:
         def left_mouse_down(self):
             # ## check vertex
             mouse_position = list(pygame.mouse.get_pos())
+            # button
+            self.app.store.current_button_info = self.app.renderer.check_buttons_intersection(position=mouse_position)
+            if self.app.store.current_button_info is not None:
+                self.app.store.current_button_info["button"].show_info = True
+                return
+            # vertex
             self.app.store.current_vertex_info = self.app.renderer.get_vertex_by_position(position=mouse_position)
             if self.app.store.current_vertex_info is not None:
                 self.app.store.current_vertex_info.show_info = True
-            else:
-                self.app.store.current_edge_info = self.app.renderer.get_edge_by_position(position=mouse_position)
-                if self.app.store.current_edge_info is not None:
-                    mouse_position = pygame.mouse.get_pos()
-                    self.app.store.current_edge_info.show_info = True
-                    position = self.app.store.current_edge_info.show_info_position
-                    position[0] = mouse_position[0] / self.app.renderer.camera.scale - \
-                                  self.app.renderer.camera.position[0]
-                    position[1] = mouse_position[1] / self.app.renderer.camera.scale - \
-                                  self.app.renderer.camera.position[1]
+                return
+            # edge
+            self.app.store.current_edge_info = self.app.renderer.get_edge_by_position(position=mouse_position)
+            if self.app.store.current_edge_info is not None:
+                self.app.store.current_edge_info.show_info = True
+                position = self.app.store.current_edge_info.show_info_position
+                position[0] = mouse_position[0] / self.app.renderer.camera.scale - \
+                              self.app.renderer.camera.position[0]
+                position[1] = mouse_position[1] / self.app.renderer.camera.scale - \
+                              self.app.renderer.camera.position[1]
+                return
 
         def left_mouse_up(self):
             if self.app.store.current_vertex_info is not None:
                 self.app.store.current_vertex_info.show_info = False
             if self.app.store.current_edge_info is not None:
                 self.app.store.current_edge_info.show_info = False
+            if self.app.store.current_button_info is not None:
+                self.app.store.current_button_info["button"].show_info = False
 
         def wheel_mouse_forward(self):
             button = self.app.renderer.check_buttons_intersection(pygame.mouse.get_pos())
