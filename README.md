@@ -16,6 +16,7 @@ Interaction via the command line
 | graph reset color          | id*            | rename graph                     |
 | graph export               | id*            | save graph in file               |
 | graph import               | file_name      | upload graph from file           |
+| graph create erdos renyi   | n, p           | print current graph id           |
 | graph print in store       | -              | print all graphs ids from store  |
 | graph print current        | -              | print current graph id           |
 |____________________________|________________|__________________________________|
@@ -31,6 +32,7 @@ Interaction via the command line
 | edge delete                | id             | delete edge                      |
 | edge paint                 | id r g b       | set color for edge               |
 | edge rename                | id id_new      | rename edge                      |
+| edge set weight            | id weight      | set weight to edge               |
 | edge change oriented state | id             | change oriented state            |
 |____________________________|________________|__________________________________|
 | # ## additional            |                | events for lab                   |

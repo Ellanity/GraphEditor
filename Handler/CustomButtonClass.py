@@ -142,6 +142,7 @@ class ButtonGraphInfo(CustomButton):
         content.append({'string': f"Graph: {self.event_handler.app.store.current_graph.identifier}"})
         content.append({'string': f"Vertexes: {len(self.event_handler.app.store.current_graph.vertexes)}"})
         content.append({'string': f"Edges: {len(self.event_handler.app.store.current_graph.edges)}"})
+        content.append({'string': f"scale: {int(self.event_handler.app.renderer.camera.scale * 100)}%"})
         self.set_content(content)
 
 
@@ -214,10 +215,18 @@ class ButtonGraphRename(CustomButton):
 
     def update(self):
         self.calculate_height()
+        if self.event_handler.display_handler.renaming_graph:
+            self.content = [{'string': f"graph renaming: {self.event_handler.display_handler.renaming_graph_text}"}]
+        else:
+            self.content = [{'string': f"graph rename"}]
 
     def on_click_self(self):
-        self.event_handler.display_handler.renaming_graph = True
-        self.event_handler.display_handler.renaming_graph_text = ""
+        if not self.event_handler.display_handler.renaming_graph:
+            self.event_handler.display_handler.renaming_graph = True
+            self.event_handler.display_handler.renaming_graph_text = ""
+        else:
+            self.event_handler.app.store.current_graph.identifier = self.event_handler.display_handler.renaming_graph_text
+            self.event_handler.display_handler.renaming_graph = False
 
 
 class ButtonGraphExportGepp(CustomButton):
@@ -359,6 +368,35 @@ class ButtonGraphRenameAllVertexes(CustomButton):
         for vertex in graph.vertexes:
             identifier_new = "v" + str(graph.vertexes.index(vertex) + 1)
             graph.rename_vertex(identifier=vertex.identifier, identifier_new=identifier_new)
+
+
+class ButtonGraphCreateErdosRenyiModel(CustomButton):
+    def __init__(self, event_handler):
+        super().__init__(event_handler)
+        self.content = [{'string': f"graph create erdos-renyi model"}]
+
+    def update(self):
+        self.calculate_height()
+        if self.event_handler.display_handler.typing_erdos_renyi_model_args:
+            args = str(self.event_handler.display_handler.typing_erdos_renyi_model_args_text).split(" ")
+            if len(args) >= 2:
+                self.content = [{'string': f"graph create erdos-renyi model: n={args[0]} p={args[1]}"}]
+            elif len(args) == 1:
+                self.content = [{'string': f"graph create erdos-renyi model: n={args[0]} p="}]
+            else:
+                self.content = [{'string': f"graph create erdos-renyi model: n="}]
+
+        else:
+            self.content = [{'string': f"graph create erdos-renyi model"}]
+
+    def on_click_self(self):
+        if not self.event_handler.display_handler.typing_erdos_renyi_model_args:
+            self.event_handler.display_handler.typing_erdos_renyi_model_args = True
+            self.event_handler.display_handler.typing_erdos_renyi_model_args_text = ""
+        else:
+            args = str(self.event_handler.display_handler.typing_erdos_renyi_model_args_text).split(" ")
+            self.event_handler.app.store.graph_create_erdos_renyi_model(args[0], args[1])
+            self.event_handler.display_handler.typing_erdos_renyi_model_args = False
 
 
 #####################

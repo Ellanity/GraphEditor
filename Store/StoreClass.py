@@ -1,9 +1,11 @@
 import json
+import math
 import pickle
 
 ############################################################
 ###### STORE KEEPS SEVERAL GRAPHS AND OTHER VARIABLES ######
 ############################################################
+import random
 from copy import copy
 
 
@@ -33,6 +35,41 @@ class Store:
             self.graphs.append(graph)
         except Exception as ex:
             print(ex)
+
+    def graph_create_erdos_renyi_model(self, n_vertexes, p_edges_chance_to_be):
+        n_vertexes = abs(int(n_vertexes))
+        p_edges_chance_to_be = abs(min(float(p_edges_chance_to_be), 1))
+        # ## graph
+        counter_of_models = 0
+        for graph in self.graphs:
+            if graph.identifier[:17] == "erdos_renyi_model":
+                counter_of_models += 1
+        graph = Graph()
+        graph.identifier = f"erdos_renyi_model_{counter_of_models}"
+        # ## vertexes
+        for index in range(1, n_vertexes + 1):
+            vertex = Graph.Vertex()
+            vertex.identifier = f"v{index}"
+            vertex.content = "content"
+            vertex.position = [random.randint(-1500, 1500), random.randint(-1500, 1500)]
+            graph.vertexes.append(vertex)
+        visited = []
+        # ## edges
+        for vertex1 in graph.vertexes:
+            for vertex2 in graph.vertexes:
+                if vertex2.identifier not in visited \
+                        and vertex1.identifier != vertex2.identifier \
+                        and random.randint(1, math.ceil(1 / p_edges_chance_to_be)) == 1:
+                    edge = Graph.Edge()
+                    edge.identifier = f"e_{vertex1.identifier}_{vertex2.identifier}"
+                    edge.vertex_identifier_first = vertex1.identifier
+                    edge.vertex_identifier_second = vertex2.identifier
+                    edge.weight = 1
+                    edge.oriented = False
+                    graph.edges.append(edge)
+            visited.append(vertex1.identifier)
+        self.graphs.append(graph)
+        self.current_graph = graph
 
     def graph_rename(self, graph_identifier, graph_identifier_new):
         for graph in self.graphs:
@@ -425,10 +462,6 @@ class Graph:
     def set_edge_weight(self, identifier, weight):
         for edge in self.edges:
             if edge.identifier == identifier:
-                try:
-                    weight = int(weight)
-                except Exception as _:
-                    weight = 0
-                weight = weight if weight > 0 else 0
+                weight = max(abs(int(weight)), 0)
                 edge.weight = copy(weight)
                 return

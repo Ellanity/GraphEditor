@@ -33,6 +33,7 @@ class EventsHandler:
             {"identifier": "graph import", "have_args": True, "action": CommandGraphImport(self).run},
             {"identifier": "graph rename", "have_args": True, "action": CommandGraphRename(self).run},
             {"identifier": "graph reset color", "have_args": True, "action": CommandGraphResetColor(self).run},
+            {"identifier": "graph create erdos renyi", "have_args": True, "action": CommandGraphCreateErdosRenyiModel(self).run},
             # ## vertex
             {"identifier": "vertex create", "have_args": True, "action": CommandVertexCreate(self).run},
             {"identifier": "vertex delete", "have_args": True, "action": CommandVertexDelete(self).run},
@@ -44,6 +45,7 @@ class EventsHandler:
             {"identifier": "edge delete", "have_args": True, "action": CommandEdgeDelete(self).run},
             {"identifier": "edge paint", "have_args": True, "action": CommandEdgePaint(self).run},
             {"identifier": "edge rename", "have_args": True, "action": CommandEdgeRename(self).run},
+            {"identifier": "edge set weight", "have_args": True, "action": CommandEdgeSetWeight(self).run},
             {"identifier": "edge change oriented state", "have_args": True, "action": CommandEdgeChangeOrientedState(self).run},
 
             # ## additional (event for lab)
@@ -92,6 +94,7 @@ class EventsHandler:
             {"type": "graph make complete", "button": ButtonGraphMakeComplete(self)},
             {"type": "graph rename all vertexes", "button": ButtonGraphRenameAllVertexes(self)},
             {"type": "graph rename all edges", "button": ButtonGraphRenameAllEdges(self)},
+            {"type": "graph create erdos-renyi model", "button": ButtonGraphCreateErdosRenyiModel(self)},
 
             {"type": "EDGE COMMANDS", "button": ButtonEdgeCommands(self)},
             {"type": "edge create", "button": ButtonEdgeCreate(self)},
@@ -162,6 +165,8 @@ class EventsHandler:
             self.typing_edge_weight_text = ""
             self.typing_vertex_content_find = False
             self.typing_vertex_content_find_text = ""
+            self.typing_erdos_renyi_model_args = False
+            self.typing_erdos_renyi_model_args_text = ""
             #
             self.double_click_timer = 0
             self.double_click_pos = [0, 0]
@@ -276,7 +281,8 @@ class EventsHandler:
                     and not self.typing_graph_to_import \
                     and not self.typing_vertex_content \
                     and not self.typing_edge_weight \
-                    and not self.typing_vertex_content_find:
+                    and not self.typing_vertex_content_find \
+                    and not self.typing_erdos_renyi_model_args:
                 if event.key == pygame.K_i and len(self.app.store.current_subgraph_vertexes) == 1:
                     self.renaming_vertex = True
                     if self.app.store.vertex_to_rename != self.app.store.current_subgraph_vertexes[0]:
@@ -396,6 +402,25 @@ class EventsHandler:
                         self.typing_vertex_content_find_text += event.unicode
             if not self.typing_vertex_content_find:
                 self.typing_vertex_content_find_text = ""
+                
+            # ## ### GRAPH ERDOS_RENYI MODEL
+            # get input
+            if self.typing_erdos_renyi_model_args:
+                if self.app.store.current_graph is None or event.key == pygame.K_RETURN:
+                    self.typing_erdos_renyi_model_args = False
+                    # ## ### body
+                    args = str(self.typing_erdos_renyi_model_args_text).split(" ")
+                    self.app.store.graph_create_erdos_renyi_model(args[0], args[1])
+                    self.typing_erdos_renyi_model_args = False
+                    # ## ###
+                    self.typing_erdos_renyi_model_args_text = ""
+                else:
+                    if event.key == pygame.K_BACKSPACE:
+                        self.typing_erdos_renyi_model_args_text = self.typing_erdos_renyi_model_args_text[:-1]
+                    elif event.key != pygame.K_RETURN:
+                        self.typing_erdos_renyi_model_args_text += event.unicode
+            if not self.typing_erdos_renyi_model_args:
+                self.typing_erdos_renyi_model_args_text = ""
 
             # ## ### DISPLAY SIZE
             if event.key == pygame.K_F11 or event.key == pygame.K_ESCAPE:

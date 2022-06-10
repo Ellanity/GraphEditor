@@ -45,6 +45,15 @@ class CommandGraphCreate(Command):
         print(f"graph {args[0]} created")
 
 
+class CommandGraphCreateErdosRenyiModel(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        self.events_handler.app.store.graph_create_erdos_renyi_model(args[0], args[1])
+        print(f"graph {self.events_handler.app.store.current_graph.identifier} created")
+
+
 class CommandGraphChoose(Command):
     def __init__(self, events_handler):
         super().__init__(events_handler)
@@ -298,6 +307,16 @@ class CommandEdgeRename(Command):
     def run(self, args):
         self.events_handler.app.store.current_graph.rename_edge(identifier=args[0], identifier_new=args[1])
         print(f"edge {args[1]} renamed")
+
+
+class CommandEdgeSetWeight(Command):
+    def __init__(self, events_handler):
+        super().__init__(events_handler)
+
+    def run(self, args):
+        self.events_handler.app.store.current_graph.set_edge_weight(
+            identifier=args[0], weight=args[1])
+        print(f"edge {args[0]} weight {args[1]} seted")
 
 
 class CommandEdgeRenameAll(Command):
